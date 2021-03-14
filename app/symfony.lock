@@ -1,4 +1,10 @@
 {
+    "n98/junit-xml": {
+        "version": "1.0.0"
+    },
+    "overtrue/phplint": {
+        "version": "2.3.5"
+    },
     "psr/cache": {
         "version": "2.0.0"
     },
@@ -111,6 +117,9 @@
     },
     "symfony/polyfill-php80": {
         "version": "v1.22.1"
+    },
+    "symfony/process": {
+        "version": "v5.2.4"
     },
     "symfony/routing": {
         "version": "5.1",
