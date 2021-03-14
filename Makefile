@@ -1,6 +1,6 @@
 init: docker-clear docker-up
 up: docker-clear docker-up
-check: lint cs psalm
+check: lint cs psalm stan
 fix: cs-fix
 
 docker-up:
@@ -21,3 +21,5 @@ cs-fix:
 	docker-compose run --rm messenger-php-cli composer cs-fix
 psalm:
 	docker-compose run --rm messenger-php-cli composer psalm
+stan:
+	docker-compose run --rm messenger-php-cli composer stan

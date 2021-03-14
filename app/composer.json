@@ -15,6 +15,7 @@
     },
     "require-dev": {
         "overtrue/phplint": "^2.3",
+        "phpstan/phpstan": "^0.12.81",
         "squizlabs/php_codesniffer": "^3.5",
         "vimeo/psalm": "^4.6"
     },
@@ -45,6 +46,7 @@
         "cs": "phpcs",
         "cs-fix": "phpcbf",
         "psalm": "psalm",
+        "stan": "vendor/bin/phpstan analyse src --level 8",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
