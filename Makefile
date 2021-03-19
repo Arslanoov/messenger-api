@@ -13,6 +13,9 @@ docker-down:
 docker-clear:
 	docker-compose down --remove-orphans
 
+install-deps:
+	docker-compose run --rm messenger-php-cli composer install --ignore-platform-reqs
+
 lint:
 	docker-compose run --rm messenger-php-cli composer lint
 

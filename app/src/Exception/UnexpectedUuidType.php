@@ -8,7 +8,7 @@ use Throwable;
 
 class UnexpectedUuidType extends DomainException
 {
-    public function __construct(string $message = "Unexpected uuid type", int $code = 419, Throwable $previous = null)
+    public function __construct(string $message = 'Unexpected uuid type', int $code = 419, Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

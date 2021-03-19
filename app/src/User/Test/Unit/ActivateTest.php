@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\User\Test\Unit;
 
 use App\User\Exception\AlreadyActivated;
-use App\User\Status;
 use App\User\Test\Builder\UserBuilder;
+use Domain\Model\User\Status;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class ActivateTest
- * @package App\User\Test\Unit
- * @covers \App\User\User
+ * @package Domain\Model\User\Test\Unit
+ * @covers \Domain\Model\User\User
  */
 class ActivateTest extends TestCase
 {
@@ -47,7 +47,7 @@ class ActivateTest extends TestCase
         $this->assertFalse($user->getStatus()->isDraft());
 
         $this->expectException(AlreadyActivated::class);
-        $this->expectExceptionMessage("Already activated");
+        $this->expectExceptionMessage('Already activated');
         $this->expectExceptionCode(419);
 
         $user->activate();

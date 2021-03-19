@@ -5,6 +5,9 @@
     "amphp/byte-stream": {
         "version": "v1.8.0"
     },
+    "beberlei/assert": {
+        "version": "v3.3.0"
+    },
     "brick/math": {
         "version": "0.9.2"
     },

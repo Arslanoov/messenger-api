@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\User;
+namespace Domain\Model\User;
+
+use Assert\Assertion;
 
 class Status
 {
@@ -11,13 +13,14 @@ class Status
         self::DRAFT
     ];
 
-    public const ACTIVE = "Active";
-    public const DRAFT = "Draft";
+    public const ACTIVE = 'Active';
+    public const DRAFT = 'Draft';
 
     private string $value;
 
     public function __construct(string $value)
     {
+        Assertion::inArray($value, self::LIST, 'Incorrect user status');
         $this->value = $value;
     }
 

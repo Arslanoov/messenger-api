@@ -2,19 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\User;
+namespace Domain\Model\User;
 
 use App\Exception\UnexpectedUuidType;
+use Assert\Assertion;
 use Ramsey\Uuid\Uuid;
 
 class Id
 {
-    private const UUID4 = "uuid4";
+    private const UUID4 = 'uuid4';
 
     private string $value;
 
     public function __construct(string $value)
     {
+        Assertion::notBlank($value, 'User id required');
         $this->value = $value;
     }
 

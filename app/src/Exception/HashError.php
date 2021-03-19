@@ -9,7 +9,7 @@ use Throwable;
 
 class HashError extends RuntimeException
 {
-    public function __construct(string $message = "Hash error", int $code = 500, Throwable $previous = null)
+    public function __construct(string $message = 'Hash error', int $code = 500, Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\User\Test\Builder;
 
-use App\User\Id;
-use App\User\Status;
-use App\User\User;
-use App\User\Username;
+use Domain\Model\User\Id;
+use Domain\Model\User\Status;
+use Domain\Model\User\User;
+use Domain\Model\User\Username;
 
 class UserBuilder
 {
@@ -19,8 +19,8 @@ class UserBuilder
     public function __construct()
     {
         $this->id = Id::generate();
-        $this->username = new Username("User name");
-        $this->hash = "hash";
+        $this->username = new Username('User name');
+        $this->hash = 'hash';
         $this->status = Status::draft();
     }
 

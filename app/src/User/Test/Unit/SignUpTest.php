@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\User\Test\Unit;
 
-use App\User\Id;
-use App\User\Status;
-use App\User\User;
-use App\User\Username;
+use Domain\Model\User\Id;
+use Domain\Model\User\Status;
+use Domain\Model\User\User;
+use Domain\Model\User\Username;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class SignUpTest
- * @package App\User\Test\Unit
- * @covers \App\User\User
+ * @package Domain\Model\User\Test\Unit
+ * @covers \Domain\Model\User\User
  */
 class SignUpTest extends TestCase
 {
@@ -21,8 +21,8 @@ class SignUpTest extends TestCase
     {
         $user = new User(
             $uuid = Id::generate(),
-            $username = new Username($username = "Username"),
-            $hash = "Hash",
+            $username = new Username($username = 'Username'),
+            $hash = 'Hash',
             $status = Status::draft()
         );
 
