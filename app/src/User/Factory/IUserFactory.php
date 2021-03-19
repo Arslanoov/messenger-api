@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\User\Factory;
 
-use App\User\UserInterface;
+use Domain\Model\User\UserInterface;
 
 interface IUserFactory
 {

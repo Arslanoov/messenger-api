@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace App\User\Infrastructure\Factory;
 
 use App\User\Factory\IUserFactory;
-use App\User\Id;
-use App\User\Service\Hasher;
-use App\User\Status;
-use App\User\User;
-use App\User\Username;
+use App\User\Service\HasherInterface;
+use Domain\Model\User\Id;
+use Domain\Model\User\Status;
+use Domain\Model\User\User;
+use Domain\Model\User\Username;
 
 class UserFactory implements IUserFactory
 {
-    private Hasher $hasher;
+    private HasherInterface $hasher;
 
-    public function __construct(Hasher $hasher)
+    public function __construct(HasherInterface $hasher)
     {
         $this->hasher = $hasher;
     }

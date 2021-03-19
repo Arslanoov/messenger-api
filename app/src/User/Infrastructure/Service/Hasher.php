@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\User\Service;
-
-/* TODO: Add interface */
+namespace App\User\Infrastructure\Service;
 
 use App\Exception\HashError;
+use App\User\Service\HasherInterface;
 
-class Hasher
+class Hasher implements HasherInterface
 {
     /**
      * Hasher constructor.
