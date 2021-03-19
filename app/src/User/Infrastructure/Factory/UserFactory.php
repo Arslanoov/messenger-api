@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\User\Infrastructure\Factory;
 
-use App\User\Factory\IUserFactory;
+use App\User\Factory\UserFactoryInterface;
 use App\User\Service\HasherInterface;
 use Domain\Model\User\Id;
 use Domain\Model\User\Status;
 use Domain\Model\User\User;
 use Domain\Model\User\Username;
 
-class UserFactory implements IUserFactory
+class UserFactory implements UserFactoryInterface
 {
     private HasherInterface $hasher;
 

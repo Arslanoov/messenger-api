@@ -8,11 +8,16 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "beberlei/assert": "^3.3",
+        "composer/package-versions-deprecated": "1.11.99.1",
+        "doctrine/doctrine-bundle": "^2.2",
+        "doctrine/doctrine-migrations-bundle": "^3.0",
+        "doctrine/orm": "^2.8",
         "ramsey/uuid": "^4.1",
         "symfony/console": "5.2.*",
         "symfony/dotenv": "5.2.*",
         "symfony/flex": "^1.3.1",
         "symfony/framework-bundle": "5.2.*",
+        "symfony/proxy-manager-bridge": "5.2.*",
         "symfony/yaml": "5.2.*"
     },
     "require-dev": {
@@ -31,8 +36,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Domain\\Model\\User\\": "src/User/Domain/Model",
-            "App\\": "src"
+            "App\\": "src/App",
+            "Domain\\Model\\User\\": "src/User/Domain/Model"
         }
     },
     "autoload-dev": {},

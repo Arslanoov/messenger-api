@@ -6,7 +6,7 @@ namespace App\User\Factory;
 
 use Domain\Model\User\UserInterface;
 
-interface IUserFactory
+interface UserFactoryInterface
 {
     public function simpleRegister(string $username, string $password): UserInterface;
 }

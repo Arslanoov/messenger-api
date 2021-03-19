@@ -6,12 +6,9 @@ services:
         autoconfigure: true
 
     App\:
-        resource: '../src/'
+        resource: '../src/App/'
         exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
-            - '../src/Kernel.php'
-            - '../src/Tests/'
+            - '../src/App/Kernel.php'
 
     App\Controller\:
         resource: '../src/Controller/'
