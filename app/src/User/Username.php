@@ -17,4 +17,9 @@ class Username
     {
         return $this->value;
     }
+
+    public function isEqual(Username $username): bool
+    {
+        return $this->getValue() === $username->getValue();
+    }
 }

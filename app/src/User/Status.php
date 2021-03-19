@@ -28,7 +28,7 @@ class Status
 
     public static function draft(): self
     {
-        return new self(self::ACTIVE);
+        return new self(self::DRAFT);
     }
 
     public function getValue(): string
@@ -44,5 +44,10 @@ class Status
     public function isActive(): bool
     {
         return $this->value === self::ACTIVE;
+    }
+
+    public function isEqual(Status $status): bool
+    {
+        return $this->getValue() === $status->getValue();
     }
 }

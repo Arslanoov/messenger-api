@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\User\Factory;
+namespace App\User\Infrastructure\Factory;
 
+use App\User\Factory\IUserFactory;
 use App\User\Id;
 use App\User\Service\Hasher;
 use App\User\Status;
 use App\User\User;
 use App\User\Username;
 
-class UserFactory
+class UserFactory implements IUserFactory
 {
     private Hasher $hasher;
 
