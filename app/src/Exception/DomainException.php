@@ -9,7 +9,7 @@ use Throwable;
 
 class DomainException extends BaseDomainException
 {
-    public function __construct(string $message = "", int $code = 419, Throwable $previous = null)
+    public function __construct(string $message = '', int $code = 419, Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

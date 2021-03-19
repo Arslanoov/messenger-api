@@ -2,6 +2,7 @@ init: docker-clear docker-up
 up: docker-clear docker-up
 check: lint cs psalm stan
 fix: cs-fix
+test: test-unit
 
 docker-up:
 	docker-compose up --build -d
@@ -11,6 +12,9 @@ docker-down:
 
 docker-clear:
 	docker-compose down --remove-orphans
+
+install-deps:
+	docker-compose run --rm messenger-php-cli composer install --ignore-platform-reqs
 
 lint:
 	docker-compose run --rm messenger-php-cli composer lint
@@ -23,3 +27,10 @@ psalm:
 	docker-compose run --rm messenger-php-cli composer psalm
 stan:
 	docker-compose run --rm messenger-php-cli composer stan
+
+test-all:
+	docker-compose run --rm messenger-php-cli vendor/bin/phpunit --colors=always
+test-unit:
+	docker-compose run --rm messenger-php-cli vendor/bin/phpunit --colors=always --testsuite=Unit
+test-functional:
+	docker-compose run --rm messenger-php-cli vendor/bin/phpunit --colors=always --testsuite=Functional
