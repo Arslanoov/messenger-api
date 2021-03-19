@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\User;
 
 use App\Exception\UnexpectedUuidType;
+use Ramsey\Uuid\Uuid;
 
 class Id
 {
@@ -25,8 +26,7 @@ class Id
     public static function generate(string $type = self::UUID4): self
     {
         if ($type === self::UUID4) {
-            /* TODO: Add uuid generate */
-            return new self("uuid");
+            return new self(Uuid::uuid4()->toString());
         }
 
         throw new UnexpectedUuidType();
