@@ -10,6 +10,6 @@ services:
         exclude:
             - '../src/App/Kernel.php'
 
-    App\Controller\:
+    App\Http\Handler\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']

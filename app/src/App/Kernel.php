@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 use function dirname;
 
-class Kernel extends BaseKernel
+final class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
