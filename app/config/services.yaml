@@ -5,11 +5,29 @@ services:
         autowire: true
         autoconfigure: true
 
-    App\:
-        resource: '../src/App/'
-        exclude:
-            - '../src/App/Kernel.php'
-
     App\Http\Handler\:
-        resource: '../src/Controller/'
-        tags: ['controller.service_arguments']
+      resource: '../src/App/Http/Handler/'
+      tags: [ 'controller.service_arguments' ]
+
+    # TODO: Separate config
+
+    # HTTP
+    App\Http\Response\ResponseFactory:
+        class: App\Infrastructure\Http\Response\SymfonyResponseFactory
+
+    # Domain Services
+    Domain\FlusherInterface:
+        class: Domain\Infrastructure\DoctrineFlusher
+
+    Domain\PersisterInterface:
+        class: Domain\Infrastructure\DoctrinePersister
+
+    # User Services
+    User\Factory\UserFactoryInterface:
+        class: User\Infrastructure\Factory\UserFactory
+
+    User\Service\HasherInterface:
+        class: User\Infrastructure\Service\Hasher
+
+    User\Model\UserRepositoryInterface:
+        class: User\Infrastructure\Model\DoctrineUserRepository
