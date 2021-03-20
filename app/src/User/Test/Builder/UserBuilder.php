@@ -11,7 +11,7 @@ use User\Model\User;
 use User\Model\UserInterface;
 use User\Model\Username;
 
-class UserBuilder
+final class UserBuilder
 {
     private Id $id;
     private Username $username;

@@ -7,7 +7,7 @@ namespace User\Infrastructure\Service;
 use Exception\HashError;
 use User\Service\HasherInterface;
 
-class Hasher implements HasherInterface
+final class Hasher implements HasherInterface
 {
     /**
      * Hasher constructor.

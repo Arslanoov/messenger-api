@@ -7,7 +7,7 @@ namespace User\Exception;
 use Domain\Exception\DomainException;
 use Throwable;
 
-class AlreadyActivated extends DomainException
+final class AlreadyActivated extends DomainException
 {
     public function __construct(string $message = 'Already activated', int $code = 419, Throwable $previous = null)
     {

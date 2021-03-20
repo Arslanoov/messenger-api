@@ -7,7 +7,7 @@ namespace Exception;
 use Domain\Exception\DomainException;
 use Throwable;
 
-class UnexpectedUuidType extends DomainException
+final class UnexpectedUuidType extends DomainException
 {
     public function __construct(string $message = 'Unexpected uuid type', int $code = 419, Throwable $previous = null)
     {

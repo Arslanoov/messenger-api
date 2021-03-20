@@ -11,7 +11,7 @@ use User\Model\User;
 use User\Model\Username;
 use User\Service\HasherInterface;
 
-class UserFactory implements UserFactoryInterface
+final class UserFactory implements UserFactoryInterface
 {
     private HasherInterface $hasher;
 
