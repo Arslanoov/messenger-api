@@ -31,7 +31,7 @@ use User\UseCase\SignUp\Request\Handler;
  *         description="Success response",
  *             @OA\JsonContent(
  *                 type="object",
- *                 @OA\Property(property="email", type="string", nullable=false)
+ *                 @OA\Property(property="username", type="string", nullable=false)
  *             )
  *          )
  *     ),

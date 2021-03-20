@@ -47,7 +47,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "email": {
+                                        "username": {
                                             "description": "Class SignUp",
                                             "type": "string",
                                             "nullable": false
