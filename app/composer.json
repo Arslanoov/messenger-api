@@ -37,10 +37,14 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/App",
-            "Domain\\Model\\User\\": "src/User/Domain/Model"
+            "Domain\\": "src/Domain",
+            "Exception\\": "src/Exception",
+            "User\\": "src/User"
         }
     },
-    "autoload-dev": {},
+    "autoload-dev": {
+        "Test\\": "tests"
+    },
     "replace": {
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",

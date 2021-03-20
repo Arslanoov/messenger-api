@@ -2,18 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Domain\Model\User;
+namespace User\Model;
 
-use Assert\Assertion;
+use Assert\AssertionFailedException;
+use Domain\Exception\DomainAssertionException;
+use Domain\Validation\DomainLogicAssertion;
 
 class Username
 {
     private string $value;
 
+    /**
+     * Username constructor.
+     * @param string $value
+     * @throws AssertionFailedException
+     * @throws DomainAssertionException
+     */
     public function __construct(string $value)
     {
-        Assertion::notBlank($value, 'User name required');
-        Assertion::betweenLength(
+        DomainLogicAssertion::notBlank($value, 'User name required');
+        DomainLogicAssertion::betweenLength(
             $value,
             4,
             16,

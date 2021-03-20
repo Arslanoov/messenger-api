@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\User\Test\Unit;
+namespace User\Test\Unit;
 
-use Domain\Model\User\Username;
-use InvalidArgumentException;
+use Domain\Exception\DomainAssertionException;
 use PHPUnit\Framework\TestCase;
+use User\Model\Username;
 
 /**
  * Class UsernameTest
  * @package Domain\Model\User\Test\Unit
- * @covers \Domain\Model\User\Username
+ * @covers \User\Model\Username
  */
 class UsernameTest extends TestCase
 {
@@ -25,7 +25,7 @@ class UsernameTest extends TestCase
 
     public function testValidationErrorNotEmpty(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DomainAssertionException::class);
         $this->expectExceptionMessage('User name required');
 
         new Username($value = '');
@@ -33,7 +33,7 @@ class UsernameTest extends TestCase
 
     public function testValidationErrorLengthBetweenTooShort(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DomainAssertionException::class);
         $this->expectExceptionMessage('User name must be between 4 and 16 chars length');
 
         new Username($value = 'sh');
@@ -41,7 +41,7 @@ class UsernameTest extends TestCase
 
     public function testValidationErrorLengthBetweenTooLong(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DomainAssertionException::class);
         $this->expectExceptionMessage('User name must be between 4 and 16 chars length');
 
         new Username($value = 'long_long_long_long');

@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Domain\Model\User;
+namespace User\Model;
 
-use Assert\Assertion;
+use Assert\AssertionFailedException;
+use Domain\Exception\DomainAssertionException;
+use Domain\Validation\DomainLogicAssertion;
 
 class Status
 {
@@ -18,9 +20,15 @@ class Status
 
     private string $value;
 
+    /**
+     * Status constructor.
+     * @param string $value
+     * @throws AssertionFailedException
+     * @throws DomainAssertionException
+     */
     public function __construct(string $value)
     {
-        Assertion::inArray($value, self::LIST, 'Incorrect user status');
+        DomainLogicAssertion::inArray($value, self::LIST, 'Incorrect user status');
         $this->value = $value;
     }
 

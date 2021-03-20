@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\User\Test\Builder;
+namespace User\Test\Builder;
 
-use Domain\Model\User\Id;
-use Domain\Model\User\Status;
-use Domain\Model\User\User;
-use Domain\Model\User\Username;
+use Assert\AssertionFailedException;
+use User\Model\Id;
+use User\Model\Status;
+use User\Model\User;
+use User\Model\UserInterface;
+use User\Model\Username;
 
 class UserBuilder
 {
@@ -16,6 +18,10 @@ class UserBuilder
     private string $hash;
     private Status $status;
 
+    /**
+     * UserBuilder constructor.
+     * @throws AssertionFailedException
+     */
     public function __construct()
     {
         $this->id = Id::generate();
@@ -62,7 +68,7 @@ class UserBuilder
         return $this->withStatus(Status::draft());
     }
 
-    public function build(): User
+    public function build(): UserInterface
     {
         return new User(
             $this->id,

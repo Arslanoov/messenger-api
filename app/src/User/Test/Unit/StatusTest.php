@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\User\Test\Unit;
+namespace User\Test\Unit;
 
-use Domain\Model\User\Status;
-use InvalidArgumentException;
+use Domain\Exception\DomainAssertionException;
+use User\Model\Status;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class UsernameTest
  * @package Domain\Model\User\Test\Unit
- * @covers \Domain\Model\User\Status
+ * @covers \User\Model\Status
  */
 class StatusTest extends TestCase
 {
@@ -39,7 +39,7 @@ class StatusTest extends TestCase
 
     public function testValidationErrorLengthBetweenTooShort(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DomainAssertionException::class);
         $this->expectExceptionMessage('Incorrect user status');
 
         new Status($value = 'Incorrect');
