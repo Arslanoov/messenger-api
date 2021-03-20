@@ -5,8 +5,9 @@
     "description": "",
     "require": {
         "php": ">=8.0",
-        "ext-ctype": "*",
+        "ext-ctyp": "*",
         "ext-iconv": "*",
+        "ext-intl": "*",
         "beberlei/assert": "^3.3",
         "composer/package-versions-deprecated": "1.11.99.1",
         "doctrine/doctrine-bundle": "^2.2",
@@ -21,6 +22,8 @@
         "symfony/yaml": "5.2.*"
     },
     "require-dev": {
+        "composer/semver": "^1.0",
+        "nunomaduro/phpinsights": "^1.14",
         "overtrue/phplint": "^2.3",
         "phpstan/phpstan": "^0.12.81",
         "phpunit/phpunit": "^9.5",
@@ -56,6 +59,7 @@
         "cs-fix": "phpcbf",
         "psalm": "psalm",
         "stan": "vendor/bin/phpstan analyse src --level 8",
+        "php-insights": "vendor/bin/phpinsights analyse src",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
