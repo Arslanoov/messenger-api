@@ -8,7 +8,7 @@ use Domain\FlusherInterface;
 use Domain\PersisterInterface;
 use User\Factory\UserFactoryInterface;
 
-class Handler
+final class Handler
 {
     private UserFactoryInterface $factory;
     private PersisterInterface $persister;

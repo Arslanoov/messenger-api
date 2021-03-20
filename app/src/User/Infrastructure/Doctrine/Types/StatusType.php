@@ -8,7 +8,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 use User\Model\Status;
 
-class StatusType extends StringType
+final class StatusType extends StringType
 {
     public const NAME = 'user_user_status';
 

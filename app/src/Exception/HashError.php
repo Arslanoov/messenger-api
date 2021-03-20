@@ -7,7 +7,7 @@ namespace Exception;
 use RuntimeException;
 use Throwable;
 
-class HashError extends RuntimeException
+final class HashError extends RuntimeException
 {
     public function __construct(string $message = 'Hash error', int $code = 500, Throwable $previous = null)
     {

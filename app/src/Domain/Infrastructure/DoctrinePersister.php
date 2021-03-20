@@ -7,7 +7,7 @@ namespace Domain\Infrastructure;
 use Doctrine\ORM\EntityManagerInterface;
 use Domain\PersisterInterface;
 
-class DoctrinePersister implements PersisterInterface
+final class DoctrinePersister implements PersisterInterface
 {
     private EntityManagerInterface $entityManager;
 

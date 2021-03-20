@@ -6,7 +6,7 @@ namespace User\Infrastructure\Model;
 
 use User\Model\UserRepositoryInterface;
 
-class UserDoctrineRepository implements UserRepositoryInterface
+final class UserDoctrineRepository implements UserRepositoryInterface
 {
 
 }

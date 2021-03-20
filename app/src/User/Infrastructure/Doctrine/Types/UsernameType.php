@@ -8,7 +8,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 use User\Model\Username;
 
-class UsernameType extends StringType
+final class UsernameType extends StringType
 {
     public const NAME = 'user_user_username';
 
