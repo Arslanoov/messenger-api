@@ -6,5 +6,8 @@ namespace Domain;
 
 interface AggregateRoot
 {
-    public function releaseEvents(): void;
+    /**
+     * @return array<object>
+     */
+    public function releaseEvents(): array;
 }

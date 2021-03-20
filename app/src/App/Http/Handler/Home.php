@@ -21,7 +21,7 @@ final class Home
         $this->response = $response;
     }
 
-    public function __invoke()
+    public function __invoke(): mixed
     {
         return $this->response->json([
             'v' => '1.0',

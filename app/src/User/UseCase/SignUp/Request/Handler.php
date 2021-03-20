@@ -6,24 +6,28 @@ namespace User\UseCase\SignUp\Request;
 
 use Domain\FlusherInterface;
 use Domain\PersisterInterface;
-use User\Factory\UserFactoryInterface;
+use User\Model\User;
+use User\Service\HasherInterface;
 
 final class Handler
 {
-    private UserFactoryInterface $factory;
+    private HasherInterface $hasher;
     private PersisterInterface $persister;
     private FlusherInterface $flusher;
 
-    public function __construct(UserFactoryInterface $factory, PersisterInterface $persister, FlusherInterface $flusher)
+    public function __construct(HasherInterface $hasher, PersisterInterface $persister, FlusherInterface $flusher)
     {
-        $this->factory = $factory;
+        $this->hasher = $hasher;
         $this->persister = $persister;
         $this->flusher = $flusher;
     }
 
     public function handle(Command $command): void
     {
-        $user = $this->factory->simpleRegister($command->username, $command->password);
+        $user = User::signUp(
+            $command->username,
+            $this->hasher->hash($command->password)
+        );
 
         $this->persister->persist($user);
 
