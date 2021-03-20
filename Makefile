@@ -21,6 +21,9 @@ create-migration:
 migrate:
 	docker-compose run --rm messenger-php-cli php bin/console do:mi:mi
 
+generate-doc:
+	docker-compose run --rm messenger-php-cli php bin/console api:doc:generate
+
 lint:
 	docker-compose run --rm messenger-php-cli composer lint
 

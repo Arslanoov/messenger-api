@@ -1,0 +1,170 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Messenger API",
+        "description": "HTTP JSON API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/"
+        }
+    ],
+    "paths": {
+        "/auth/sign-up": {
+            "post": {
+                "tags": [
+                    "Sign Up Request"
+                ],
+                "summary": "Class SignUp",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "description": "Class SignUp",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "Class SignUp",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "username": {
+                                            "description": "Class SignUp",
+                                            "type": "string",
+                                            "nullable": false
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "tags": [
+                    "API"
+                ],
+                "summary": "Class Home",
+                "description": "API Home",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "version": {
+                                            "description": "Class Home",
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "description": "Class Home",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ErrorModel": {
+                "properties": {
+                    "error": {
+                        "description": "Class Home",
+                        "properties": {
+                            "code": {
+                                "description": "Class Home",
+                                "type": "integer"
+                            },
+                            "message": {
+                                "description": "Class Home",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "violations": {
+                        "description": "Class Home",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "propertyPath": {
+                                    "description": "Class Home",
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "description": "Class Home",
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "400": {
+                "description": "Errors",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "description": "Class SignUp",
+                                    "type": "string",
+                                    "nullable": true
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "oauth2": {
+                "type": "oauth2",
+                "flows": {
+                    "implicit": {
+                        "authorizationUrl": "/token",
+                        "scopes": {
+                            "common": "Common"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

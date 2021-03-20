@@ -6,24 +6,41 @@ namespace User\UseCase\SignUp\Request;
 
 use Domain\FlusherInterface;
 use Domain\PersisterInterface;
-use User\Factory\UserFactoryInterface;
+use User\Exception\ExistsWithThisUsername;
+use User\Model\User;
+use User\Model\Username;
+use User\Model\UserRepositoryInterface;
+use User\Service\HasherInterface;
 
 final class Handler
 {
-    private UserFactoryInterface $factory;
+    private HasherInterface $hasher;
+    private UserRepositoryInterface $users;
     private PersisterInterface $persister;
     private FlusherInterface $flusher;
 
-    public function __construct(UserFactoryInterface $factory, PersisterInterface $persister, FlusherInterface $flusher)
-    {
-        $this->factory = $factory;
+    public function __construct(
+        HasherInterface $hasher,
+        UserRepositoryInterface $users,
+        PersisterInterface $persister,
+        FlusherInterface $flusher
+    ) {
+        $this->hasher = $hasher;
+        $this->users = $users;
         $this->persister = $persister;
         $this->flusher = $flusher;
     }
 
     public function handle(Command $command): void
     {
-        $user = $this->factory->simpleRegister($command->username, $command->password);
+        if ($this->users->hasByUsername(new Username($command->username))) {
+            throw new ExistsWithThisUsername();
+        }
+
+        $user = User::signUp(
+            $command->username,
+            $this->hasher->hash($command->password)
+        );
 
         $this->persister->persist($user);
 

@@ -17,7 +17,7 @@ use User\Model\Username;
  */
 class SignUpTest extends TestCase
 {
-    public function testSuccess(): void
+    public function testConstructor(): void
     {
         $user = new User(
             $uuid = Id::generate(),
@@ -30,6 +30,21 @@ class SignUpTest extends TestCase
         $this->assertEquals($user->getUsername(), $username);
         $this->assertEquals($user->getHash(), $hash);
         $this->assertEquals($user->getStatus(), $status);
+        $this->assertTrue($user->isDraft());
+        $this->assertFalse($user->isActive());
+    }
+
+    public function testNamedConstructor(): void
+    {
+        $user = User::signUp(
+            $username = 'Username',
+            $hash = 'Hash'
+        );
+
+        $this->assertNotEmpty($user->getUuid());
+        $this->assertEquals($user->getUsername(), new Username($username));
+        $this->assertEquals($user->getHash(), $hash);
+        $this->assertNotEmpty($user->getStatus());
         $this->assertTrue($user->isDraft());
         $this->assertFalse($user->isActive());
     }
