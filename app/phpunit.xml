@@ -12,6 +12,7 @@
             <directory>src/User/Test</directory>
         </testsuite>
         <testsuite name="Functional">
+            <directory>tests/Functional</directory>
         </testsuite>
     </testsuites>
 
@@ -20,7 +21,8 @@
             <directory suffix=".php">src</directory>
         </include>
         <exclude>
-                <directory>src/User/Test</directory>
+            <directory>src/User/Test</directory>
+            <directory>tests/Functional</directory>
         </exclude>
     </coverage>
 

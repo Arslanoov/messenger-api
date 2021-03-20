@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Domain\Model\User;
+namespace User\Model;
 
-use App\Exception\UnexpectedUuidType;
-use Assert\Assertion;
+use Assert\AssertionFailedException;
+use Domain\Exception\DomainAssertionException;
+use Domain\Validation\DomainLogicAssertion;
+use Exception\UnexpectedUuidType;
 use Ramsey\Uuid\Uuid;
 
 class Id
@@ -14,14 +16,21 @@ class Id
 
     private string $value;
 
+    /**
+     * Id constructor.
+     * @param string $value
+     * @throws AssertionFailedException
+     * @throws DomainAssertionException
+     */
     public function __construct(string $value)
     {
-        Assertion::notBlank($value, 'User id required');
+        DomainLogicAssertion::notBlank($value, 'User id required');
         $this->value = $value;
     }
 
     /**
      * @throws UnexpectedUuidType
+     * @throws AssertionFailedException
      * @param string $type
      * @return self
      */

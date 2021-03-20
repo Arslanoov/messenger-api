@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Exception;
+namespace Exception;
 
+use Domain\Exception\DomainException;
 use Throwable;
 
 class UnexpectedUuidType extends DomainException

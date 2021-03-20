@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\User\Test\Unit;
+namespace User\Test\Unit;
 
-use Domain\Model\User\Id;
-use InvalidArgumentException;
+use Domain\Exception\DomainAssertionException;
 use PHPUnit\Framework\TestCase;
+use User\Model\Id;
 
 /**
  * Class IdTest
  * @package Domain\Model\User\Test\Unit
- * @covers \Domain\Model\User\Id
+ * @covers \User\Model\Id
  */
 class IdTest extends TestCase
 {
@@ -24,7 +24,7 @@ class IdTest extends TestCase
 
     public function testValidationErrorNotEmpty(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DomainAssertionException::class);
         $this->expectExceptionMessage('User id required');
 
         new Id($value = '');

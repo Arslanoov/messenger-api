@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\User\Infrastructure\Service;
+namespace User\Infrastructure\Service;
 
-use App\Exception\HashError;
-use App\User\Service\HasherInterface;
+use Exception\HashError;
+use User\Service\HasherInterface;
 
 class Hasher implements HasherInterface
 {

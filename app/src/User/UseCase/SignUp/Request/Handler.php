@@ -2,24 +2,30 @@
 
 declare(strict_types=1);
 
-namespace App\User\UseCase\SignUp\Request;
+namespace User\UseCase\SignUp\Request;
 
-use App\User\Factory\UserFactoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Domain\FlusherInterface;
+use Domain\PersisterInterface;
+use User\Factory\UserFactoryInterface;
 
-/*
- * TODO: WIP
- * */
 class Handler
 {
-    private EntityManagerInterface $em;
     private UserFactoryInterface $factory;
+    private PersisterInterface $persister;
+    private FlusherInterface $flusher;
+
+    public function __construct(UserFactoryInterface $factory, PersisterInterface $persister, FlusherInterface $flusher)
+    {
+        $this->factory = $factory;
+        $this->persister = $persister;
+        $this->flusher = $flusher;
+    }
 
     public function handle(Command $command): void
     {
         $user = $this->factory->simpleRegister($command->username, $command->password);
 
-        $this->em->persist($user);
+        $this->persister->persist($user);
 
         $this->flusher->flush();
     }

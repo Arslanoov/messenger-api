@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\User\Infrastructure\Factory;
+namespace User\Infrastructure\Factory;
 
-use App\User\Factory\UserFactoryInterface;
-use App\User\Service\HasherInterface;
-use Domain\Model\User\Id;
-use Domain\Model\User\Status;
-use Domain\Model\User\User;
-use Domain\Model\User\Username;
+use User\Factory\UserFactoryInterface;
+use User\Model\Id;
+use User\Model\Status;
+use User\Model\User;
+use User\Model\Username;
+use User\Service\HasherInterface;
 
 class UserFactory implements UserFactoryInterface
 {

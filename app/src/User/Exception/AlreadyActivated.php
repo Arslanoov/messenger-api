@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\User\Exception;
+namespace User\Exception;
 
-use App\Exception\DomainException;
+use Domain\Exception\DomainException;
 use Throwable;
 
 class AlreadyActivated extends DomainException

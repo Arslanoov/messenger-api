@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Domain\Model\User;
+namespace User\Model;
 
-use App\User\Exception\AlreadyActivated;
+use User\Exception\AlreadyActivated;
 
 class User implements UserInterface
 {
@@ -41,6 +41,9 @@ class User implements UserInterface
         return $this->status;
     }
 
+    /**
+     * @throws AlreadyActivated
+     */
     public function activate(): void
     {
         if ($this->status->isActive()) {
@@ -48,5 +51,15 @@ class User implements UserInterface
         }
 
         $this->status = Status::active();
+    }
+
+    public function isActive(): bool
+    {
+        return $this->getStatus()->isActive();
+    }
+
+    public function isDraft(): bool
+    {
+        return $this->getStatus()->isDraft();
     }
 }

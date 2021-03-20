@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\User\Test\Unit;
+namespace User\Test\Unit;
 
-use App\User\Exception\AlreadyActivated;
-use App\User\Test\Builder\UserBuilder;
-use Domain\Model\User\Status;
 use PHPUnit\Framework\TestCase;
+use User\Exception\AlreadyActivated;
+use User\Model\Status;
+use User\Test\Builder\UserBuilder;
 
 /**
  * Class ActivateTest
  * @package Domain\Model\User\Test\Unit
- * @covers \Domain\Model\User\User
+ * @covers \User\Model\User
  */
 class ActivateTest extends TestCase
 {
