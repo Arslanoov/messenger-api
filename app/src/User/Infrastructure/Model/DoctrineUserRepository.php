@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace User\Infrastructure\Model;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ObjectRepository;
 use User\Model\User;
 use User\Model\Username;
 use User\Model\UserRepositoryInterface;
@@ -13,14 +13,12 @@ use User\Model\UserRepositoryInterface;
 final class DoctrineUserRepository implements UserRepositoryInterface
 {
     private EntityManagerInterface $entityManger;
-    private EntityRepository $repository;
+    private ObjectRepository $repository;
 
     public function __construct(EntityManagerInterface $entityManger)
     {
         $this->entityManger = $entityManger;
-        /** @var EntityRepository $repository */
-        $repository = $this->entityManger->getRepository(User::class);
-        $this->repository = $repository;
+        $this->repository = $this->entityManger->getRepository(User::class);
     }
 
     public function hasByUsername(Username $username): bool
