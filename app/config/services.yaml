@@ -5,15 +5,15 @@ services:
         autowire: true
         autoconfigure: true
 
-    App\Http\Handler\:
-      resource: '../src/App/Http/Handler/'
-      tags: [ 'controller.service_arguments' ]
-
     # TODO: Separate config
 
     # App
     App\:
         resource: '../src/App'
+
+    App\Http\Handler\:
+        resource: '../src/App/Http/Handler/'
+        tags: [ 'controller.service_arguments' ]
 
     # HTTP
     App\Http\Response\ResponseFactory:

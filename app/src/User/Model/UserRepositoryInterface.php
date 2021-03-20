@@ -6,5 +6,5 @@ namespace User\Model;
 
 interface UserRepositoryInterface
 {
-
+    public function hasByUsername(Username $username): bool;
 }
