@@ -9,8 +9,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class SymfonyResponseFactory implements ResponseFactory
 {
-    public function json(array $data): JsonResponse
+    public function json(array $data, int $code = 200): JsonResponse
     {
-        return new JsonResponse($data);
+        return new JsonResponse($data, $code);
     }
 }

@@ -11,6 +11,10 @@ services:
 
     # TODO: Separate config
 
+    # App
+    App\:
+        resource: '../src/App'
+
     # HTTP
     App\Http\Response\ResponseFactory:
         class: App\Infrastructure\Http\Response\SymfonyResponseFactory
