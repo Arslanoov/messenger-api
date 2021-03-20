@@ -16,6 +16,11 @@ docker-clear:
 install-deps:
 	docker-compose run --rm messenger-php-cli composer install --ignore-platform-reqs
 
+create-migration:
+	docker-compose run --rm messenger-php-cli php bin/console do:mi:di
+migrate:
+	docker-compose run --rm messenger-php-cli php bin/console do:mi:mi
+
 lint:
 	docker-compose run --rm messenger-php-cli composer lint
 
