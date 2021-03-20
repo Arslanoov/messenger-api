@@ -15,12 +15,20 @@ services:
     App\Http\Response\ResponseFactory:
         class: App\Infrastructure\Http\Response\SymfonyResponseFactory
 
+    # Domain
+    Domain\:
+        resource: '../src/Domain'
+
     # Domain Services
     Domain\FlusherInterface:
         class: Domain\Infrastructure\DoctrineFlusher
 
     Domain\PersisterInterface:
         class: Domain\Infrastructure\DoctrinePersister
+
+    # User
+    User\:
+        resource: '../src/User'
 
     # User Services
     User\Factory\UserFactoryInterface:
