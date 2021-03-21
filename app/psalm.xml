@@ -11,6 +11,7 @@
         <ignoreFiles>
             <file name="src/App/Kernel.php" />
             <directory name="src/User/Test" />
+            <directory name="tests/Functional" />
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>

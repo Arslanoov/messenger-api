@@ -1,0 +1,22 @@
+security:
+    providers:
+        fetcher:
+            id: App\Security\UserProvider
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        api_token:
+            pattern: ^/token$
+            security: false
+
+        api:
+            pattern: ^/
+            anonymous: true
+            stateless: true
+            oauth2: true
+
+    access_control:
+        - { path: ^/api/sign-up, roles: IS_AUTHENTICATED_ANONYMOUSLY }

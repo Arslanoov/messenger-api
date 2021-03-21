@@ -1,33 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
-         executionOrder="depends,defects"
-         beStrictAboutOutputDuringTests="true"
-         beStrictAboutTodoAnnotatedTests="true"
-         cacheResultFile="var/cache/.phpunit.result.cache"
-         verbose="true">
+         xsi:noNamespaceSchemaLocation="bin/.phpunit/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="tests/bootstrap.php"
+>
+    <php>
+        <ini name="error_reporting" value="-1" />
+        <server name="APP_ENV" value="test" force="true" />
+        <server name="SHELL_VERBOSITY" value="-1" />
+        <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
+        <server name="SYMFONY_PHPUNIT_VERSION" value="8.5" />
+    </php>
+
     <testsuites>
         <testsuite name="Unit">
-            <directory>src/User/Test</directory>
+            <directory>src/User/Test/Unit</directory>
         </testsuite>
         <testsuite name="Functional">
             <directory>tests/Functional</directory>
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
-        <include>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
-        </include>
-        <exclude>
-            <directory>src/User/Test</directory>
-            <directory>tests/Functional</directory>
-        </exclude>
-    </coverage>
+        </whitelist>
+    </filter>
 
-    <php>
-        <env name="APP_ENV" value="test" force="true"/>
-        <env name="APP_DEBUG" value="1" force="true"/>
-    </php>
+    <listeners>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+    </listeners>
 </phpunit>
