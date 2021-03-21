@@ -1,0 +1,9 @@
+security:
+  encoders:
+    App\Security\UserIdentity: native
+
+  firewalls:
+    api:
+      oauth2: false
+      http_basic:
+        provider: fetcher

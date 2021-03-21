@@ -15,6 +15,11 @@ services:
         resource: '../src/App/Http/Handler/'
         tags: [ 'controller.service_arguments' ]
 
+    # Tests
+    Test\Functional\:
+        resource: '../tests/Functional/**/*Fixture.php'
+        tags: [ 'doctrine.fixture.orm' ]
+
     # HTTP
     App\Http\Response\ResponseFactory:
         class: App\Infrastructure\Http\Response\SymfonyResponseFactory
@@ -35,11 +40,17 @@ services:
         resource: '../src/User'
 
     # User Services
+    User\ReadModel\UserFetcher:
+        class: User\Infrastructure\ReadModel\DoctrineUserFetcher
+
     User\Factory\UserFactoryInterface:
         class: User\Infrastructure\Factory\UserFactory
 
     User\Service\HasherInterface:
         class: User\Infrastructure\Service\Hasher
+
+    User\Service\PasswordValidatorInterface:
+        class: User\Infrastructure\Service\PasswordValidator
 
     User\Model\UserRepositoryInterface:
         class: User\Infrastructure\Model\DoctrineUserRepository

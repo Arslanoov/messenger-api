@@ -21,6 +21,16 @@ create-migration:
 migrate:
 	docker-compose run --rm messenger-php-cli php bin/console do:mi:mi
 
+generate-oauth-keys:
+	docker-compose run --rm messenger-php-cli mkdir -p var/oauth
+	docker-compose run --rm messenger-php-cli openssl genrsa -out var/oauth/private.key 2048
+	docker-compose run --rm messenger-php-cli openssl rsa -in var/oauth/private.key -pubout -out var/oauth/public.key
+	docker-compose run --rm messenger-php-cli chmod 644 var/oauth/private.key var/oauth/public.key
+	docker-compose run --rm messenger-php-cli php bin/console trikoder:oauth2:create-client --grant-type password oauth2
+
+clear-cache:
+	docker-compose run --rm messenger-php-cli php bin/console cache:clear
+
 generate-doc:
 	docker-compose run --rm messenger-php-cli php bin/console api:doc:generate
 
