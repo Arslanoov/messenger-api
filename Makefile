@@ -2,7 +2,7 @@ init: docker-clear docker-up
 up: docker-clear docker-up
 check: lint cs psalm stan php-insights
 fix: cs-fix
-test: test-unit
+test: load-fixtures test-unit test-functional
 
 docker-up:
 	docker-compose up --build -d
@@ -25,8 +25,7 @@ generate-oauth-keys:
 	docker-compose run --rm messenger-php-cli mkdir -p var/oauth
 	docker-compose run --rm messenger-php-cli openssl genrsa -out var/oauth/private.key 2048
 	docker-compose run --rm messenger-php-cli openssl rsa -in var/oauth/private.key -pubout -out var/oauth/public.key
-	docker-compose run --rm messenger-php-cli chmod 644 var/oauth/private.key var/oauth/public.key
-	docker-compose run --rm messenger-php-cli php bin/console trikoder:oauth2:create-client --grant-type password oauth2
+	docker-compose run --rm messenger-php-cli chmod -R 755 var/oauth
 
 clear-cache:
 	docker-compose run --rm messenger-php-cli php bin/console cache:clear
@@ -50,6 +49,8 @@ php-insights:
 
 test-all:
 	docker-compose run --rm messenger-php-cli vendor/bin/phpunit --colors=always
+load-fixtures:
+	docker-compose run --rm messenger-php-cli php bin/console doctrine:fixtures:load --no-interaction
 test-unit:
 	docker-compose run --rm messenger-php-cli vendor/bin/phpunit --colors=always --testsuite=Unit
 test-functional:

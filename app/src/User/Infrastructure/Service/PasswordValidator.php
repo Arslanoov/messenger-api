@@ -11,10 +11,8 @@ use function password_verify;
 
 final class PasswordValidator implements PasswordValidatorInterface
 {
-    public function validate(string $password, string $hash): void
+    public function validate(string $password, string $hash): bool
     {
-        if (!password_verify($password, $hash)) {
-            throw new WrongCredentials();
-        }
+        return password_verify($password, $hash);
     }
 }

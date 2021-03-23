@@ -23,10 +23,11 @@
         "symfony/serializer": "5.2.*",
         "symfony/validator": "5.2.*",
         "symfony/yaml": "5.2.*",
-        "trikoder/oauth2-bundle": "^3.2"
+        "trikoder/oauth2-bundle": "3.1.*"
     },
     "require-dev": {
         "composer/semver": "^1.0",
+        "dms/phpunit-arraysubset-asserts": "^0.2.1",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "nunomaduro/phpinsights": "^1.14",
         "overtrue/phplint": "^2.3",

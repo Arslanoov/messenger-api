@@ -43,9 +43,7 @@ final class UserResolver implements EventSubscriberInterface
             return;
         }
 
-        try {
-            $this->validator->validate($event->getPassword(), $user->getPassword() ?? '');
-        } catch (WrongCredentials) {
+        if (!$this->validator->validate($event->getPassword(), $user->getPassword() ?? '')) {
             return;
         }
 

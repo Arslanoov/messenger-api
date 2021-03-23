@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace User\Infrastructure\ReadModel\User;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\FetchMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use User\Model\User;
@@ -25,16 +26,21 @@ final class DoctrineUserFetcher implements UserFetcherInterface
     {
         $stmt = $this->connection->createQueryBuilder()
             ->select([
-                'id',
+                'uuid',
                 'username',
-                'password',
+                'hash',
                 'status'
             ])
             ->from('user_users')
             ->where('username = :username')
-            ->setParameter(':username', $username);
+            ->setParameter(':username', $username)
+            ->execute();
 
-        $result = $stmt->getFirstResult();
+        /* TODO: Remove deprecated */
+
+        $stmt->setFetchMode(FetchMode::CUSTOM_OBJECT, AuthView::class);
+
+        $result = $stmt->fetch();
 
         return $result ?: null;
     }

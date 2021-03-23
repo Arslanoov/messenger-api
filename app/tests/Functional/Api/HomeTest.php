@@ -8,9 +8,11 @@ use Test\Functional\FunctionalTestCase;
 
 class HomeTest extends FunctionalTestCase
 {
+    private const URI = '/';
+
     public function testSuccess(): void
     {
-        $this->client->request('GET', '/');
+        $this->client->request('GET', self::URI);
 
         $response = $this->client->getResponse();
 
