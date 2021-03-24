@@ -35,6 +35,9 @@
     "defuse/php-encryption": {
         "version": "v2.2.1"
     },
+    "dms/phpunit-arraysubset-asserts": {
+        "version": "v0.2.1"
+    },
     "dnoegel/php-xdg-base-dir": {
         "version": "v0.1.1"
     },

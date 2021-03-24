@@ -13,10 +13,10 @@ security:
             security: false
 
         api:
-            pattern: ^/
+            pattern: ^/api
             anonymous: true
             stateless: true
             oauth2: true
 
     access_control:
-        - { path: ^/api/sign-up, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/auth/sign-up, roles: IS_AUTHENTICATED_ANONYMOUSLY }

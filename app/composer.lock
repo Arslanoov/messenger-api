@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3acebe10a2ccc79d352eb774c6527296",
+    "content-hash": "a70b97ac8ad3e8c715da67e57cffbeae",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6383,16 +6383,16 @@
         },
         {
             "name": "trikoder/oauth2-bundle",
-            "version": "v3.2.0",
+            "version": "v3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/trikoder/oauth2-bundle.git",
-                "reference": "58788136d3856a3e0c7fb41364943af8bc89101c"
+                "reference": "73cddab208efa823ef516b62bc5f1758aea609de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trikoder/oauth2-bundle/zipball/58788136d3856a3e0c7fb41364943af8bc89101c",
-                "reference": "58788136d3856a3e0c7fb41364943af8bc89101c",
+                "url": "https://api.github.com/repos/trikoder/oauth2-bundle/zipball/73cddab208efa823ef516b62bc5f1758aea609de",
+                "reference": "73cddab208efa823ef516b62bc5f1758aea609de",
                 "shasum": ""
             },
             "require": {
@@ -6411,7 +6411,7 @@
                 "ext-xdebug": "*",
                 "laminas/laminas-diactoros": "^2.2",
                 "nyholm/psr7": "^1.2",
-                "phpunit/phpunit": "^8.5|^9.4",
+                "phpunit/phpunit": "^8.5",
                 "symfony/browser-kit": "^4.4|^5.0",
                 "symfony/phpunit-bridge": "^5.0"
             },
@@ -6459,9 +6459,9 @@
             ],
             "support": {
                 "issues": "https://github.com/trikoder/oauth2-bundle/issues",
-                "source": "https://github.com/trikoder/oauth2-bundle/tree/v3.2.0"
+                "source": "https://github.com/trikoder/oauth2-bundle/tree/v3.1.1"
             },
-            "time": "2020-10-26T15:54:32+00:00"
+            "time": "2020-04-10T16:45:57+00:00"
         }
     ],
     "packages-dev": [
@@ -7091,6 +7091,51 @@
                 "source": "https://github.com/dealerdirect/phpcodesniffer-composer-installer"
             },
             "time": "2020-12-07T18:04:37+00:00"
+        },
+        {
+            "name": "dms/phpunit-arraysubset-asserts",
+            "version": "v0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rdohms/phpunit-arraysubset-asserts.git",
+                "reference": "8e3673a70019a60df484e36fc3271d63cbdc40ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rdohms/phpunit-arraysubset-asserts/zipball/8e3673a70019a60df484e36fc3271d63cbdc40ea",
+                "reference": "8e3673a70019a60df484e36fc3271d63cbdc40ea",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3|^8.0",
+                "phpunit/phpunit": "^9.0"
+            },
+            "require-dev": {
+                "dms/coding-standard": "^1.0",
+                "squizlabs/php_codesniffer": "^3.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DMS\\PHPUnitExtensions\\ArraySubset\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rafael Dohms",
+                    "email": "rdohms@gmail.com"
+                }
+            ],
+            "description": "This package provides ArraySubset and related asserts once deprecated in PHPUnit 8",
+            "support": {
+                "issues": "https://github.com/rdohms/phpunit-arraysubset-asserts/issues",
+                "source": "https://github.com/rdohms/phpunit-arraysubset-asserts/tree/v0.2.1"
+            },
+            "time": "2020-10-03T21:43:40+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",

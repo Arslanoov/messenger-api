@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Handler\Auth;
 
 use App\Http\Response\ResponseFactory;
-use Domain\Exception\DomainException;
 use OpenApi\Annotations as OA;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -90,14 +89,7 @@ final class SignUp
             return $this->response->json($decoded, 422);
         }
 
-        try {
-            $this->handler->handle($signUpCommand);
-        } catch (DomainException $e) {
-            $this->logger->debug($e->getMessage(), ['exception' => $e]);
-            return $this->response->json([
-                'message' => $e->getMessage()
-            ], (int) $e->getCode());
-        }
+        $this->handler->handle($signUpCommand);
 
         return $this->response->json([
             'username' => $username

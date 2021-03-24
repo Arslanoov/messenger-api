@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace User\Infrastructure\ReadModel\User;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\ResultStatement;
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\FetchMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use User\Model\User;
@@ -21,21 +24,34 @@ final class DoctrineUserFetcher implements UserFetcherInterface
         $this->repository = $entityManger->getRepository(User::class);
     }
 
+    /**
+     * @param string $username
+     * @return AuthView|null
+     * @throws Exception
+     * @psalm-suppress DeprecatedMethod
+     */
     public function findForAuthByUsername(string $username): ?AuthView
     {
+        /** @var ResultStatement $stmt */
         $stmt = $this->connection->createQueryBuilder()
             ->select([
-                'id',
+                'uuid',
                 'username',
-                'password',
+                'hash',
                 'status'
             ])
             ->from('user_users')
             ->where('username = :username')
-            ->setParameter(':username', $username);
+            ->setParameter(':username', $username)
+            ->execute();
 
-        $result = $stmt->getFirstResult();
+        /* TODO: Remove deprecated */
 
-        return $result ?: null;
+        $stmt->setFetchMode(FetchMode::CUSTOM_OBJECT, AuthView::class);
+
+        /** @var AuthView | null $result */
+        $result = $stmt->fetch();
+
+        return $result;
     }
 }

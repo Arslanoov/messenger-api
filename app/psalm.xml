@@ -15,4 +15,8 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
+
+    <issueHandlers>
+        <DeprecatedClass errorLevel="suppress" />
+    </issueHandlers>
 </psalm>

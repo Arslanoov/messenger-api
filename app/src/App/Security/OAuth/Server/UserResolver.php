@@ -23,6 +23,9 @@ final class UserResolver implements EventSubscriberInterface
         $this->validator = $validator;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -43,9 +46,7 @@ final class UserResolver implements EventSubscriberInterface
             return;
         }
 
-        try {
-            $this->validator->validate($event->getPassword(), $user->getPassword() ?? '');
-        } catch (WrongCredentials) {
+        if (!$this->validator->validate($event->getPassword(), $user->getPassword() ?? '')) {
             return;
         }
 
