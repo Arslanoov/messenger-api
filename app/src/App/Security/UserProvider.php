@@ -47,7 +47,6 @@ class UserProvider implements UserProviderInterface
      */
     private function loadUser(string $username): AuthView
     {
-        /** @var ?AuthView $user */
         if ($user = $this->users->findForAuthByUsername($username)) {
             return $user;
         }

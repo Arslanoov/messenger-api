@@ -22,6 +22,9 @@ final class ErrorEventListener implements EventSubscriberInterface
         $this->logger = $logger;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [

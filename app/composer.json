@@ -67,7 +67,7 @@
         "cs": "phpcs",
         "cs-fix": "phpcbf",
         "psalm": "psalm",
-        "stan": "vendor/bin/phpstan analyse src --level 8",
+        "stan": "php -d memory_limit=4G vendor/bin/phpstan analyse src --level 8",
         "php-insights": "vendor/bin/phpinsights analyse src",
         "test-coverage": "XDEBUG_MODE=coverage phpunit --colors=always --coverage-html var/test/coverage",
         "auto-scripts": {
