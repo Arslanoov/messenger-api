@@ -55,3 +55,7 @@ test-unit:
 	docker-compose run --rm messenger-php-cli vendor/bin/phpunit --colors=always --testsuite=Unit
 test-functional:
 	docker-compose run --rm messenger-php-cli vendor/bin/phpunit --colors=always --testsuite=Functional
+
+test-coverage:
+	docker-compose run --rm messenger-php-cli chmod -R 755 var/cache
+	docker-compose run --rm messenger-php-cli composer test-coverage
