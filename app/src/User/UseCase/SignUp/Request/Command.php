@@ -17,6 +17,11 @@ final class Command
         /**
          * @var string
          * @Assert\NotBlank()
+         */
+        public string $id,
+        /**
+         * @var string
+         * @Assert\NotBlank()
          * @Assert\Length(min="4", max="16")
          */
         public string $username,

@@ -2,31 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Messenger\UseCase\CreateFromUser;
+namespace Messenger\UseCase\Author\CreateFromUser;
 
 use Domain\FlusherInterface;
 use Domain\PersisterInterface;
-use Messenger\Factory\AuthorFactoryInterface;
+use Messenger\Model\Author\Author;
 
 final class Handler
 {
-    private AuthorFactoryInterface $factory;
     private PersisterInterface $persister;
     private FlusherInterface $flusher;
 
     public function __construct(
-        AuthorFactoryInterface $factory,
         PersisterInterface $persister,
         FlusherInterface $flusher
     ) {
-        $this->factory = $factory;
         $this->persister = $persister;
         $this->flusher = $flusher;
     }
 
     public function handle(Command $command): void
     {
-        $author = $this->factory->fromUser($command->user);
+        $author = Author::new($command->uuid);
 
         $this->persister->persist($author);
 

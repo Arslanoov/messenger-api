@@ -52,9 +52,15 @@ class Author
         $this->messagesCount = $messagesCount;
     }
 
-    public static function new(Id $id): self
+    /**
+     * @param string $id
+     * @return self
+     * @throws AssertionFailedException
+     * @throws DomainAssertionException
+     */
+    public static function new(string $id): self
     {
-        return new self($id, new DateTimeImmutable(), 0);
+        return new self(new Id($id), new DateTimeImmutable(), 0);
     }
 
     /**
@@ -64,7 +70,7 @@ class Author
      */
     public static function empty(): self
     {
-        return self::new(Id::generate());
+        return self::new(Id::generate()->getValue());
     }
 
     public function getUuid(): Id

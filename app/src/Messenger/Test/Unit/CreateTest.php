@@ -14,9 +14,9 @@ class CreateTest extends TestCase
 {
     public function testNew(): void
     {
-        $author = Author::new($uuid = new Id("someId"));
+        $author = Author::new($uuid = "someId");
 
-        $this->assertEquals($uuid, $author->getUuid());
+        $this->assertEquals($uuid, $author->getUuid()->getValue());
         $this->assertNotEmpty($author->getCreatedAtDate());
         $this->assertEquals(0, $author->getMessagesCount());
     }

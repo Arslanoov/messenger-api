@@ -27,6 +27,9 @@ generate-oauth-keys:
 	docker-compose run --rm messenger-php-cli openssl rsa -in var/oauth/private.key -pubout -out var/oauth/public.key
 	docker-compose run --rm messenger-php-cli chmod -R 755 var/oauth
 
+fix-permissions:
+	docker-compose run --rm messenger-php-cli chmod -R 777 var/cache
+
 clear-cache:
 	docker-compose run --rm messenger-php-cli php bin/console cache:clear
 

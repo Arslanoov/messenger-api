@@ -73,6 +73,27 @@ class User implements UserInterface, AggregateRoot
         return $user;
     }
 
+    /**
+     * @param string $id
+     * @param string $username
+     * @param string $hash
+     * @return self
+     * @throws AssertionFailedException
+     */
+    public static function signUpWithId(string $id, string $username, string $hash): self
+    {
+        $user = new self(
+            new Id($id),
+            new Username($username),
+            $hash,
+            Status::draft()
+        );
+
+        $user->recordEvent(new UserSignedUp($username));
+
+        return $user;
+    }
+
     public function getUuid(): Id
     {
         return $this->uuid;

@@ -24,6 +24,13 @@ services:
     App\Http\Response\ResponseFactory:
         class: App\Infrastructure\Http\Response\SymfonyResponseFactory
 
+    # Services
+    App\Service\UuidGenerator:
+        class: App\Infrastructure\Service\RamseyUuidGenerator
+
+    App\Service\ValidatorInterface:
+        class: App\Infrastructure\Service\SymfonyValidator
+
     # Domain
     Domain\:
         resource: '../src/Domain'
@@ -58,7 +65,3 @@ services:
     # Messenger
     Messenger\:
         resource: '../src/Messenger'
-
-    # Messenger Services
-    Messenger\Factory\AuthorFactoryInterface:
-        class: Messenger\Infrastructure\Factory\AuthorFactory

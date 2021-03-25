@@ -2,12 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Messenger\UseCase\CreateFromUser;
+namespace Messenger\UseCase\Author\CreateFromUser;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use User\Model\User;
-
-// TODO: Check BC violation
 
 /*
  * TODO: Remove suppress after PHPCS PHP8 fully support
@@ -18,10 +15,10 @@ final class Command
     // @codingStandardsIgnoreStart
     public function __construct(
         /**
-         * @var User
+         * @var string
          * @Assert\NotBlank()
          */
-        public User $user
+        public string $uuid
     )
     {
     }
