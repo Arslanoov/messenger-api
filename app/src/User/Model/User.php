@@ -26,7 +26,7 @@ class User implements UserInterface, AggregateRoot
     /**
      * @var Id
      * @ORM\Id()
-     * @ORM\Column(type="user_user_id", name="uuid", length=128)
+     * @ORM\Column(type="user_user_id", length=128)
      */
     private Id $uuid;
     /**

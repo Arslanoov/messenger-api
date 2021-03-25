@@ -18,6 +18,7 @@
     <testsuites>
         <testsuite name="Unit">
             <directory>src/User/Test/Unit</directory>
+            <directory>src/Messenger/Test/Unit</directory>
         </testsuite>
         <testsuite name="Functional">
             <directory>tests/Functional</directory>

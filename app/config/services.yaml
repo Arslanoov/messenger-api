@@ -54,3 +54,11 @@ services:
 
     User\Model\UserRepositoryInterface:
         class: User\Infrastructure\Model\DoctrineUserRepository
+
+    # Messenger
+    Messenger\:
+        resource: '../src/Messenger'
+
+    # Messenger Services
+    Messenger\Factory\AuthorFactoryInterface:
+        class: Messenger\Infrastructure\Factory\AuthorFactory

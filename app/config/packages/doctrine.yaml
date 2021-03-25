@@ -8,6 +8,8 @@ doctrine:
             user_user_id: 'User\Infrastructure\Doctrine\Types\IdType'
             user_user_username: 'User\Infrastructure\Doctrine\Types\UsernameType'
             user_user_status: 'User\Infrastructure\Doctrine\Types\StatusType'
+
+            messenger_author_id: 'Messenger\Infrastructure\Doctrine\Types\IdType'
         default_table_options:
             charset: utf8
             collate: ~
@@ -23,3 +25,10 @@ doctrine:
                 dir: '%kernel.project_dir%/src/User/Model'
                 prefix: 'User\Model'
                 alias: User
+
+            Messenger:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Messenger/Model'
+                prefix: 'Messenger\Model'
+                alias: Messenger
