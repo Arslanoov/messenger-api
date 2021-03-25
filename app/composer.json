@@ -54,6 +54,7 @@
             "Domain\\": "src/Domain/",
             "Exception\\": "src/Exception/",
             "User\\": "src/User/",
+            "Messenger\\": "src/Messenger/",
             "Test\\": "tests/"
         }
     },

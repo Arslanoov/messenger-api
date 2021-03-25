@@ -37,7 +37,8 @@ final class Handler
             throw new ExistsWithThisUsername();
         }
 
-        $user = User::signUp(
+        $user = User::signUpWithId(
+            $command->id,
             $command->username,
             $this->hasher->hash($command->password)
         );

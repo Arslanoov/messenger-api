@@ -26,7 +26,7 @@ class User implements UserInterface, AggregateRoot
     /**
      * @var Id
      * @ORM\Id()
-     * @ORM\Column(type="user_user_id", name="uuid", length=128)
+     * @ORM\Column(type="user_user_id", length=128)
      */
     private Id $uuid;
     /**
@@ -63,6 +63,27 @@ class User implements UserInterface, AggregateRoot
     {
         $user = new self(
             Id::generate(),
+            new Username($username),
+            $hash,
+            Status::draft()
+        );
+
+        $user->recordEvent(new UserSignedUp($username));
+
+        return $user;
+    }
+
+    /**
+     * @param string $id
+     * @param string $username
+     * @param string $hash
+     * @return self
+     * @throws AssertionFailedException
+     */
+    public static function signUpWithId(string $id, string $username, string $hash): self
+    {
+        $user = new self(
+            new Id($id),
             new Username($username),
             $hash,
             Status::draft()
