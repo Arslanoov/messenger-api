@@ -91,6 +91,122 @@
                     }
                 }
             }
+        },
+        "/messenger/message/edit": {
+            "post": {
+                "tags": [
+                    "Messenger message edit"
+                ],
+                "summary": "Class Edit",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "message_id",
+                                    "content"
+                                ],
+                                "properties": {
+                                    "message_id": {
+                                        "description": "Class Edit",
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "description": "Class Edit",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Success response"
+                    },
+                    "400": {
+                        "description": "Errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Class Edit",
+                                            "type": "string",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "common"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/messenger/message/remove": {
+            "post": {
+                "tags": [
+                    "Messenger message remove"
+                ],
+                "summary": "Class Remove",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "message_id",
+                                    "content"
+                                ],
+                                "properties": {
+                                    "message_id": {
+                                        "description": "Class Remove",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Success response"
+                    },
+                    "400": {
+                        "description": "Errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Class Remove",
+                                            "type": "string",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "common"
+                        ]
+                    }
+                ]
+            }
         }
     },
     "components": {
