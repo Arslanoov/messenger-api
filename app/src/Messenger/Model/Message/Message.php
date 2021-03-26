@@ -74,6 +74,11 @@ class Message
         return $this->getEditStatus()->isEdited();
     }
 
+    public function isWroteBy(Author $author): bool
+    {
+        return $this->getAuthor()->isEqualTo($author);
+    }
+
     public function getId(): Id
     {
         return $this->uuid;

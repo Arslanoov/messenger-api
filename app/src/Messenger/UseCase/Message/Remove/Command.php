@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace User\UseCase\SignUp\Request;
+namespace Messenger\UseCase\Message\Remove;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -18,19 +18,12 @@ final class Command
          * @var string
          * @Assert\NotBlank()
          */
-        public string $id,
+        public string $authorId,
         /**
          * @var string
          * @Assert\NotBlank()
-         * @Assert\Length(min="4", max="16")
          */
-        public string $username,
-        /**
-         * @var string
-         * @Assert\NotBlank()
-         * @Assert\Length(min="4", max="16")
-         */
-        public string $password
+        public string $messageId
     )
     {
     }
