@@ -9,7 +9,11 @@ doctrine:
             user_user_username: 'User\Infrastructure\Doctrine\Types\UsernameType'
             user_user_status: 'User\Infrastructure\Doctrine\Types\StatusType'
 
-            messenger_author_id: 'Messenger\Infrastructure\Doctrine\Types\IdType'
+            messenger_author_id: 'Messenger\Infrastructure\Doctrine\Types\Author\IdType'
+
+            messenger_message_id: 'Messenger\Infrastructure\Doctrine\Types\Message\IdType'
+            messenger_message_content: 'Messenger\Infrastructure\Doctrine\Types\Message\ContentType'
+            messenger_message_edit_status: 'Messenger\Infrastructure\Doctrine\Types\Message\EditStatusType'
         default_table_options:
             charset: utf8
             collate: ~

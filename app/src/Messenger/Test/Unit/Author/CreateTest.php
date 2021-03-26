@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Messenger\Test\Unit;
+namespace Messenger\Test\Unit\Author;
 
 use DateTimeImmutable;
 use Domain\Exception\DomainAssertionException;
