@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Messenger\Infrastructure\Doctrine\Types;
+namespace Messenger\Infrastructure\Doctrine\Types\Message;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\GuidType;
-use Messenger\Model\Author\Id;
+use Messenger\Model\Message\Id;
 
 final class IdType extends GuidType
 {
-    public const NAME = 'messenger_author_id';
+    public const NAME = 'messenger_message_id';
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): string
     {

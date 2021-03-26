@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace User\Test\Unit;
+namespace Messenger\Test\Unit\Author;
 
 use Domain\Exception\DomainAssertionException;
+use Messenger\Model\Author\Id;
 use PHPUnit\Framework\TestCase;
-use User\Model\Id;
 
 /**
  * Class IdTest
  * @package Domain\Model\User\Test\Unit
- * @covers \User\Model\Id
+ * @covers \Messenger\Model\Author\Id
  */
 class IdTest extends TestCase
 {
@@ -25,7 +25,7 @@ class IdTest extends TestCase
     public function testValidationErrorNotEmpty(): void
     {
         $this->expectException(DomainAssertionException::class);
-        $this->expectExceptionMessage('User id required');
+        $this->expectExceptionMessage('Author id required');
 
         new Id('');
     }

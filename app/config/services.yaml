@@ -42,6 +42,9 @@ services:
     Domain\PersisterInterface:
         class: Domain\Infrastructure\DoctrinePersister
 
+    Domain\EntityRemoverInterface:
+        class: Domain\Infrastructure\DoctrineEntityRemover
+
     # User
     User\:
         resource: '../src/User'
@@ -65,3 +68,11 @@ services:
     # Messenger
     Messenger\:
         resource: '../src/Messenger'
+
+    # Author
+    Messenger\Model\Author\AuthorRepositoryInterface:
+        class: Messenger\Infrastructure\Model\Author\DoctrineAuthorRepository
+
+    # Message
+    Messenger\Model\Message\MessageRepositoryInterface:
+        class: Messenger\Infrastructure\Model\Message\DoctrineMessageRepository

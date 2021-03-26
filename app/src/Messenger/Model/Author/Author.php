@@ -105,4 +105,9 @@ class Author
         }
         $this->messagesCount--;
     }
+
+    public function isEqualTo(Author $author): bool
+    {
+        return $this->getUuid()->getValue() === $author->getUuid()->getValue();
+    }
 }

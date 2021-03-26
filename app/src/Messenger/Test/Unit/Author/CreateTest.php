@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Messenger\Test\Unit;
+namespace Messenger\Test\Unit\Author;
 
 use DateTimeImmutable;
 use Domain\Exception\DomainAssertionException;
@@ -19,6 +19,7 @@ class CreateTest extends TestCase
         $this->assertEquals($uuid, $author->getUuid()->getValue());
         $this->assertNotEmpty($author->getCreatedAtDate());
         $this->assertEquals(0, $author->getMessagesCount());
+        $this->assertTrue($author->isEqualTo($author));
     }
 
     public function testConstructor(): void
