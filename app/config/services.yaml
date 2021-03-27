@@ -76,3 +76,7 @@ services:
     # Message
     Messenger\Model\Message\MessageRepositoryInterface:
         class: Messenger\Infrastructure\Model\Message\DoctrineMessageRepository
+
+    # Dialog
+    Messenger\Model\Dialog\DialogRepositoryInterface:
+        class: Messenger\Infrastructure\Model\Dialog\DoctrineDialogRepository

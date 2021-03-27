@@ -6,6 +6,7 @@ namespace Messenger\Model\Dialog;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Messenger\Exception\DialogNotFound;
 use Messenger\Model\Author\Author;
 use Messenger\Model\Message\Message;
 
@@ -92,6 +93,13 @@ final class Dialog
         );
     }
 
+    public function hasMember(Author $author): bool
+    {
+        return
+            $this->getFirstAuthor()->getUuid()->isEqualTo($author->getUuid()) ||
+            $this->getSecondAuthor()->getUuid()->isEqualTo($author->getUuid());
+    }
+
     public function addMessage(Message $message): void
     {
         $this->messages->add($message);
@@ -129,6 +137,26 @@ final class Dialog
     public function hasMessages(): bool
     {
         return $this->messagesCount > 0;
+    }
+
+    public function isNotReadByMember(Author $author): bool
+    {
+        if (!$this->hasMember($author)) {
+            throw new DialogNotFound();
+        }
+
+        if ($latestMessage = $this->getLatestMessage()) {
+            return $latestMessage->getAuthor()->getUuid()->isNotEqualTo($author->getUuid());
+        }
+
+        return false;
+    }
+
+    public function getLatestMessage(): ?Message
+    {
+        /** @var ?Message $message */
+        $message = $this->messages->first();
+        return $message ?: null;
     }
 
     public function getUuid(): Id
