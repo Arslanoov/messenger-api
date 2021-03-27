@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Security;
 
+use App\Exception\WrongCredentials;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use User\Infrastructure\ReadModel\User\AuthView;
@@ -44,6 +44,7 @@ class UserProvider implements UserProviderInterface
     /**
      * @param string $username
      * @return AuthView
+     * @throws WrongCredentials
      */
     private function loadUser(string $username): AuthView
     {
@@ -51,7 +52,7 @@ class UserProvider implements UserProviderInterface
             return $user;
         }
 
-        throw new UsernameNotFoundException('');
+        throw new WrongCredentials();
     }
 
     private static function identityByUser(AuthView $user, string $username): UserIdentity

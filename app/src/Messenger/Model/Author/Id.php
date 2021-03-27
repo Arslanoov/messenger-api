@@ -25,6 +25,7 @@ class Id
     public function __construct(string $value)
     {
         DomainLogicAssertion::notBlank($value, 'Author id required');
+        DomainLogicAssertion::uuid($value, 'Author id must be uuid');
         $this->value = $value;
     }
 

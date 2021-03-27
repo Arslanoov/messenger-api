@@ -52,6 +52,6 @@ final class DoctrineUserFetcher implements UserFetcherInterface
         /** @var AuthView | null $result */
         $result = $stmt->fetch();
 
-        return $result;
+        return $result ?: null;
     }
 }

@@ -43,24 +43,38 @@ class Message
      * @ORM\Column(type="messenger_message_edit_status", length=16)
      */
     private EditStatus $editStatus;
+    /**
+     * @var ReadStatus
+     * @ORM\Column(type="messenger_message_read_status", length=16)
+     */
+    private ReadStatus $readStatus;
 
     public function __construct(
         Id $uuid,
         DateTimeImmutable $wroteAt,
         Author $author,
         Content $content,
-        EditStatus $editStatus
+        EditStatus $editStatus,
+        ReadStatus $readStatus
     ) {
         $this->uuid = $uuid;
         $this->wroteAt = $wroteAt;
         $this->author = $author;
         $this->content = $content;
         $this->editStatus = $editStatus;
+        $this->readStatus = $readStatus;
     }
 
     public static function send(Author $author, Content $content): self
     {
-        return new self(Id::generate(), new DateTimeImmutable(), $author, $content, EditStatus::notEdited());
+        return new self(
+            Id::generate(),
+            new DateTimeImmutable(),
+            $author,
+            $content,
+            EditStatus::notEdited(),
+            ReadStatus::notRead()
+        );
     }
 
     public function edit(Content $newContent): void
@@ -72,6 +86,16 @@ class Message
     public function isEdited(): bool
     {
         return $this->getEditStatus()->isEdited();
+    }
+
+    public function read(): void
+    {
+        $this->readStatus = ReadStatus::read();
+    }
+
+    public function isRead(): bool
+    {
+        return $this->readStatus->isRead();
     }
 
     public function isWroteBy(Author $author): bool

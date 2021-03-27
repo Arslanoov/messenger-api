@@ -25,6 +25,7 @@ final class Id
     public function __construct(string $value)
     {
         DomainLogicAssertion::notBlank($value, 'Message id required');
+        DomainLogicAssertion::uuid($value, 'Message id must be uuid');
         $this->value = $value;
     }
 

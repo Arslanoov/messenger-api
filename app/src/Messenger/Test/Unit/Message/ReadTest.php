@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
  * @package Messenger\Test\Unit\Message
  * @covers \Messenger\Model\Message\Message
  */
-class SendTest extends TestCase
+class ReadTest extends TestCase
 {
     public function testSend(): void
     {
@@ -23,10 +23,10 @@ class SendTest extends TestCase
             $content = new Content('Some very important message')
         );
 
-        $this->assertNotEmpty($message->getId());
-        $this->assertNotEmpty($message->getWroteAt());
-        $this->assertEquals($content, $message->getContent());
-        $this->assertFalse($message->isEdited());
         $this->assertFalse($message->isRead());
+
+        $message->read();
+
+        $this->assertTrue($message->isRead());
     }
 }
