@@ -7,7 +7,7 @@ namespace App\Http\Handler\Messenger\Dialog;
 use App\Http\Response\ResponseFactory;
 use App\Security\UserIdentity;
 use Exception\IncorrectPage;
-use Messenger\ReadModel\DialogFetcherRepository;
+use Messenger\ReadModel\DialogFetcherInterface;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,11 +15,17 @@ use Symfony\Component\Security\Core\Security;
 
 /**
  * Class Dialogs
- * @package App\Http\Handler\Messenger\AuthorList
+ * @package App\Http\Handler\Messenger\Dialog
  * @Route(path="/messenger/dialogs", name="messenger.dialogs", methods={"GET"})
  * @OA\Get(
  *     path="/messenger/dialogs",
  *     tags={"Messenger dialogs list"},
+ *     @OA\Parameter(
+ *         name="page",
+ *         in="path",
+ *         required=false,
+ *         @OA\Schema(type="string")
+ *     ),
  *     @OA\Response(
  *         response=200,
  *         description="Success response",
@@ -51,11 +57,11 @@ final class Dialogs
 {
     public const PER_PAGE = 20;
 
-    private DialogFetcherRepository $dialogs;
+    private DialogFetcherInterface $dialogs;
     private ResponseFactory $response;
     private Security $security;
 
-    public function __construct(DialogFetcherRepository $dialogs, ResponseFactory $response, Security $security)
+    public function __construct(DialogFetcherInterface $dialogs, ResponseFactory $response, Security $security)
     {
         $this->dialogs = $dialogs;
         $this->response = $response;
@@ -69,6 +75,8 @@ final class Dialogs
      */
     public function __invoke(Request $request): mixed
     {
+        // TODO: Add author information output (joins)
+
         /** @var UserIdentity $user */
         $user = $this->security->getUser();
 

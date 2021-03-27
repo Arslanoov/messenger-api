@@ -10,9 +10,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Messenger\Model\Dialog\Dialog;
-use Messenger\ReadModel\DialogFetcherRepository;
+use Messenger\ReadModel\DialogFetcherInterface;
 
-final class DoctrineDialogFetcher implements DialogFetcherRepository
+final class DoctrineDialogFetcher implements DialogFetcherInterface
 {
     private Connection $connection;
     private PaginatorInterface $paginator;
