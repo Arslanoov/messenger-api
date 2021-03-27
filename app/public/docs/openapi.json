@@ -92,8 +92,178 @@
                 }
             }
         },
-        "/messenger/message/edit": {
+        "/messenger/dialog/create": {
             "post": {
+                "tags": [
+                    "Messenger dialog create"
+                ],
+                "summary": "Class Create",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "with_author"
+                                ],
+                                "properties": {
+                                    "with_author": {
+                                        "description": "Class Create",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Success response"
+                    },
+                    "400": {
+                        "description": "Errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Class Create",
+                                            "type": "string",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "common"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/messenger/dialog/remove": {
+            "delete": {
+                "tags": [
+                    "Messenger dialog remove"
+                ],
+                "summary": "Class Remove",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "dialog_id"
+                                ],
+                                "properties": {
+                                    "dialog_id": {
+                                        "description": "Class Remove",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Success response"
+                    },
+                    "400": {
+                        "description": "Errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Class Remove",
+                                            "type": "string",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "common"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/messenger/dialog/send-message": {
+            "post": {
+                "tags": [
+                    "Messenger dialog - send message"
+                ],
+                "summary": "Class SendMessage",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "dialog_id",
+                                    "content"
+                                ],
+                                "properties": {
+                                    "dialog_id": {
+                                        "description": "Class SendMessage",
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "description": "Class SendMessage",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Success response"
+                    },
+                    "400": {
+                        "description": "Errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Class SendMessage",
+                                            "type": "string",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "common"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/messenger/message/edit": {
+            "patch": {
                 "tags": [
                     "Messenger message edit"
                 ],
@@ -153,7 +323,7 @@
             }
         },
         "/messenger/message/remove": {
-            "post": {
+            "delete": {
                 "tags": [
                     "Messenger message remove"
                 ],

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Handler\Messenger\Message;
+namespace App\Http\Handler\Messenger\Dialog;
 
 use App\Http\Response\ResponseFactory;
 use App\Security\UserIdentity;
 use App\Service\ValidatorInterface;
-use Messenger\UseCase\Message\Edit\Command;
-use Messenger\UseCase\Message\Edit\Handler;
+use Messenger\UseCase\Dialog\SendMessage\Command;
+use Messenger\UseCase\Dialog\SendMessage\Handler;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,17 +17,17 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 /**
- * Class Edit
+ * Class SendMessage
  * @package App\Http\Handler\Messenger\Message
- * @Route(path="/messenger/message/edit", name="messenger.message.edit", methods={"PATCH"})
- * @OA\Patch(
- *     path="/messenger/message/edit",
- *     tags={"Messenger message edit"},
+ * @Route(path="/messenger/dialog/send-message", name="messenger.dialog.send-message", methods={"POST"})
+ * @OA\Post(
+ *     path="/messenger/dialog/send-message",
+ *     tags={"Messenger dialog - send message"},
  *     @OA\RequestBody(
  *         @OA\JsonContent(
  *             type="object",
- *             required={"message_id", "content"},
- *             @OA\Property(property="message_id", type="string"),
+ *             required={"dialog_id", "content"},
+ *             @OA\Property(property="dialog_id", type="string"),
  *             @OA\Property(property="content", type="string")
  *         )
  *     ),
@@ -47,7 +47,7 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
  *   )
  * )
  */
-final class Edit
+final class SendMessage
 {
     private Handler $handler;
     private ValidatorInterface $validator;
@@ -69,21 +69,17 @@ final class Edit
         $this->security = $security;
     }
 
-    /**
-     * @param Request $request
-     * @return mixed
-     */
     public function __invoke(Request $request): mixed
     {
         $content = (string) $request->getContent();
         $body = (array) json_decode($content, true);
 
-        $messageId = (string) ($body['message_id'] ?? '');
-        $messageContent = (string) ($body['content'] ?? '');
+        $dialogId = (string) ($body['dialog_id'] ?? '');
+        $content = (string) ($body['content'] ?? '');
 
         /** @var UserIdentity $user */
         $user = $this->security->getUser();
-        $command = new Command($user->getId(), $messageId, $messageContent);
+        $command = new Command($user->getId(), $dialogId, $content);
 
         try {
             $this->validator->validateObjects([$command]);

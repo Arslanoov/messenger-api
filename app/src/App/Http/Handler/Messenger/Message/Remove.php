@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
  * Class Remove
  * @package App\Http\Handler\Messenger\Message
  * @Route(path="/messenger/message/remove", name="messenger.message.remove", methods={"DELETE"})
- * @OA\Post(
+ * @OA\Delete (
  *     path="/messenger/message/remove",
  *     tags={"Messenger message remove"},
  *     @OA\RequestBody(

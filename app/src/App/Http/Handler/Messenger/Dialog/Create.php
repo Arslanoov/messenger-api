@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Handler\Messenger\Message;
+namespace App\Http\Handler\Messenger\Dialog;
 
 use App\Http\Response\ResponseFactory;
 use App\Security\UserIdentity;
 use App\Service\ValidatorInterface;
-use Messenger\UseCase\Message\Edit\Command;
-use Messenger\UseCase\Message\Edit\Handler;
+use Messenger\UseCase\Dialog\Create\Command;
+use Messenger\UseCase\Dialog\Create\Handler;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,18 +17,17 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 /**
- * Class Edit
+ * Class Create
  * @package App\Http\Handler\Messenger\Message
- * @Route(path="/messenger/message/edit", name="messenger.message.edit", methods={"PATCH"})
- * @OA\Patch(
- *     path="/messenger/message/edit",
- *     tags={"Messenger message edit"},
+ * @Route(path="/messenger/dialog/create", name="messenger.dialog.create", methods={"POST"})
+ * @OA\Post(
+ *     path="/messenger/dialog/create",
+ *     tags={"Messenger dialog create"},
  *     @OA\RequestBody(
  *         @OA\JsonContent(
  *             type="object",
- *             required={"message_id", "content"},
- *             @OA\Property(property="message_id", type="string"),
- *             @OA\Property(property="content", type="string")
+ *             required={"with_author"},
+ *             @OA\Property(property="with_author", type="string")
  *         )
  *     ),
  *     @OA\Response(
@@ -47,7 +46,7 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
  *   )
  * )
  */
-final class Edit
+final class Create
 {
     private Handler $handler;
     private ValidatorInterface $validator;
@@ -78,12 +77,11 @@ final class Edit
         $content = (string) $request->getContent();
         $body = (array) json_decode($content, true);
 
-        $messageId = (string) ($body['message_id'] ?? '');
-        $messageContent = (string) ($body['content'] ?? '');
+        $withAuthor = (string) ($body['with_author'] ?? '');
 
         /** @var UserIdentity $user */
         $user = $this->security->getUser();
-        $command = new Command($user->getId(), $messageId, $messageContent);
+        $command = new Command($user->getId(), $withAuthor);
 
         try {
             $this->validator->validateObjects([$command]);
