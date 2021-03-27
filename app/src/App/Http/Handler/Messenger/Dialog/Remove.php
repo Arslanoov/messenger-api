@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 /**
  * Class Remove
- * @package App\Http\Handler\Messenger\Message
+ * @package App\Http\Handler\Messenger\Dialog
  * @Route(path="/messenger/dialog/remove", name="messenger.dialog.remove", methods={"DELETE"})
  * @OA\Delete(
  *     path="/messenger/dialog/remove",

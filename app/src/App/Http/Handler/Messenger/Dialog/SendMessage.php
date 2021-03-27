@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 /**
  * Class SendMessage
- * @package App\Http\Handler\Messenger\Message
+ * @package App\Http\Handler\Messenger\Dialog
  * @Route(path="/messenger/dialog/send-message", name="messenger.dialog.send-message", methods={"POST"})
  * @OA\Post(
  *     path="/messenger/dialog/send-message",

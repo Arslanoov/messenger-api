@@ -156,6 +156,12 @@
     "justinrainbow/json-schema": {
         "version": "5.2.10"
     },
+    "knplabs/knp-components": {
+        "version": "v3.0.2"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.4.2"
+    },
     "laminas/laminas-code": {
         "version": "4.0.0"
     },
@@ -606,6 +612,19 @@
     "symfony/string": {
         "version": "v5.2.4"
     },
+    "symfony/translation": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "2ad9d2545bce8ca1a863e50e92141f0b9d87ffcd"
+        },
+        "files": [
+            "config/packages/translation.yaml",
+            "translations/.gitignore"
+        ]
+    },
     "symfony/translation-contracts": {
         "version": "v2.3.0"
     },
@@ -649,6 +668,9 @@
             "config/packages/trikoder_oauth2.yaml",
             "config/routes/trikoder_oauth2.yaml"
         ]
+    },
+    "twig/twig": {
+        "version": "v3.3.0"
     },
     "vimeo/psalm": {
         "version": "4.6.2"

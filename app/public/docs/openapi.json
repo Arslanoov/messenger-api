@@ -147,6 +147,81 @@
                 ]
             }
         },
+        "/messenger/dialogs": {
+            "get": {
+                "tags": [
+                    "Messenger dialogs list"
+                ],
+                "summary": "Class Dialogs",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "items": {
+                                            "description": "Class Dialogs",
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "uuid": {
+                                                        "description": "Class Dialogs",
+                                                        "type": "string"
+                                                    },
+                                                    "first_author_id": {
+                                                        "description": "Class Dialogs",
+                                                        "type": "string"
+                                                    },
+                                                    "second_author_id": {
+                                                        "description": "Class Dialogs",
+                                                        "type": "string"
+                                                    },
+                                                    "messages_count": {
+                                                        "description": "Class Dialogs",
+                                                        "type": "integer"
+                                                    },
+                                                    "not_read_count": {
+                                                        "description": "Class Dialogs",
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Class Dialogs",
+                                            "type": "string",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "common"
+                        ]
+                    }
+                ]
+            }
+        },
         "/messenger/dialog/remove": {
             "delete": {
                 "tags": [
