@@ -7,6 +7,7 @@ namespace Messenger\Model\Message;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Messenger\Model\Author\Author;
+use Messenger\Model\Dialog\Dialog;
 
 /**
  * Class Message
@@ -27,6 +28,12 @@ class Message
      * @ORM\Column(type="datetime_immutable", name="wrote_at")
      */
     private DateTimeImmutable $wroteAt;
+    /**
+     * @var Dialog
+     * @ORM\ManyToOne(targetEntity="Messenger\Model\Dialog\Dialog", inversedBy="messages")
+     * @ORM\JoinColumn(name="dialog_id", referencedColumnName="uuid", nullable=false)
+     */
+    private Dialog $dialog;
     /**
      * @var Author
      * @ORM\ManyToOne(targetEntity="Messenger\Model\Author\Author", inversedBy="messages")
@@ -52,6 +59,7 @@ class Message
     public function __construct(
         Id $uuid,
         DateTimeImmutable $wroteAt,
+        Dialog $dialog,
         Author $author,
         Content $content,
         EditStatus $editStatus,
@@ -59,22 +67,29 @@ class Message
     ) {
         $this->uuid = $uuid;
         $this->wroteAt = $wroteAt;
+        $this->dialog = $dialog;
         $this->author = $author;
         $this->content = $content;
         $this->editStatus = $editStatus;
         $this->readStatus = $readStatus;
     }
 
-    public static function send(Author $author, Content $content): self
+    public static function send(Dialog $dialog, Author $author, Content $content): self
     {
         return new self(
             Id::generate(),
             new DateTimeImmutable(),
+            $dialog,
             $author,
             $content,
             EditStatus::notEdited(),
             ReadStatus::notRead()
         );
+    }
+
+    public function isFromDialog(Dialog $dialog): bool
+    {
+        return $this->getDialog()->getUuid()->isEqualTo($dialog->getUuid());
     }
 
     public function edit(Content $newContent): void
@@ -98,6 +113,11 @@ class Message
         return $this->readStatus->isRead();
     }
 
+    public function isNotRead(): bool
+    {
+        return !$this->isRead();
+    }
+
     public function isWroteBy(Author $author): bool
     {
         return $this->getAuthor()->isEqualTo($author);
@@ -116,6 +136,11 @@ class Message
     public function getAuthor(): Author
     {
         return $this->author;
+    }
+
+    public function getDialog(): Dialog
+    {
+        return $this->dialog;
     }
 
     public function getContent(): Content

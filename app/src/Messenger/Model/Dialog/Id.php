@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Messenger\Model\Message;
+namespace Messenger\Model\Dialog;
 
 use Assert\AssertionFailedException;
 use Domain\Exception\DomainAssertionException;
@@ -24,8 +24,8 @@ final class Id
      */
     public function __construct(string $value)
     {
-        DomainLogicAssertion::notBlank($value, 'Message id required');
-        DomainLogicAssertion::uuid($value, 'Message id must be uuid');
+        DomainLogicAssertion::notBlank($value, 'Dialog id required');
+        DomainLogicAssertion::uuid($value, 'Dialog id must be uuid');
         $this->value = $value;
     }
 
@@ -54,7 +54,6 @@ final class Id
         return $this->getValue();
     }
 
-    // TODO: Add test
     public function isEqualTo(Id $id): bool
     {
         return $this->getValue() === $id->getValue();
