@@ -70,6 +70,28 @@ final class Dialog
         $this->notReadCount = $notReadCount;
     }
 
+    public static function new(Author $firstAuthor, Author $secondAuthor): self
+    {
+        return new self(
+            Id::generate(),
+            $firstAuthor,
+            $secondAuthor,
+            0,
+            0
+        );
+    }
+
+    public static function empty(): self
+    {
+        return new self(
+            Id::generate(),
+            Author::empty(),
+            Author::empty(),
+            0,
+            0
+        );
+    }
+
     public function addMessage(Message $message): void
     {
         $this->messages->add($message);

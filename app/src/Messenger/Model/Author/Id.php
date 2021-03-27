@@ -53,4 +53,9 @@ class Id
     {
         return $this->getValue();
     }
+
+    public function isEqualTo(Id $id): bool
+    {
+        return $this->getValue() === $id->getValue();
+    }
 }
