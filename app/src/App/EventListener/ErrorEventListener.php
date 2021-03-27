@@ -37,7 +37,7 @@ final class ErrorEventListener implements EventSubscriberInterface
         $e = $event->getThrowable();
         $code = (int) $e->getCode();
 
-        $this->logger->debug($e->getMessage(), ['exception' => $e]);
+        $this->logger->debug($e->getFile(), ['exception' => $e]);
 
         if ($code) {
             /** @var JsonResponse $response */

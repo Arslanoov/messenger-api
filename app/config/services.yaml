@@ -5,8 +5,6 @@ services:
         autowire: true
         autoconfigure: true
 
-    # TODO: Separate config
-
     # App
     App\:
         resource: '../src/App'
@@ -76,3 +74,10 @@ services:
     # Message
     Messenger\Model\Message\MessageRepositoryInterface:
         class: Messenger\Infrastructure\Model\Message\DoctrineMessageRepository
+
+    # Dialog
+    Messenger\Model\Dialog\DialogRepositoryInterface:
+        class: Messenger\Infrastructure\Model\Dialog\DoctrineDialogRepository
+
+    Messenger\ReadModel\DialogFetcherInterface:
+        class: Messenger\Infrastructure\ReadModel\DoctrineDialogFetcher

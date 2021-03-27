@@ -14,6 +14,9 @@ doctrine:
             messenger_message_id: 'Messenger\Infrastructure\Doctrine\Types\Message\IdType'
             messenger_message_content: 'Messenger\Infrastructure\Doctrine\Types\Message\ContentType'
             messenger_message_edit_status: 'Messenger\Infrastructure\Doctrine\Types\Message\EditStatusType'
+            messenger_message_read_status: 'Messenger\Infrastructure\Doctrine\Types\Message\ReadStatusType'
+
+            messenger_dialog_id: 'Messenger\Infrastructure\Doctrine\Types\Dialog\IdType'
         default_table_options:
             charset: utf8
             collate: ~

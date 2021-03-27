@@ -7,6 +7,7 @@ namespace Messenger\Test\Unit\Author;
 use Domain\Exception\DomainAssertionException;
 use Messenger\Model\Author\Id;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Class IdTest
@@ -17,9 +18,18 @@ class IdTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $id = new Id($value = 'id');
+        $id = new Id($value = Uuid::uuid4()->toString());
 
         $this->assertEquals($value, $id->getValue());
+        $this->assertTrue($id->isEqualTo($id));
+    }
+
+    public function testNotUuid(): void
+    {
+        $this->expectException(DomainAssertionException::class);
+        $this->expectExceptionMessage('Author id must be uuid');
+
+        new Id('not uuid');
     }
 
     public function testValidationErrorNotEmpty(): void

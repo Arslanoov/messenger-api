@@ -34,7 +34,7 @@ final class DoctrineMessageRepository implements MessageRepositoryInterface
     public function findById(Id $id): ?Message
     {
         /** @var Message | null $message */
-        $message =  $this->repository->findBy([
+        $message =  $this->repository->findOneBy([
             'uuid' => $id->getValue()
         ]);
         return $message;

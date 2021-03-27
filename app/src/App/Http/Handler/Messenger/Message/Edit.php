@@ -5,20 +5,22 @@ declare(strict_types=1);
 namespace App\Http\Handler\Messenger\Message;
 
 use App\Http\Response\ResponseFactory;
+use App\Security\UserIdentity;
 use App\Service\ValidatorInterface;
 use Messenger\UseCase\Message\Edit\Command;
 use Messenger\UseCase\Message\Edit\Handler;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
-use Trikoder\Bundle\OAuth2Bundle\Security\Authentication\Token\OAuth2Token;
 
 /**
  * Class Edit
  * @package App\Http\Handler\Messenger\Message
  * @Route(path="/messenger/message/edit", name="messenger.message.edit", methods={"PATCH"})
- * @OA\Post(
+ * @OA\Patch(
  *     path="/messenger/message/edit",
  *     tags={"Messenger message edit"},
  *     @OA\RequestBody(
@@ -51,20 +53,20 @@ final class Edit
     private ValidatorInterface $validator;
     private SerializerInterface $serializer;
     private ResponseFactory $response;
-    private OAuth2Token $tokenizer;
+    private Security $security;
 
     public function __construct(
         Handler $handler,
         ValidatorInterface $validator,
         SerializerInterface $serializer,
         ResponseFactory $response,
-        OAuth2Token $tokenizer // TODO: Separate service
+        Security $security
     ) {
         $this->handler = $handler;
         $this->validator = $validator;
         $this->serializer = $serializer;
         $this->response = $response;
-        $this->tokenizer = $tokenizer;
+        $this->security = $security;
     }
 
     /**
@@ -76,13 +78,12 @@ final class Edit
         $content = (string) $request->getContent();
         $body = (array) json_decode($content, true);
 
-        $messageId = (string) $body['message_id'];
-        $messageContent = (string) $body['content'];
+        $messageId = (string) ($body['message_id'] ?? '');
+        $messageContent = (string) ($body['content'] ?? '');
 
-        // TODO: Check for correctness
-        $userId = (string) $this->tokenizer->getAttribute('oauth_client_id');
-
-        $command = new Command($userId, $messageId, $messageContent);
+        /** @var UserIdentity $user */
+        $user = $this->security->getUser();
+        $command = new Command($user->getId(), $messageId, $messageContent);
 
         try {
             $this->validator->validateObjects([$command]);

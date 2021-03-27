@@ -5,20 +5,22 @@ declare(strict_types=1);
 namespace App\Http\Handler\Messenger\Message;
 
 use App\Http\Response\ResponseFactory;
+use App\Security\UserIdentity;
 use App\Service\ValidatorInterface;
 use Messenger\UseCase\Message\Remove\Command;
 use Messenger\UseCase\Message\Remove\Handler;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
-use Trikoder\Bundle\OAuth2Bundle\Security\Authentication\Token\OAuth2Token;
 
 /**
  * Class Remove
  * @package App\Http\Handler\Messenger\Message
  * @Route(path="/messenger/message/remove", name="messenger.message.remove", methods={"DELETE"})
- * @OA\Post(
+ * @OA\Delete (
  *     path="/messenger/message/remove",
  *     tags={"Messenger message remove"},
  *     @OA\RequestBody(
@@ -50,20 +52,20 @@ final class Remove
     private ValidatorInterface $validator;
     private SerializerInterface $serializer;
     private ResponseFactory $response;
-    private OAuth2Token $tokenizer;
+    private Security $security;
 
     public function __construct(
         Handler $handler,
         ValidatorInterface $validator,
         SerializerInterface $serializer,
         ResponseFactory $response,
-        OAuth2Token $tokenizer // TODO: Separate service
+        Security $security
     ) {
         $this->handler = $handler;
         $this->validator = $validator;
         $this->serializer = $serializer;
         $this->response = $response;
-        $this->tokenizer = $tokenizer;
+        $this->security = $security;
     }
 
     /**
@@ -75,12 +77,11 @@ final class Remove
         $content = (string) $request->getContent();
         $body = (array) json_decode($content, true);
 
-        $messageId = (string) $body['message_id'];
+        $messageId = (string) ($body['message_id'] ?? '');
 
-        // TODO: Check for correctness
-        $userId = (string) $this->tokenizer->getAttribute('oauth_client_id');
-
-        $command = new Command($userId, $messageId);
+        /** @var UserIdentity $user */
+        $user = $this->security->getUser();
+        $command = new Command($user->getId(), $messageId);
 
         try {
             $this->validator->validateObjects([$command]);

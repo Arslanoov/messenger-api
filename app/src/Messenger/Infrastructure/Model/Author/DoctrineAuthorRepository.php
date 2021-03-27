@@ -11,7 +11,7 @@ use Messenger\Model\Author\Author;
 use Messenger\Model\Author\AuthorRepositoryInterface;
 use Messenger\Model\Author\Id;
 
-final class DoctrineAuthorRepositoryInterface implements AuthorRepositoryInterface
+final class DoctrineAuthorRepository implements AuthorRepositoryInterface
 {
     private EntityManagerInterface $entityManger;
     private ObjectRepository $repository;
@@ -34,9 +34,10 @@ final class DoctrineAuthorRepositoryInterface implements AuthorRepositoryInterfa
     public function findById(Id $id): ?Author
     {
         /** @var Author | null $author */
-        $author =  $this->repository->findBy([
+        $author = $this->repository->findOneBy([
             'uuid' => $id->getValue()
         ]);
+
         return $author;
     }
 }

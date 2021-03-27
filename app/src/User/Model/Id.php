@@ -25,6 +25,7 @@ class Id
     public function __construct(string $value)
     {
         DomainLogicAssertion::notBlank($value, 'User id required');
+        DomainLogicAssertion::uuid($value, 'User id must be uuid');
         $this->value = $value;
     }
 
@@ -51,5 +52,10 @@ class Id
     public function __toString(): string
     {
         return $this->getValue();
+    }
+
+    public function isEqualTo(Id $id): bool
+    {
+        return $this->getValue() === $id->getValue();
     }
 }

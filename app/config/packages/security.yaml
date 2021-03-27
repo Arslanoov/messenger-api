@@ -13,11 +13,11 @@ security:
             security: false
 
         api:
-            pattern: ^/api
+            pattern: ^/
             anonymous: true
             stateless: true
             oauth2: true
 
     access_control:
         - { path: ^/auth/sign-up, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/messenger, roles: ROLE_USER }
+        - { path: ^/messenger, roles: IS_AUTHENTICATED_FULLY }

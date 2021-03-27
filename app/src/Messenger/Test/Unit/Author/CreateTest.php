@@ -9,12 +9,13 @@ use Domain\Exception\DomainAssertionException;
 use Messenger\Model\Author\Author;
 use Messenger\Model\Author\Id;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 
 class CreateTest extends TestCase
 {
     public function testNew(): void
     {
-        $author = Author::new($uuid = "someId");
+        $author = Author::new($uuid = Uuid::uuid4()->toString());
 
         $this->assertEquals($uuid, $author->getUuid()->getValue());
         $this->assertNotEmpty($author->getCreatedAtDate());
@@ -25,7 +26,7 @@ class CreateTest extends TestCase
     public function testConstructor(): void
     {
         $author = new Author(
-            $uuid = new Id("someId"),
+            $uuid = new Id(Uuid::uuid4()->toString()),
             $date = new DateTimeImmutable(),
             $messagesCounter = 25
         );
@@ -41,7 +42,7 @@ class CreateTest extends TestCase
         $this->expectExceptionMessage('Incorrect messages count');
 
         new Author(
-            new Id("someId"),
+            new Id(Uuid::uuid4()->toString()),
             new DateTimeImmutable(),
             -22
         );
