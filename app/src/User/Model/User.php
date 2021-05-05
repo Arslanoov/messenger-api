@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace User\Model;
 
 use Assert\AssertionFailedException;
+use DateInterval;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Domain\AggregateRoot;
 use Domain\EventsTrait;
@@ -44,13 +46,38 @@ class User implements UserInterface, AggregateRoot
      * @ORM\Column(type="user_user_status", name="status", length=16)
      */
     private Status $status;
+    /**
+     * @var DateTimeImmutable
+     * @ORM\Column(type="datetime_immutable", name="latest_activity")
+     */
+    private DateTimeImmutable $latestActivity;
+    /**
+     * @var int
+     * @ORM\Column(type="integer")
+     */
+    private int $messagesCount;
+    /**
+     * @var ?string
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $aboutMe;
 
-    public function __construct(Id $uuid, Username $username, string $hash, Status $status)
-    {
+    public function __construct(
+        Id $uuid,
+        Username $username,
+        string $hash,
+        Status $status,
+        DateTimeImmutable $latestActivity,
+        int $messagesCount = 0,
+        ?string $aboutMe = null
+    ) {
         $this->uuid = $uuid;
         $this->username = $username;
         $this->hash = $hash;
         $this->status = $status;
+        $this->latestActivity = $latestActivity;
+        $this->messagesCount = $messagesCount;
+        $this->aboutMe = $aboutMe;
     }
 
     /**
@@ -65,7 +92,8 @@ class User implements UserInterface, AggregateRoot
             Id::generate(),
             new Username($username),
             $hash,
-            Status::draft()
+            Status::draft(),
+            new DateTimeImmutable()
         );
 
         $user->recordEvent(new UserSignedUp($username));
@@ -86,7 +114,8 @@ class User implements UserInterface, AggregateRoot
             new Id($id),
             new Username($username),
             $hash,
-            Status::draft()
+            Status::draft(),
+            new DateTimeImmutable()
         );
 
         $user->recordEvent(new UserSignedUp($username));
@@ -112,6 +141,31 @@ class User implements UserInterface, AggregateRoot
     public function getStatus(): Status
     {
         return $this->status;
+    }
+
+    public function aboutMe(): ?string
+    {
+        return $this->aboutMe;
+    }
+
+    public function getLatestActivity(): DateTimeImmutable
+    {
+        return $this->latestActivity;
+    }
+
+    public function isOnline(DateTimeImmutable $now, DateInterval $onlineTimeout): bool
+    {
+        return $this->latestActivity->add($onlineTimeout) >= $now;
+    }
+
+    public function getMessagesCount(): int
+    {
+        return $this->messagesCount;
+    }
+
+    public function addAction(?DateTimeImmutable $date): void
+    {
+        $this->latestActivity = $date ?? new DateTimeImmutable();
     }
 
     /**

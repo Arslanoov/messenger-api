@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace User\Test\Unit;
 
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use User\Model\Id;
 use User\Model\Status;
@@ -23,13 +24,19 @@ class SignUpTest extends TestCase
             $uuid = Id::generate(),
             $username = new Username($username = 'Username'),
             $hash = 'Hash',
-            $status = Status::draft()
+            $status = Status::draft(),
+            $latestActivity = new DateTimeImmutable(),
+            $messagesCount = 2,
+            $aboutMe = 'About me'
         );
 
-        $this->assertEquals($user->getUuid(), $uuid);
-        $this->assertEquals($user->getUsername(), $username);
-        $this->assertEquals($user->getHash(), $hash);
-        $this->assertEquals($user->getStatus(), $status);
+        $this->assertEquals($uuid, $user->getUuid());
+        $this->assertEquals($username, $user->getUsername());
+        $this->assertEquals($hash, $user->getHash());
+        $this->assertEquals($status, $user->getStatus());
+        $this->assertEquals($latestActivity, $user->getLatestActivity());
+        $this->assertEquals($messagesCount, $user->getMessagesCount());
+        $this->assertEquals($aboutMe, $user->aboutMe());
         $this->assertTrue($user->isDraft());
         $this->assertFalse($user->isActive());
     }
@@ -42,8 +49,8 @@ class SignUpTest extends TestCase
         );
 
         $this->assertNotEmpty($user->getUuid());
-        $this->assertEquals($user->getUsername(), new Username($username));
-        $this->assertEquals($user->getHash(), $hash);
+        $this->assertEquals(new Username($username), $user->getUsername());
+        $this->assertEquals($hash, $user->getHash());
         $this->assertNotEmpty($user->getStatus());
         $this->assertTrue($user->isDraft());
         $this->assertFalse($user->isActive());
