@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace User\Test\Builder;
 
 use Assert\AssertionFailedException;
+use DateTimeImmutable;
 use User\Model\Id;
 use User\Model\Status;
 use User\Model\User;
-use User\Model\UserInterface;
 use User\Model\Username;
 
 final class UserBuilder
@@ -17,6 +17,9 @@ final class UserBuilder
     private Username $username;
     private string $hash;
     private Status $status;
+    private ?string $aboutMe;
+    private DateTimeImmutable $latestActivity;
+    private int $messagesCount;
 
     /**
      * UserBuilder constructor.
@@ -28,6 +31,9 @@ final class UserBuilder
         $this->username = new Username('User name');
         $this->hash = 'hash';
         $this->status = Status::draft();
+        $this->aboutMe = 'About me';
+        $this->latestActivity = new DateTimeImmutable();
+        $this->messagesCount = 0;
     }
 
     public function withId(Id $id): self
@@ -58,6 +64,27 @@ final class UserBuilder
         return $builder;
     }
 
+    public function withAboutMe(?string $aboutMe): self
+    {
+        $builder = clone $this;
+        $builder->aboutMe = $aboutMe;
+        return $builder;
+    }
+
+    public function withLatestActivity(DateTimeImmutable $date): self
+    {
+        $builder = clone $this;
+        $builder->latestActivity = $date;
+        return $builder;
+    }
+
+    public function withMessagesCount(int $messagesCount): self
+    {
+        $builder = clone $this;
+        $builder->messagesCount = $messagesCount;
+        return $builder;
+    }
+
     public function active(): self
     {
         return $this->withStatus(Status::active());
@@ -68,13 +95,16 @@ final class UserBuilder
         return $this->withStatus(Status::draft());
     }
 
-    public function build(): UserInterface
+    public function build(): User
     {
         return new User(
             $this->id,
             $this->username,
             $this->hash,
-            $this->status
+            $this->status,
+            $this->latestActivity,
+            $this->messagesCount,
+            $this->aboutMe,
         );
     }
 }
