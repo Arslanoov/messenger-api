@@ -25,7 +25,7 @@ final class DoctrineUserRepository implements UserRepositoryInterface
     public function findByUsername(Username $username): ?User
     {
         /** @var ?User $user */
-        $user = $this->repository->findBy([
+        $user = $this->repository->findOneBy([
             'username' => $username
         ]);
 
@@ -43,7 +43,7 @@ final class DoctrineUserRepository implements UserRepositoryInterface
 
     public function hasByUsername(Username $username): bool
     {
-        return (bool) $this->repository->findBy([
+        return (bool) $this->repository->findOneBy([
             'username' => $username
         ]);
     }

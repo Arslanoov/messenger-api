@@ -29,7 +29,7 @@ use User\Model\UserRepositoryInterface;
  *             @OA\Property(property="uuid", type="string"),
  *             @OA\Property(property="username", type="string"),
  *             @OA\Property(property="aboutMe", type="string"),
- *             @OA\Property(property="isOnline", type="string"),
+ *             @OA\Property(property="isOnline", type="boolean"),
  *             @OA\Property(property="messagesCount", type="integer")
  *         )
  *     ),
@@ -70,7 +70,7 @@ final class Index
             'username' => $user->getUsername()->getValue(),
             'aboutMe' => $user->aboutMe(),
             // TODO: DI Date interval
-            'isOnline' => $user->isOnline(new DateTimeImmutable(), new DateInterval("PT15M")) ? "true" : "false",
+            'isOnline' => $user->isOnline(new DateTimeImmutable(), new DateInterval("PT15M")),
             'messagesCount' => $user->getMessagesCount()
         ]);
     }

@@ -147,12 +147,111 @@
                 ]
             }
         },
+        "/messenger/dialog/{id}": {
+            "get": {
+                "tags": [
+                    "Messenger dialog"
+                ],
+                "summary": "Class Dialog",
+                "parameters": [
+                    {
+                        "name": "message_page",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "items": {
+                                            "description": "Class Dialog",
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "uuid": {
+                                                        "description": "Class Dialog",
+                                                        "type": "string"
+                                                    },
+                                                    "first_author_id": {
+                                                        "description": "Class Dialog",
+                                                        "type": "string"
+                                                    },
+                                                    "second_author_id": {
+                                                        "description": "Class Dialog",
+                                                        "type": "string"
+                                                    },
+                                                    "messages_count": {
+                                                        "description": "Class Dialog",
+                                                        "type": "integer"
+                                                    },
+                                                    "not_read_count": {
+                                                        "description": "Class Dialog",
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "perPage": {
+                                            "description": "Class Dialog",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Class Dialog",
+                                            "type": "string",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "common"
+                        ]
+                    }
+                ]
+            }
+        },
         "/messenger/dialogs": {
             "get": {
                 "tags": [
                     "Messenger dialogs list"
                 ],
                 "summary": "Class Dialogs",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success response",
@@ -188,6 +287,10 @@
                                                 },
                                                 "type": "object"
                                             }
+                                        },
+                                        "perPage": {
+                                            "description": "Class Dialogs",
+                                            "type": "integer"
                                         }
                                     },
                                     "type": "object"
@@ -434,6 +537,72 @@
                                     "properties": {
                                         "message": {
                                             "description": "Class Remove",
+                                            "type": "string",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "common"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/profile": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Class Index",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "uuid": {
+                                            "description": "Class Index",
+                                            "type": "string"
+                                        },
+                                        "username": {
+                                            "description": "Class Index",
+                                            "type": "string"
+                                        },
+                                        "aboutMe": {
+                                            "description": "Class Index",
+                                            "type": "string"
+                                        },
+                                        "isOnline": {
+                                            "description": "Class Index",
+                                            "type": "boolean"
+                                        },
+                                        "messagesCount": {
+                                            "description": "Class Index",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Class Index",
                                             "type": "string",
                                             "nullable": true
                                         }
