@@ -49,5 +49,21 @@ services:
     ports:
       - "54321:5432"
 
+  storage:
+    build:
+      context: ./storage/docker/dev/nginx
+    volumes:
+      - ./storage:/app
+    ports:
+      - "8082:80"
+  storage-ftp:
+    image: stilliard/pure-ftpd
+    environment:
+      FTP_USER_NAME: app
+      FTP_USER_PASS: secret
+      FTP_USER_HOME: /app
+    volumes:
+      - ./storage/public:/app
+
 volumes:
   messenger-postgres:

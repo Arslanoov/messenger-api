@@ -556,6 +556,58 @@
                 ]
             }
         },
+        "/profile/avatar/upload": {
+            "post": {
+                "tags": [
+                    "Profile avatar upload"
+                ],
+                "summary": "Class ChangeAvatar",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "avatar": {
+                                        "description": "Class ChangeAvatar",
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response"
+                    },
+                    "400": {
+                        "description": "Errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Class ChangeAvatar",
+                                            "type": "string",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "common"
+                        ]
+                    }
+                ]
+            }
+        },
         "/profile": {
             "get": {
                 "tags": [
@@ -603,6 +655,43 @@
                                     "properties": {
                                         "message": {
                                             "description": "Class Index",
+                                            "type": "string",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "common"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/profile/avatar/remove": {
+            "delete": {
+                "tags": [
+                    "Profile avatar remove"
+                ],
+                "summary": "Class RemoveAvatar",
+                "responses": {
+                    "200": {
+                        "description": "Success response"
+                    },
+                    "400": {
+                        "description": "Errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Class RemoveAvatar",
                                             "type": "string",
                                             "nullable": true
                                         }

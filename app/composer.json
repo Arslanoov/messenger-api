@@ -14,6 +14,8 @@
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.8",
         "knplabs/knp-paginator-bundle": "^5.4",
+        "league/flysystem-bundle": "^2.0",
+        "league/flysystem-ftp": "^2.0",
         "nyholm/psr7": "^1.4",
         "ramsey/uuid": "^4.1",
         "symfony/console": "5.2.*",

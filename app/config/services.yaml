@@ -29,6 +29,10 @@ services:
     App\Service\ValidatorInterface:
         class: App\Infrastructure\Service\SymfonyValidator
 
+    App\Service\FileUploader:
+        class: App\Infrastructure\Service\Uploader\FlysystemFileUploader
+        arguments: ['@default.storage']
+
     # Domain
     Domain\:
         resource: '../src/Domain'
