@@ -6,24 +6,28 @@ namespace App\Http\Handler\Profile;
 
 use App\Http\Response\ResponseFactory;
 use App\Security\UserIdentity;
-use App\Service\FileUploader;
-use App\Service\UuidGenerator;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use User\Model\Username;
 use User\Model\UserRepositoryInterface;
-use User\UseCase\Avatar\Remove\Command;
-use User\UseCase\Avatar\Remove\Handler;
+use User\UseCase\Change\About\Command;
+use User\UseCase\Change\About\Handler;
 
 /**
- * Class RemoveAvatar
+ * Class ChangeAvatar
  * @package App\Http\Handler\Profile
- * @Route(path="/profile/avatar/remove", name="profile.avatar.remove", methods={"DELETE"})
- * @OA\Delete(
- *     path="/profile/avatar/remove",
- *     tags={"Profile avatar remove"},
+ * @Route(path="/profile/change/about", name="profile.avatar.upload", methods={"PATCH"})
+ * @OA\Patch(
+ *     path="/profile/change/about",
+ *     tags={"Profile about change"},
+ *     @OA\RequestBody(
+*          @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="about", type="string", nullable=true)
+ *         )
+ *     ),
  *     @OA\Response(
  *         response=204,
  *         description="Success response"
@@ -40,22 +44,19 @@ use User\UseCase\Avatar\Remove\Handler;
  *   )
  * )
  */
-final class RemoveAvatar
+final class ChangeAbout
 {
-    private FileUploader $uploader;
     private UserRepositoryInterface $users;
     private Handler $handler;
     private ResponseFactory $response;
     private Security $security;
 
     public function __construct(
-        FileUploader $uploader,
         UserRepositoryInterface $users,
         Handler $handler,
         ResponseFactory $response,
         Security $security
     ) {
-        $this->uploader = $uploader;
         $this->users = $users;
         $this->handler = $handler;
         $this->response = $response;
@@ -64,13 +65,16 @@ final class RemoveAvatar
 
     public function __invoke(Request $request): mixed
     {
+        $content = (string) $request->getContent();
+        $body = (array) json_decode($content, true);
+
+        $about = (string) $body['about'];
+
         /** @var UserIdentity $userIdentity */
         $userIdentity = $this->security->getUser();
         $user = $this->users->getByUsername(new Username($userIdentity->getUsername()));
 
-        $this->uploader->remove('avatar/', $user->avatar());
-
-        $this->handler->handle(new Command($user->getUsername()->getValue()));
+        $this->handler->handle(new Command($user->getUsername()->getValue(), $about));
 
         return $this->response->json([], 204);
     }

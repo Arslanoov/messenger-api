@@ -71,7 +71,9 @@ final class Index
             'aboutMe' => $user->aboutMe(),
             // TODO: DI Date interval
             'isOnline' => $user->isOnline(new DateTimeImmutable(), new DateInterval("PT15M")),
-            'messagesCount' => $user->getMessagesCount()
+            'messagesCount' => $user->getMessagesCount(),
+            // TODO: Add env
+            'avatar' => 'http://localhost:8082/avatar/' . $user->avatar()
         ]);
     }
 }

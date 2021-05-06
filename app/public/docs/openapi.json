@@ -556,6 +556,59 @@
                 ]
             }
         },
+        "/profile/change/about": {
+            "patch": {
+                "tags": [
+                    "Profile about change"
+                ],
+                "summary": "Class ChangeAvatar",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "about": {
+                                        "description": "Class ChangeAvatar",
+                                        "type": "string",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Success response"
+                    },
+                    "400": {
+                        "description": "Errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Class ChangeAvatar",
+                                            "type": "string",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": [
+                            "common"
+                        ]
+                    }
+                ]
+            }
+        },
         "/profile/avatar/upload": {
             "post": {
                 "tags": [
@@ -681,7 +734,7 @@
                 ],
                 "summary": "Class RemoveAvatar",
                 "responses": {
-                    "200": {
+                    "204": {
                         "description": "Success response"
                     },
                     "400": {
