@@ -27,7 +27,8 @@ class SignUpTest extends TestCase
             $status = Status::draft(),
             $latestActivity = new DateTimeImmutable(),
             $messagesCount = 2,
-            $aboutMe = 'About me'
+            $aboutMe = 'About me',
+            $avatarUrl = 'some url/'
         );
 
         $this->assertEquals($uuid, $user->getUuid());
@@ -37,6 +38,7 @@ class SignUpTest extends TestCase
         $this->assertEquals($latestActivity, $user->getLatestActivity());
         $this->assertEquals($messagesCount, $user->getMessagesCount());
         $this->assertEquals($aboutMe, $user->aboutMe());
+        $this->assertEquals($avatarUrl, $user->avatar());
         $this->assertTrue($user->isDraft());
         $this->assertFalse($user->isActive());
     }

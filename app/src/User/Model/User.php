@@ -61,6 +61,11 @@ class User implements UserInterface, AggregateRoot
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $aboutMe;
+    /**
+     * @var ?string
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $avatarUrl;
 
     public function __construct(
         Id $uuid,
@@ -69,7 +74,8 @@ class User implements UserInterface, AggregateRoot
         Status $status,
         DateTimeImmutable $latestActivity,
         int $messagesCount = 0,
-        ?string $aboutMe = null
+        ?string $aboutMe = null,
+        ?string $avatarUrl = null
     ) {
         $this->uuid = $uuid;
         $this->username = $username;
@@ -78,6 +84,7 @@ class User implements UserInterface, AggregateRoot
         $this->latestActivity = $latestActivity;
         $this->messagesCount = $messagesCount;
         $this->aboutMe = $aboutMe;
+        $this->avatarUrl = $avatarUrl;
     }
 
     /**
@@ -161,6 +168,21 @@ class User implements UserInterface, AggregateRoot
     public function getMessagesCount(): int
     {
         return $this->messagesCount;
+    }
+
+    public function avatar(): ?string
+    {
+        return $this->avatarUrl;
+    }
+
+    public function changeAvatar(string $url): void
+    {
+        $this->avatarUrl = $url;
+    }
+
+    public function removeAvatar(): void
+    {
+        $this->avatarUrl = null;
     }
 
     public function addAction(?DateTimeImmutable $date): void

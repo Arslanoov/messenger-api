@@ -18,6 +18,7 @@ final class UserBuilder
     private string $hash;
     private Status $status;
     private ?string $aboutMe;
+    private ?string $avatarUrl;
     private DateTimeImmutable $latestActivity;
     private int $messagesCount;
 
@@ -34,6 +35,7 @@ final class UserBuilder
         $this->aboutMe = 'About me';
         $this->latestActivity = new DateTimeImmutable();
         $this->messagesCount = 0;
+        $this->avatarUrl = 'url';
     }
 
     public function withId(Id $id): self
@@ -85,6 +87,13 @@ final class UserBuilder
         return $builder;
     }
 
+    public function withAvatar(string $url): self
+    {
+        $builder = clone $this;
+        $builder->avatarUrl = $url;
+        return $builder;
+    }
+
     public function active(): self
     {
         return $this->withStatus(Status::active());
@@ -105,6 +114,7 @@ final class UserBuilder
             $this->latestActivity,
             $this->messagesCount,
             $this->aboutMe,
+            $this->avatarUrl
         );
     }
 }
