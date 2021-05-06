@@ -30,15 +30,19 @@ final class FlysystemFileUploader implements FileUploader
     {
         $fileName = $name . '.' . $file->getClientOriginalExtension();
         if (!$name) {
-            $fileName = Uuid::uuid4()->toString() . '.' . $file->getClientOriginalExtension();
+            $fileName = $name . '.' . $file->getClientOriginalExtension();
         }
 
         $this->storage->createDirectory($prefix);
+        // TODO: Refactor
+        $this->storage->delete($prefix . $name . '.jpg');
+        $this->storage->delete($prefix . $name . '.jpeg');
+        $this->storage->delete($prefix . $name . '.png');
         $stream = fopen($file->getRealPath(), 'rb+');
         $this->storage->writeStream($prefix . '/' . $fileName, $stream);
         fclose($stream);
 
-        return new File($prefix, $name, $file->getSize());
+        return new File($prefix, $name . '.' . $file->getClientOriginalExtension(), $file->getSize());
     }
 
     /**
