@@ -180,6 +180,16 @@ class User implements UserInterface, AggregateRoot
         $this->avatarUrl = $url;
     }
 
+    public function removeAboutInfo(): void
+    {
+        $this->aboutMe = null;
+    }
+
+    public function changeAboutInfo(?string $info): void
+    {
+        $this->aboutMe = $info;
+    }
+
     public function removeAvatar(): void
     {
         $this->avatarUrl = null;
