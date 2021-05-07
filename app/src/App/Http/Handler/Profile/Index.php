@@ -65,6 +65,8 @@ final class Index
 
         $user = $this->users->getByUsername(new Username($userIdentity->getUsername()));
 
+        $avatarUrl = $user->avatar() ? 'http://localhost:8082/avatar/' . ($user->avatar() ?? '') : null;
+
         return $this->response->json([
             'uuid' => $user->getUuid()->getValue(),
             'username' => $user->getUsername()->getValue(),
@@ -73,7 +75,7 @@ final class Index
             'isOnline' => $user->isOnline(new DateTimeImmutable(), new DateInterval("PT15M")),
             'messagesCount' => $user->getMessagesCount(),
             // TODO: Add env
-            'avatar' => 'http://localhost:8082/avatar/' . $user->avatar()
+            'avatar' => $avatarUrl
         ]);
     }
 }

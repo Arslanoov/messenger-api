@@ -18,7 +18,7 @@ use User\UseCase\Change\About\Handler;
 /**
  * Class ChangeAvatar
  * @package App\Http\Handler\Profile
- * @Route(path="/profile/change/about", name="profile.avatar.upload", methods={"PATCH"})
+ * @Route(path="/profile/change/about", name="profile.change.about", methods={"PATCH"})
  * @OA\Patch(
  *     path="/profile/change/about",
  *     tags={"Profile about change"},
