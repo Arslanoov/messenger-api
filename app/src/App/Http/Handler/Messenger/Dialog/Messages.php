@@ -118,10 +118,10 @@ final class Messages
         $this->handler->handle(new Command($user->getId(), $dialog->getUuid()->getValue()));
 
         return $this->response->json([
-            'messages' => array_map(function (Message $message) use ($user) {
+            'items' => array_map(function (Message $message) use ($user) {
                 return [
                     'uuid' => $message->getId()->getValue(),
-                    'isMine' => $message->getAuthor()->getUuid() === $user->getId(),
+                    'isMine' => $message->getAuthor()->getUuid()->getValue() === $user->getId(),
                     'wroteAt' => $message->getWroteAt()->format('d.m.Y H:i:s'),
                     'content' => $message->getContent()->getValue()
                 ];
