@@ -7,4 +7,6 @@ namespace Messenger\ReadModel;
 interface DialogFetcherInterface
 {
     public function getDialogs(string $authorId, int $page = 1): array;
+
+    public function getLatestMessage(string $authorId): ?array;
 }

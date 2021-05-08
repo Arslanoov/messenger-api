@@ -6,12 +6,15 @@ namespace App\Http\Handler\Messenger\Dialog;
 
 use App\Http\Response\ResponseFactory;
 use App\Security\UserIdentity;
+use DateInterval;
+use DateTimeImmutable;
 use Exception\IncorrectPage;
 use Messenger\ReadModel\DialogFetcherInterface;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use User\Model\Id;
 
 /**
  * Class Dialogs
@@ -86,8 +89,49 @@ final class Dialogs
         }
 
         return $this->response->json([
-            'items' => $this->dialogs->getDialogs($user->getId(), $page),
+            'items' => $this->dialog($user->getId(), $page),
             'perPage' => self::PER_PAGE
         ]);
+    }
+
+    private function dialog(string $userId, int $page): array
+    {
+        return array_map(function (array $dialog) use ($userId) {
+            $latestMessage = $this->dialogs->getLatestMessage((string) $dialog['uuid']);
+            /* TODO: Extract */
+            if (mb_strlen((string) $latestMessage['content']) > 25) {
+                $latestMessage['content'] = mb_substr((string) $latestMessage['content'], 0, 25) . '...';
+            };
+
+            // TODO: Docs
+            $response = [
+                'uuid' => $dialog['uuid'],
+                'partner' => [
+                    'uuid' => $dialog['partner_user_uuid'],
+                    'username' => $dialog['partner_user_username'],
+                    'avatarUrl' => $dialog['partner_user_avatar_url'],
+                    'aboutMe' => $dialog['partner_user_about_me'],
+                    'isOnline' => new DateTimeImmutable((string) $dialog['partner_latest_activity']) >
+                        (new DateTimeImmutable())->add(new DateInterval("PT15M")),
+                ],
+                'messagesCount' => $dialog['messages_count'],
+                'latestMessage' => $latestMessage
+            ];
+
+            if ($latestMessage) {
+                if ($userId === $latestMessage['author_id']) {
+                    $response['sentByMe'] = [
+                        'isSent' => true,
+                        'isRead' => $latestMessage['read_status']
+                    ];
+                } else {
+                    $response['sentByPartner'] = [
+                        'isRead' => $latestMessage['read_status']
+                    ];
+                }
+            }
+
+            return $response;
+        }, $this->dialogs->getDialogs($userId, $page));
     }
 }

@@ -121,7 +121,7 @@ class User implements UserInterface, AggregateRoot
             new Id($id),
             new Username($username),
             $hash,
-            Status::draft(),
+            Status::active(),
             new DateTimeImmutable()
         );
 
