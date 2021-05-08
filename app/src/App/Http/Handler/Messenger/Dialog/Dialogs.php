@@ -99,7 +99,7 @@ final class Dialogs
         return array_map(function (array $dialog) use ($userId) {
             $latestMessage = $this->dialogs->getLatestMessage((string) $dialog['uuid']);
             /* TODO: Extract */
-            if (mb_strlen((string) $latestMessage['content']) > 25) {
+            if ($latestMessage && mb_strlen((string) $latestMessage['content']) > 25) {
                 $latestMessage['content'] = mb_substr((string) $latestMessage['content'], 0, 25) . '...';
             };
 
