@@ -15,6 +15,7 @@ use Messenger\Model\Dialog\Dialog as DialogModel;
 use Exception\IncorrectPage;
 use Messenger\Model\Dialog\DialogRepositoryInterface;
 use Messenger\Model\Dialog\Id as DialogId;
+use Messenger\Model\Message\Message;
 use Messenger\UseCase\Dialog\Read\Command;
 use Messenger\UseCase\Dialog\Read\Handler;
 use OpenApi\Annotations as OA;
@@ -24,13 +25,13 @@ use Symfony\Component\Security\Core\Security;
 
 /**
  * Class Dialog
- * @package App\Http\Handler\Messenger\Dialog
- * @Route(path="/messenger/dialog/{id}", name="messenger.dialog", methods={"GET"})
+ * @package App\Http\Handler\Messenger\Messages
+ * @Route(path="/messenger/dialog/{id}/messages", name="messenger.dialog.messages", methods={"GET"})
  * @OA\Get(
- *     path="/messenger/dialog/{id}",
- *     tags={"Messenger dialog"},
+ *     path="/messenger/dialog/{id}/messages",
+ *     tags={"Messenger dialog messages"},
  *     @OA\Parameter(
- *         name="message_page",
+ *         name="page",
  *         in="path",
  *         required=false,
  *         @OA\Schema(type="string")
@@ -62,7 +63,7 @@ use Symfony\Component\Security\Core\Security;
  *   )
  * )
  */
-final class Dialog
+final class Messages
 {
     public const PAGE_SIZE = 25;
 
@@ -102,7 +103,7 @@ final class Dialog
         /** @var UserIdentity $user */
         $user = $this->security->getUser();
 
-        $page = (int) ($request->get('message_page') ?? 1);
+        $page = (int) ($request->get('page') ?? 1);
         if ($page <= 0) {
             throw new IncorrectPage();
         }
@@ -116,21 +117,15 @@ final class Dialog
         // TODO: Fix handler
         $this->handler->handle(new Command($user->getId(), $dialog->getUuid()->getValue()));
 
-        return $this->response->json(
-            $this->dialog(
-                $dialog,
-                $page
-            )
-        );
-    }
-
-    private function dialog(DialogModel $dialog, int $page): array
-    {
-        return [
-            'uuid' => $dialog->getUuid()->getValue(),
-            'first_author' => $dialog->getFirstAuthor(),
-            'second_author' => $dialog->getSecondAuthor(),
-            'messages' => $dialog->getMessages()->slice(($page - 1) * self::PAGE_SIZE, self::PAGE_SIZE)
-        ];
+        return $this->response->json([
+            'messages' => array_map(function (Message $message) use ($user) {
+                return [
+                    'uuid' => $message->getId()->getValue(),
+                    'isMine' => $message->getAuthor()->getUuid() === $user->getId(),
+                    'wroteAt' => $message->getWroteAt()->format('d.m.Y H:i:s'),
+                    'content' => $message->getContent()->getValue()
+                ];
+            }, $dialog->getMessages()->slice(($page - 1) * self::PAGE_SIZE, self::PAGE_SIZE))
+        ]);
     }
 }

@@ -43,7 +43,6 @@ final class Dialog
      *     targetEntity="Messenger\Model\Message\Message",
      *     mappedBy="dialog", orphanRemoval=true, cascade={"all"}
      * )
-     * @ORM\OrderBy({"name" = "DESC"})
      */
     private Collection | array $messages;
     /**
