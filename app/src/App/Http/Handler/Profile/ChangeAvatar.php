@@ -97,8 +97,9 @@ final class ChangeAvatar
 
         $this->handler->handle(new Command($user->getUsername()->getValue(), $file->name));
 
+        // TODO: Add env
         return $this->response->json([
-            'url' => $file->path . $file->name
+            'url' => 'http://localhost:8082/' . $file->path . $file->name,
         ]);
     }
 }
