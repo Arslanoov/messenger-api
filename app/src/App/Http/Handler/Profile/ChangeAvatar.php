@@ -8,7 +8,6 @@ use App\Exception\InvalidAvatar;
 use App\Http\Response\ResponseFactory;
 use App\Security\UserIdentity;
 use App\Service\FileUploader;
-use App\Service\UuidGenerator;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use User\Model\Username;
 use User\Model\UserRepositoryInterface;
-use User\UseCase\Avatar\Change\Command;
-use User\UseCase\Avatar\Change\Handler;
+use User\UseCase\Avatar\Change\Command as ChangeCommand;
+use User\UseCase\Avatar\Change\Handler as ChangeHandler;
+use User\UseCase\Online\Command as OnlineCommand;
+use User\UseCase\Online\Handler as OnlineHandler;
 
 /**
  * Class ChangeAvatar
@@ -52,23 +53,23 @@ final class ChangeAvatar
 {
     private FileUploader $uploader;
     private UserRepositoryInterface $users;
-    private UuidGenerator $uuid;
-    private Handler $handler;
+    private ChangeHandler $handler;
+    private OnlineHandler $onlineHandler;
     private ResponseFactory $response;
     private Security $security;
 
     public function __construct(
         FileUploader $uploader,
-        UuidGenerator $uuid,
         UserRepositoryInterface $users,
-        Handler $handler,
+        ChangeHandler $handler,
+        OnlineHandler $onlineHandler,
         ResponseFactory $response,
         Security $security
     ) {
         $this->uploader = $uploader;
-        $this->uuid = $uuid;
         $this->users = $users;
         $this->handler = $handler;
+        $this->onlineHandler = $onlineHandler;
         $this->response = $response;
         $this->security = $security;
     }
@@ -95,7 +96,8 @@ final class ChangeAvatar
 
         $file = $this->uploader->upload($avatar, 'avatar/', $user->getUuid()->getValue());
 
-        $this->handler->handle(new Command($user->getUsername()->getValue(), $file->name));
+        $this->handler->handle(new ChangeCommand($user->getUsername()->getValue(), $file->name));
+        $this->onlineHandler->handle(new OnlineCommand($userIdentity->getUsername()));
 
         // TODO: Add env
         return $this->response->json([

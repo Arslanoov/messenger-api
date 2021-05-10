@@ -11,17 +11,18 @@ use Domain\Exception\DomainAssertionException;
 use Messenger\Exception\DialogNotFound;
 use Messenger\Model\Author\AuthorRepositoryInterface;
 use Messenger\Model\Author\Id as AuthorId;
-use Messenger\Model\Dialog\Dialog as DialogModel;
 use Exception\IncorrectPage;
 use Messenger\Model\Dialog\DialogRepositoryInterface;
 use Messenger\Model\Dialog\Id as DialogId;
-use Messenger\Model\Message\Message;
-use Messenger\UseCase\Dialog\Read\Command;
-use Messenger\UseCase\Dialog\Read\Handler;
+use Messenger\ReadModel\MessageFetcherInterface;
+use Messenger\UseCase\Dialog\Read\Command as ReadCommand;
+use Messenger\UseCase\Dialog\Read\Handler as ReadHandler;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use User\UseCase\Online\Command as OnlineCommand;
+use User\UseCase\Online\Handler as OnlineHandler;
 
 /**
  * Class Dialog
@@ -65,23 +66,27 @@ use Symfony\Component\Security\Core\Security;
  */
 final class Messages
 {
-    public const PAGE_SIZE = 25;
+    public const PER_PAGE = 25;
 
     private DialogRepositoryInterface $dialogs;
     private AuthorRepositoryInterface $authors;
-    private Handler $handler;
+    private MessageFetcherInterface $messages;
+    private ReadHandler $handler;
+    private OnlineHandler $onlineHandler;
     private ResponseFactory $response;
     private Security $security;
 
     public function __construct(
         DialogRepositoryInterface $dialogs,
         AuthorRepositoryInterface $authors,
-        Handler $handler,
+        MessageFetcherInterface $messages,
+        ReadHandler $handler,
         ResponseFactory $response,
         Security $security
     ) {
         $this->dialogs = $dialogs;
         $this->authors = $authors;
+        $this->messages = $messages;
         $this->handler = $handler;
         $this->response = $response;
         $this->security = $security;
@@ -99,12 +104,11 @@ final class Messages
     public function __invoke(string $id, Request $request): mixed
     {
         // TODO: Add author information output
-        // TODO: Change repository to raw pdo
         /** @var UserIdentity $user */
         $user = $this->security->getUser();
 
         $page = (int) ($request->get('page') ?? 1);
-        if ($page <= 0) {
+        if ($page < 1) {
             throw new IncorrectPage();
         }
 
@@ -114,18 +118,21 @@ final class Messages
             throw new DialogNotFound();
         }
 
-        // TODO: Fix handler
-        $this->handler->handle(new Command($user->getId(), $dialog->getUuid()->getValue()));
+        // TODO: Test
+        $this->handler->handle(new ReadCommand($user->getId(), $dialog->getUuid()->getValue()));
+        $this->onlineHandler->handle(new OnlineCommand($user->getUsername()));
+
+        $messages = $this->messages->getMessages($dialog->getUuid()->getValue(), $page);
 
         return $this->response->json([
-            'items' => array_map(function (Message $message) use ($user) {
+            'items' => array_map(function (array $message) use ($author) {
                 return [
-                    'uuid' => $message->getId()->getValue(),
-                    'isMine' => $message->getAuthor()->getUuid()->getValue() === $user->getId(),
-                    'wroteAt' => $message->getWroteAt()->format('d.m.Y H:i:s'),
-                    'content' => $message->getContent()->getValue()
+                    'uuid' => $message['uuid'],
+                    'isMine' => $message['author_id'] === $author->getUuid()->getValue(),
+                    'wroteAt' => $message['wrote_at'],
+                    'content' => $message['content']
                 ];
-            }, $dialog->getMessages()->slice(($page - 1) * self::PAGE_SIZE, self::PAGE_SIZE))
+            }, $messages)
         ]);
     }
 }

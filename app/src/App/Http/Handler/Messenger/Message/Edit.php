@@ -7,14 +7,16 @@ namespace App\Http\Handler\Messenger\Message;
 use App\Http\Response\ResponseFactory;
 use App\Security\UserIdentity;
 use App\Service\ValidatorInterface;
-use Messenger\UseCase\Message\Edit\Command;
-use Messenger\UseCase\Message\Edit\Handler;
+use Messenger\UseCase\Message\Edit\Command as EditCommand;
+use Messenger\UseCase\Message\Edit\Handler as EditHandler;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
+use User\UseCase\Online\Command as OnlineCommand;
+use User\UseCase\Online\Handler as OnlineHandler;
 
 /**
  * Class Edit
@@ -49,20 +51,23 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
  */
 final class Edit
 {
-    private Handler $handler;
+    private EditHandler $handler;
+    private OnlineHandler $onlineHandler;
     private ValidatorInterface $validator;
     private SerializerInterface $serializer;
     private ResponseFactory $response;
     private Security $security;
 
     public function __construct(
-        Handler $handler,
+        EditHandler $handler,
+        OnlineHandler $onlineHandler,
         ValidatorInterface $validator,
         SerializerInterface $serializer,
         ResponseFactory $response,
         Security $security
     ) {
         $this->handler = $handler;
+        $this->onlineHandler = $onlineHandler;
         $this->validator = $validator;
         $this->serializer = $serializer;
         $this->response = $response;
@@ -83,7 +88,7 @@ final class Edit
 
         /** @var UserIdentity $user */
         $user = $this->security->getUser();
-        $command = new Command($user->getId(), $messageId, $messageContent);
+        $command = new EditCommand($user->getId(), $messageId, $messageContent);
 
         try {
             $this->validator->validateObjects([$command]);
@@ -95,6 +100,7 @@ final class Edit
         }
 
         $this->handler->handle($command);
+        $this->onlineHandler->handle(new OnlineCommand($user->getUsername()));
 
         return $this->response->json([], 204);
     }

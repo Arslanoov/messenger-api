@@ -74,10 +74,13 @@ class Message
         $this->readStatus = $readStatus;
     }
 
-    public static function send(Dialog $dialog, Author $author, Content $content): self
+    /*
+     * TODO: Fix tests
+     */
+    public static function send(Id $id, Dialog $dialog, Author $author, Content $content): self
     {
         return new self(
-            Id::generate(),
+            $id,
             new DateTimeImmutable(),
             $dialog,
             $author,

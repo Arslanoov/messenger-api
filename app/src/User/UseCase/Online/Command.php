@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace User\UseCase\Change\About;
+namespace User\UseCase\Online;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -12,14 +12,8 @@ final class Command
         /**
          * @var string
          * @Assert\NotBlank()
-         * @Assert\Length(min="4", max="16")
          */
-        public string $username,
-        /**
-         * @var string
-         * @Assert\Length(max="255")
-         */
-        public string $newAboutInfo
+        public string $username
     )
     {
     }
