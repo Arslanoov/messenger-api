@@ -18,6 +18,11 @@ final class Command
          * @var string
          * @Assert\NotBlank()
          */
+        public string $id,
+        /**
+         * @var string
+         * @Assert\NotBlank()
+         */
         public string $authorId,
         /**
          * @var string

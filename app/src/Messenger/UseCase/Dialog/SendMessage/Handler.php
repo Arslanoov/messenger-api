@@ -14,6 +14,7 @@ use Messenger\Model\Author\Id as AuthorId;
 use Messenger\Model\Dialog\DialogRepositoryInterface;
 use Messenger\Model\Dialog\Id as DialogId;
 use Messenger\Model\Message\Content;
+use Messenger\Model\Message\Id;
 use Messenger\Model\Message\Message;
 
 final class Handler
@@ -50,12 +51,13 @@ final class Handler
         }
 
         $message = Message::send(
+            new Id($command->id),
             $dialog,
             $author,
             new Content($command->content)
         );
 
-        $dialog->add($message);
+        $dialog->getMessages()->add($message);
 
         $this->persister->persist($message);
 

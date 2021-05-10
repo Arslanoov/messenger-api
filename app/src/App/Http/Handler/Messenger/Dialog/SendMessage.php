@@ -6,7 +6,10 @@ namespace App\Http\Handler\Messenger\Dialog;
 
 use App\Http\Response\ResponseFactory;
 use App\Security\UserIdentity;
+use App\Service\UuidGenerator;
 use App\Service\ValidatorInterface;
+use Messenger\Model\Message\Id;
+use Messenger\Model\Message\MessageRepositoryInterface;
 use Messenger\UseCase\Dialog\SendMessage\Command;
 use Messenger\UseCase\Dialog\SendMessage\Handler;
 use OpenApi\Annotations as OA;
@@ -50,6 +53,8 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
 final class SendMessage
 {
     private Handler $handler;
+    private UuidGenerator $uuid;
+    private MessageRepositoryInterface $messages;
     private ValidatorInterface $validator;
     private SerializerInterface $serializer;
     private ResponseFactory $response;
@@ -57,12 +62,16 @@ final class SendMessage
 
     public function __construct(
         Handler $handler,
+        UuidGenerator $uuid,
+        MessageRepositoryInterface $messages,
         ValidatorInterface $validator,
         SerializerInterface $serializer,
         ResponseFactory $response,
         Security $security
     ) {
         $this->handler = $handler;
+        $this->uuid = $uuid;
+        $this->messages = $messages;
         $this->validator = $validator;
         $this->serializer = $serializer;
         $this->response = $response;
@@ -77,9 +86,11 @@ final class SendMessage
         $dialogId = (string) ($body['dialog_id'] ?? '');
         $content = (string) ($body['content'] ?? '');
 
+        $id = $this->uuid->uuid4();
+
         /** @var UserIdentity $user */
         $user = $this->security->getUser();
-        $command = new Command($user->getId(), $dialogId, $content);
+        $command = new Command($id, $user->getId(), $dialogId, $content);
 
         try {
             $this->validator->validateObjects([$command]);
@@ -92,6 +103,14 @@ final class SendMessage
 
         $this->handler->handle($command);
 
-        return $this->response->json([], 204);
+        $message = $this->messages->getById(new Id($id));
+
+        return $this->response->json([
+            'uuid' => $message->getId()->getValue(),
+            'isMine' => $message->getAuthor()->getUuid()->getValue() === $user->getId(),
+            'wroteAt' => $message->getWroteAt()->format('d.m.Y H:i:s'),
+            'content' => $message->getContent()->getValue(),
+            'isEdited' => $message->getEditStatus()->isEdited()
+        ], 201);
     }
 }
