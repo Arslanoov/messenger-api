@@ -74,9 +74,6 @@ class Message
         $this->readStatus = $readStatus;
     }
 
-    /*
-     * TODO: Fix tests
-     */
     public static function send(Id $id, Dialog $dialog, Author $author, Content $content): self
     {
         return new self(
