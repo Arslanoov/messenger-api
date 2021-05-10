@@ -7,15 +7,16 @@ namespace App\Http\Handler\Profile;
 use App\Http\Response\ResponseFactory;
 use App\Security\UserIdentity;
 use App\Service\FileUploader;
-use App\Service\UuidGenerator;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use User\Model\Username;
 use User\Model\UserRepositoryInterface;
-use User\UseCase\Avatar\Remove\Command;
-use User\UseCase\Avatar\Remove\Handler;
+use User\UseCase\Avatar\Remove\Command as RemoveCommand;
+use User\UseCase\Avatar\Remove\Handler as RemoveHandler;
+use User\UseCase\Online\Command as OnlineCommand;
+use User\UseCase\Online\Handler as OnlineHandler;
 
 /**
  * Class RemoveAvatar
@@ -44,20 +45,23 @@ final class RemoveAvatar
 {
     private FileUploader $uploader;
     private UserRepositoryInterface $users;
-    private Handler $handler;
+    private RemoveHandler $handler;
+    private OnlineHandler $onlineHandler;
     private ResponseFactory $response;
     private Security $security;
 
     public function __construct(
         FileUploader $uploader,
         UserRepositoryInterface $users,
-        Handler $handler,
+        RemoveHandler $handler,
+        OnlineHandler $onlineHandler,
         ResponseFactory $response,
         Security $security
     ) {
         $this->uploader = $uploader;
         $this->users = $users;
         $this->handler = $handler;
+        $this->onlineHandler = $onlineHandler;
         $this->response = $response;
         $this->security = $security;
     }
@@ -68,9 +72,10 @@ final class RemoveAvatar
         $userIdentity = $this->security->getUser();
         $user = $this->users->getByUsername(new Username($userIdentity->getUsername()));
 
-        $this->uploader->remove('avatar/', $user->avatar());
+        $this->uploader->remove('avatar/', $user->avatar() ?? "");
 
-        $this->handler->handle(new Command($user->getUsername()->getValue()));
+        $this->handler->handle(new RemoveCommand($user->getUsername()->getValue()));
+        $this->onlineHandler->handle(new OnlineCommand($userIdentity->getUsername()));
 
         return $this->response->json([], 204);
     }

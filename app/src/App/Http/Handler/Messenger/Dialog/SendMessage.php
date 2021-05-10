@@ -10,14 +10,16 @@ use App\Service\UuidGenerator;
 use App\Service\ValidatorInterface;
 use Messenger\Model\Message\Id;
 use Messenger\Model\Message\MessageRepositoryInterface;
-use Messenger\UseCase\Dialog\SendMessage\Command;
-use Messenger\UseCase\Dialog\SendMessage\Handler;
+use Messenger\UseCase\Dialog\SendMessage\Command as SendCommand;
+use Messenger\UseCase\Dialog\SendMessage\Handler as SendHandler;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
+use User\UseCase\Online\Command as OnlineCommand;
+use User\UseCase\Online\Handler as OnlineHandler;
 
 /**
  * Class SendMessage
@@ -52,7 +54,8 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
  */
 final class SendMessage
 {
-    private Handler $handler;
+    private SendHandler $handler;
+    private OnlineHandler $onlineHandler;
     private UuidGenerator $uuid;
     private MessageRepositoryInterface $messages;
     private ValidatorInterface $validator;
@@ -61,7 +64,8 @@ final class SendMessage
     private Security $security;
 
     public function __construct(
-        Handler $handler,
+        SendHandler $handler,
+        OnlineHandler $onlineHandler,
         UuidGenerator $uuid,
         MessageRepositoryInterface $messages,
         ValidatorInterface $validator,
@@ -70,6 +74,7 @@ final class SendMessage
         Security $security
     ) {
         $this->handler = $handler;
+        $this->onlineHandler = $onlineHandler;
         $this->uuid = $uuid;
         $this->messages = $messages;
         $this->validator = $validator;
@@ -90,7 +95,7 @@ final class SendMessage
 
         /** @var UserIdentity $user */
         $user = $this->security->getUser();
-        $command = new Command($id, $user->getId(), $dialogId, $content);
+        $command = new SendCommand($id, $user->getId(), $dialogId, $content);
 
         try {
             $this->validator->validateObjects([$command]);
@@ -102,6 +107,7 @@ final class SendMessage
         }
 
         $this->handler->handle($command);
+        $this->onlineHandler->handle(new OnlineCommand($user->getUsername()));
 
         $message = $this->messages->getById(new Id($id));
 

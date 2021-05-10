@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use User\Model\Id;
+use User\UseCase\Online\Command;
+use User\UseCase\Online\Handler;
 
 /**
  * Class Dialogs
@@ -61,12 +63,18 @@ final class Dialogs
     public const PER_PAGE = 20;
 
     private DialogFetcherInterface $dialogs;
+    private Handler $handler;
     private ResponseFactory $response;
     private Security $security;
 
-    public function __construct(DialogFetcherInterface $dialogs, ResponseFactory $response, Security $security)
-    {
+    public function __construct(
+        DialogFetcherInterface $dialogs,
+        Handler $handler,
+        ResponseFactory $response,
+        Security $security
+    ) {
         $this->dialogs = $dialogs;
+        $this->handler = $handler;
         $this->response = $response;
         $this->security = $security;
     }
@@ -78,8 +86,6 @@ final class Dialogs
      */
     public function __invoke(Request $request): mixed
     {
-        // TODO: Add author information output (joins)
-
         /** @var UserIdentity $user */
         $user = $this->security->getUser();
 
@@ -87,6 +93,8 @@ final class Dialogs
         if ($page <= 0) {
             throw new IncorrectPage();
         }
+
+        $this->handler->handle(new Command($user->getUsername()));
 
         return $this->response->json([
             'items' => $this->dialog($user->getId(), $page),

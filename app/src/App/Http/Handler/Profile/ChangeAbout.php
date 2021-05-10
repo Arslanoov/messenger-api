@@ -12,8 +12,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use User\Model\Username;
 use User\Model\UserRepositoryInterface;
-use User\UseCase\Change\About\Command;
-use User\UseCase\Change\About\Handler;
+use User\UseCase\Change\About\Command as ChangeCommand;
+use User\UseCase\Change\About\Handler as ChangeHandler;
+use User\UseCase\Online\Command as OnlineCommand;
+use User\UseCase\Online\Handler as OnlineHandler;
 
 /**
  * Class ChangeAvatar
@@ -47,18 +49,21 @@ use User\UseCase\Change\About\Handler;
 final class ChangeAbout
 {
     private UserRepositoryInterface $users;
-    private Handler $handler;
+    private ChangeHandler $handler;
+    private OnlineHandler $onlineHandler;
     private ResponseFactory $response;
     private Security $security;
 
     public function __construct(
         UserRepositoryInterface $users,
-        Handler $handler,
+        ChangeHandler $handler,
+        OnlineHandler $onlineHandler,
         ResponseFactory $response,
         Security $security
     ) {
         $this->users = $users;
         $this->handler = $handler;
+        $this->onlineHandler = $onlineHandler;
         $this->response = $response;
         $this->security = $security;
     }
@@ -74,7 +79,8 @@ final class ChangeAbout
         $userIdentity = $this->security->getUser();
         $user = $this->users->getByUsername(new Username($userIdentity->getUsername()));
 
-        $this->handler->handle(new Command($user->getUsername()->getValue(), $about));
+        $this->handler->handle(new ChangeCommand($user->getUsername()->getValue(), $about));
+        $this->onlineHandler->handle(new OnlineCommand($userIdentity->getUsername()));
 
         return $this->response->json([], 204);
     }

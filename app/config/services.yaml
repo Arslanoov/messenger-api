@@ -85,3 +85,7 @@ services:
 
     Messenger\ReadModel\DialogFetcherInterface:
         class: Messenger\Infrastructure\ReadModel\DoctrineDialogFetcher
+
+    # Message
+    Messenger\ReadModel\MessageFetcherInterface:
+        class: Messenger\Infrastructure\ReadModel\DoctrineMessageFetcher

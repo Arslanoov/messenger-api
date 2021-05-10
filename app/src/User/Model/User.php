@@ -195,9 +195,9 @@ class User implements UserInterface, AggregateRoot
         $this->avatarUrl = null;
     }
 
-    public function addAction(?DateTimeImmutable $date): void
+    public function addAction(DateTimeImmutable $date): void
     {
-        $this->latestActivity = $date ?? new DateTimeImmutable();
+        $this->latestActivity = $date;
     }
 
     /**

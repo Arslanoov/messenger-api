@@ -11,19 +11,18 @@ use Domain\Exception\DomainAssertionException;
 use Messenger\Exception\DialogNotFound;
 use Messenger\Model\Author\AuthorRepositoryInterface;
 use Messenger\Model\Author\Id as AuthorId;
-use Messenger\Model\Dialog\Dialog as DialogModel;
 use Exception\IncorrectPage;
 use Messenger\Model\Dialog\DialogRepositoryInterface;
 use Messenger\Model\Dialog\Id as DialogId;
-use Messenger\Model\Message\Message;
-use Messenger\ReadModel\DialogFetcherInterface;
 use Messenger\ReadModel\MessageFetcherInterface;
-use Messenger\UseCase\Dialog\Read\Command;
-use Messenger\UseCase\Dialog\Read\Handler;
+use Messenger\UseCase\Dialog\Read\Command as ReadCommand;
+use Messenger\UseCase\Dialog\Read\Handler as ReadHandler;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use User\UseCase\Online\Command as OnlineCommand;
+use User\UseCase\Online\Handler as OnlineHandler;
 
 /**
  * Class Dialog
@@ -72,7 +71,8 @@ final class Messages
     private DialogRepositoryInterface $dialogs;
     private AuthorRepositoryInterface $authors;
     private MessageFetcherInterface $messages;
-    private Handler $handler;
+    private ReadHandler $handler;
+    private OnlineHandler $onlineHandler;
     private ResponseFactory $response;
     private Security $security;
 
@@ -80,7 +80,7 @@ final class Messages
         DialogRepositoryInterface $dialogs,
         AuthorRepositoryInterface $authors,
         MessageFetcherInterface $messages,
-        Handler $handler,
+        ReadHandler $handler,
         ResponseFactory $response,
         Security $security
     ) {
@@ -118,8 +118,9 @@ final class Messages
             throw new DialogNotFound();
         }
 
-        // TODO: Fix handler
-        $this->handler->handle(new Command($user->getId(), $dialog->getUuid()->getValue()));
+        // TODO: Test
+        $this->handler->handle(new ReadCommand($user->getId(), $dialog->getUuid()->getValue()));
+        $this->onlineHandler->handle(new OnlineCommand($user->getUsername()));
 
         $messages = $this->messages->getMessages($dialog->getUuid()->getValue(), $page);
 

@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use User\Model\Username;
 use User\Model\UserRepositoryInterface;
+use User\UseCase\Online\Command;
+use User\UseCase\Online\Handler;
 
 /**
  * Class Index
@@ -48,6 +50,7 @@ use User\Model\UserRepositoryInterface;
 final class Index
 {
     private UserRepositoryInterface $users;
+    private Handler $handler;
     private ResponseFactory $response;
     private Security $security;
 
@@ -66,6 +69,8 @@ final class Index
         $user = $this->users->getByUsername(new Username($userIdentity->getUsername()));
 
         $avatarUrl = $user->avatar() ? 'http://localhost:8082/avatar/' . ($user->avatar() ?? '') : null;
+
+        $this->handler->handle(new Command($userIdentity->getUsername()));
 
         return $this->response->json([
             'uuid' => $user->getUuid()->getValue(),

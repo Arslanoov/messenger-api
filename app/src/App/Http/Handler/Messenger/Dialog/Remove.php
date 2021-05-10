@@ -7,14 +7,16 @@ namespace App\Http\Handler\Messenger\Dialog;
 use App\Http\Response\ResponseFactory;
 use App\Security\UserIdentity;
 use App\Service\ValidatorInterface;
-use Messenger\UseCase\Dialog\Remove\Command;
-use Messenger\UseCase\Dialog\Remove\Handler;
+use Messenger\UseCase\Dialog\Remove\Command as RemoveCommand;
+use Messenger\UseCase\Dialog\Remove\Handler as RemoveHandler;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
+use User\UseCase\Online\Command as OnlineCommand;
+use User\UseCase\Online\Handler as OnlineHandler;
 
 /**
  * Class Remove
@@ -48,20 +50,23 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
  */
 final class Remove
 {
-    private Handler $handler;
+    private RemoveHandler $handler;
+    private OnlineHandler $onlineHandler;
     private ValidatorInterface $validator;
     private SerializerInterface $serializer;
     private ResponseFactory $response;
     private Security $security;
 
     public function __construct(
-        Handler $handler,
+        RemoveHandler $handler,
+        OnlineHandler $onlineHandler,
         ValidatorInterface $validator,
         SerializerInterface $serializer,
         ResponseFactory $response,
         Security $security
     ) {
         $this->handler = $handler;
+        $this->onlineHandler = $onlineHandler;
         $this->validator = $validator;
         $this->serializer = $serializer;
         $this->response = $response;
@@ -81,7 +86,7 @@ final class Remove
 
         /** @var UserIdentity $user */
         $user = $this->security->getUser();
-        $command = new Command($user->getId(), $dialogId);
+        $command = new RemoveCommand($user->getId(), $dialogId);
 
         try {
             $this->validator->validateObjects([$command]);
@@ -93,6 +98,7 @@ final class Remove
         }
 
         $this->handler->handle($command);
+        $this->onlineHandler->handle(new OnlineCommand($user->getUsername()));
 
         return $this->response->json([], 204);
     }
