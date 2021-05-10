@@ -54,9 +54,14 @@ final class Index
     private ResponseFactory $response;
     private Security $security;
 
-    public function __construct(UserRepositoryInterface $users, ResponseFactory $response, Security $security)
-    {
+    public function __construct(
+        UserRepositoryInterface $users,
+        Handler $handler,
+        ResponseFactory $response,
+        Security $security
+    ) {
         $this->users = $users;
+        $this->handler = $handler;
         $this->response = $response;
         $this->security = $security;
     }
