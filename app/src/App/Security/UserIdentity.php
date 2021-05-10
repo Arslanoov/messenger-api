@@ -8,13 +8,8 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use User\Model\Status;
 
-/*
- * TODO: Remove suppress after PHPCS PHP8 fully support
- * @see https://github.com/squizlabs/PHP_CodeSniffer/issues/3182
- */
 class UserIdentity implements UserInterface, EquatableInterface
 {
-    // @codingStandardsIgnoreStart
     public function __construct(
         private string $id,
         private string $username,
@@ -22,7 +17,6 @@ class UserIdentity implements UserInterface, EquatableInterface
         private string $status
     ) {
     }
-    // @codingStandardsIgnoreEnd
 
     public function getId(): string
     {
