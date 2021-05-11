@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Messenger\UseCase\Dialog\SendMessage;
 
 use Assert\AssertionFailedException;
+use Doctrine\Common\Collections\Collection;
 use Domain\Exception\DomainAssertionException;
 use Domain\FlusherInterface;
 use Domain\PersisterInterface;
@@ -57,7 +58,9 @@ final class Handler
             new Content($command->content)
         );
 
-        $dialog->getMessages()->add($message);
+        /** @var Collection $messages */
+        $messages = $dialog->getMessages();
+        $messages->add($message);
 
         $this->persister->persist($message);
 

@@ -35,14 +35,14 @@ final class DoctrineMessageFetcher implements MessageFetcherInterface
         $qb = $this
             ->connection
             ->createQueryBuilder()
-            ->select(
+            ->select([
                 'uuid',
                 'author_id',
                 'wrote_at',
                 'content',
                 'edit_status',
                 'read_status'
-            )
+            ])
             ->from('messenger_messages')
             ->where('dialog_id = :dialog_id')
             ->orderBy('wrote_at', 'desc')

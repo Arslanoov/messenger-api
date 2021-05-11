@@ -6,7 +6,9 @@ namespace Messenger\Infrastructure\ReadModel;
 
 use App\Http\Handler\Messenger\Dialog\Dialogs;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\FetchMode;
+use Doctrine\DBAL\ForwardCompatibility\DriverStatement;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -34,7 +36,7 @@ final class DoctrineDialogFetcher implements DialogFetcherInterface
         $qb = $this
             ->connection
             ->createQueryBuilder()
-            ->select(
+            ->select([
                 'd.uuid',
                 'p.uuid as partner_user_uuid',
                 'p.username as partner_user_username',
@@ -43,7 +45,7 @@ final class DoctrineDialogFetcher implements DialogFetcherInterface
                 'p.latest_activity as partner_latest_activity',
                 'd.messages_count',
                 'd.not_read_count'
-            )
+            ])
             ->from('messenger_dialogs', 'd')
             ->where('first_author_id = :author_id')
             ->orWhere('second_author_id = :author_id')
@@ -64,6 +66,12 @@ final class DoctrineDialogFetcher implements DialogFetcherInterface
         return (array) $pagination->getItems();
     }
 
+    /**
+     * @psalm-suppress DeprecatedMethod
+     * @param string $dialogId
+     * @return array|null
+     * @throws Exception
+     */
     public function getLatestMessage(string $dialogId): ?array
     {
         $stmt = $this->connection->createQueryBuilder()
@@ -80,8 +88,10 @@ final class DoctrineDialogFetcher implements DialogFetcherInterface
             ->orderBy('wrote_at', 'desc')
             ->execute();
 
+        /** @var DriverStatement $stmt */
         $stmt->setFetchMode(FetchMode::ASSOCIATIVE);
 
+        /** @var ?array $result */
         $result = $stmt->fetch();
 
         return $result ?: null;

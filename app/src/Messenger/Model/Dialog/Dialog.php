@@ -102,14 +102,18 @@ final class Dialog
 
     public function addMessage(Message $message): void
     {
-        $this->messages->add($message);
+        /** @var Collection $messages */
+        $messages = $this->messages;
+        $messages->add($message);
         $this->notReadCount++;
         $this->messagesCount++;
     }
 
     public function readAllMessages(): void
     {
-        foreach ($this->messages as $message) {
+        /** @var Message[] $messages */
+        $messages = $this->messages;
+        foreach ($messages as $message) {
             $message->read();
         }
         $this->notReadCount = 0;
@@ -117,12 +121,15 @@ final class Dialog
 
     public function removeMessage(Message $message): void
     {
-        foreach ($this->messages as $listMessage) {
+        /** @var Message[] $messages */
+        $messages = $this->messages;
+        foreach ($messages as $listMessage) {
             if ($listMessage->getId()->isEqualTo($message->getId())) {
                 if ($message->isNotRead()) {
                     $this->notReadCount--;
                 }
                 $this->messagesCount--;
+                // TODO: Fix
                 $this->messages->removeElement($message);
                 return;
             }
@@ -154,8 +161,10 @@ final class Dialog
 
     public function getLatestMessage(): ?Message
     {
+        /** @var Collection $messages */
+        $messages = $this->messages;
         /** @var ?Message $message */
-        $message = $this->messages->first();
+        $message = $messages->first();
         return $message ?: null;
     }
 

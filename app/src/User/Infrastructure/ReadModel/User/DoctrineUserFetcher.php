@@ -47,6 +47,7 @@ final class DoctrineUserFetcher implements UserFetcherInterface
 
         /* TODO: Remove deprecated */
 
+        // @psalm-suppress DeprecatedMethod
         $stmt->setFetchMode(FetchMode::CUSTOM_OBJECT, AuthView::class);
 
         /** @var AuthView | null $result */

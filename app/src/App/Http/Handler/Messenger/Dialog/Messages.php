@@ -81,6 +81,7 @@ final class Messages
         AuthorRepositoryInterface $authors,
         MessageFetcherInterface $messages,
         ReadHandler $handler,
+        OnlineHandler $onlineHandler,
         ResponseFactory $response,
         Security $security
     ) {
@@ -88,6 +89,7 @@ final class Messages
         $this->authors = $authors;
         $this->messages = $messages;
         $this->handler = $handler;
+        $this->onlineHandler = $onlineHandler;
         $this->response = $response;
         $this->security = $security;
     }
@@ -103,7 +105,6 @@ final class Messages
      */
     public function __invoke(string $id, Request $request): mixed
     {
-        // TODO: Add author information output
         /** @var UserIdentity $user */
         $user = $this->security->getUser();
 
@@ -118,7 +119,6 @@ final class Messages
             throw new DialogNotFound();
         }
 
-        // TODO: Test
         $this->handler->handle(new ReadCommand($user->getId(), $dialog->getUuid()->getValue()));
         $this->onlineHandler->handle(new OnlineCommand($user->getUsername()));
 

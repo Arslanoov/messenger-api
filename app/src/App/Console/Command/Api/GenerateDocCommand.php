@@ -25,7 +25,7 @@ final class GenerateDocCommand extends Command
         $target = 'public/docs/openapi.json';
 
         $process = new Process([PHP_BINARY, $swagger, $source, '--output', $target]);
-        $process->run(static function (string $type, string $buffer) use ($output) {
+        $process->run(static function (string $_type, string $buffer) use ($output) {
             $output->write($buffer);
         });
 
