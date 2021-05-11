@@ -121,16 +121,18 @@ final class Dialog
 
     public function removeMessage(Message $message): void
     {
+        // TODO: Fix
         /** @var Message[] $messages */
         $messages = $this->messages;
+        /** @var Collection $messagesCollection */
+        $messagesCollection = $this->messages;
         foreach ($messages as $listMessage) {
             if ($listMessage->getId()->isEqualTo($message->getId())) {
                 if ($message->isNotRead()) {
                     $this->notReadCount--;
                 }
                 $this->messagesCount--;
-                // TODO: Fix
-                $this->messages->removeElement($message);
+                $messagesCollection->removeElement($message);
                 return;
             }
         }

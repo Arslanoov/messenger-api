@@ -19,6 +19,5 @@
 
     <issueHandlers>
         <DeprecatedClass errorLevel="suppress" />
-        <PossiblyInvalidMethodCall errorLevel="suppress" />
     </issueHandlers>
 </psalm>
