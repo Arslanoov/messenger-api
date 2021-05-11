@@ -38,7 +38,11 @@ final class FlysystemFileUploader implements FileUploader
         $this->storage->delete($prefix . $name . '.jpg');
         $this->storage->delete($prefix . $name . '.jpeg');
         $this->storage->delete($prefix . $name . '.png');
-        $stream = fopen($file->getRealPath(), 'rb+');
+
+        /** @var string $path */
+        $path = $file->getRealPath();
+        /** @var resource $stream */
+        $stream = fopen($path, 'rb+');
         $this->storage->writeStream($prefix . '/' . $fileName, $stream);
         fclose($stream);
 

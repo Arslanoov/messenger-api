@@ -7,6 +7,7 @@ namespace Messenger\Test\Unit\Message;
 use Messenger\Model\Author\Author;
 use Messenger\Model\Dialog\Dialog;
 use Messenger\Model\Message\Content;
+use Messenger\Model\Message\Id;
 use Messenger\Model\Message\Message;
 use PHPUnit\Framework\TestCase;
 
@@ -20,12 +21,14 @@ class SendTest extends TestCase
     public function testSend(): void
     {
         $message = Message::send(
+            $uuid = Id::generate(),
             $dialog = Dialog::empty(),
             $author = Author::empty(),
             $content = new Content('Some very important message')
         );
 
-        $this->assertNotEmpty($message->getId());
+        $this->assertEquals($uuid, $message->getId());
+        $this->assertEquals($author, $message->getAuthor());
         $this->assertEquals($dialog, $message->getDialog());
         $this->assertTrue($message->isFromDialog($dialog));
         $this->assertNotEmpty($message->getWroteAt());

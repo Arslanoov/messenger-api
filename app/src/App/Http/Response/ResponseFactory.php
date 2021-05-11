@@ -7,7 +7,7 @@ namespace App\Http\Response;
 interface ResponseFactory
 {
     /**
-     * @param array<string, string | int | array> $data
+     * @param array<string, mixed> $data
      * @param int $code
      * @return mixed
      */

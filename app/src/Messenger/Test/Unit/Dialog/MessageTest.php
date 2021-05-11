@@ -7,6 +7,7 @@ namespace Messenger\Test\Unit\Dialog;
 use Messenger\Model\Author\Author;
 use Messenger\Model\Dialog\Dialog;
 use Messenger\Model\Message\Content;
+use Messenger\Model\Message\Id;
 use Messenger\Model\Message\Message;
 use PHPUnit\Framework\TestCase;
 
@@ -20,8 +21,8 @@ class MessageTest extends TestCase
     public function testSuccess(): void
     {
         $dialog = Dialog::new(
-            $firstAuthor = Author::empty(),
-            $secondAuthor = Author::empty()
+            Author::empty(),
+            Author::empty()
         );
 
         $this->assertFalse($dialog->hasNotReadMessages());
@@ -30,9 +31,10 @@ class MessageTest extends TestCase
 
         $dialog->addMessage(
             $message = Message::send(
+                Id::generate(),
                 $dialog,
-                $author = Author::empty(),
-                $content = new Content('Content')
+                Author::empty(),
+                new Content('Content')
             )
         );
 
