@@ -8,7 +8,5 @@ final class UserSignedUp
 {
     public function __construct(
         public string $username
-    )
-    {
-    }
+    ) {}
 }

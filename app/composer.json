@@ -13,6 +13,7 @@
         "doctrine/doctrine-bundle": "^2.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.8",
+        "friendsofsymfony/elastica-bundle": "^5.2",
         "knplabs/knp-paginator-bundle": "^5.4",
         "league/flysystem-bundle": "^2.0",
         "league/flysystem-ftp": "^2.0",

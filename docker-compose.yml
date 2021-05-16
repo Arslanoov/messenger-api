@@ -65,5 +65,20 @@ services:
     volumes:
       - ./storage/public:/app
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./app/var/docker/elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - "9201:9200"
+
 volumes:
   messenger-postgres:
+  elasticsearch:
