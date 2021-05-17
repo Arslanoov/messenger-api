@@ -55,4 +55,32 @@ final class DoctrineUserFetcher implements UserFetcherInterface
 
         return $result ?: null;
     }
+
+    /**
+     * @param string $username
+     * @return array
+     * @throws Exception
+     * @psalm-suppress DeprecatedMethod
+     */
+    public function searchByUsername(string $username): array
+    {
+        /** @var ResultStatement $stmt */
+        $stmt = $this->connection->createQueryBuilder()
+            ->select([
+                'uuid',
+                'username'
+            ])
+            ->from('user_users')
+            ->where('username LIKE :username')
+            ->setParameter('username', '%' . $username . '%')
+            ->execute();
+
+        // @psalm-suppress DeprecatedMethod
+        $stmt->setFetchMode(FetchMode::ASSOCIATIVE);
+
+        /** @var array $results */
+        $results = $stmt->fetchAll();
+
+        return $results ?: [];
+    }
 }
