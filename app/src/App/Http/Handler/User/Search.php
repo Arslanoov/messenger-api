@@ -12,7 +12,7 @@ use User\ReadModel\UserFetcherInterface;
 /**
  * Class Search
  * @package App\Http\Handler\User\Search
- * @Route(path="/users/search/{content}", name="users.search", methods={"GET"})
+ * @Route(path="/users/search/{content}", defaults={"content"=""}, name="users.search", methods={"GET"})
  */
 final class Search
 {
