@@ -10,6 +10,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\FetchMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
+use User\Model\Id;
 use User\Model\User;
 use User\ReadModel\UserFetcherInterface;
 
@@ -51,6 +52,63 @@ final class DoctrineUserFetcher implements UserFetcherInterface
         $stmt->setFetchMode(FetchMode::CUSTOM_OBJECT, AuthView::class);
 
         /** @var AuthView | null $result */
+        $result = $stmt->fetch();
+
+        return $result ?: null;
+    }
+
+    /**
+     * @param string $username
+     * @return array
+     * @throws Exception
+     * @psalm-suppress DeprecatedMethod
+     */
+    public function searchByUsername(string $username): array
+    {
+        /** @var ResultStatement $stmt */
+        $stmt = $this->connection->createQueryBuilder()
+            ->select([
+                'uuid',
+                'username'
+            ])
+            ->from('user_users')
+            ->where('username LIKE :username')
+            ->setParameter('username', '%' . $username . '%')
+            ->execute();
+
+        // @psalm-suppress DeprecatedMethod
+        $stmt->setFetchMode(FetchMode::ASSOCIATIVE);
+
+        /** @var array $results */
+        $results = $stmt->fetchAll();
+
+        return $results ?: [];
+    }
+
+    /**
+     * @param Id $uuid
+     * @return array | null
+     * @throws Exception
+     * @psalm-suppress DeprecatedMethod
+     */
+    public function searchOneByUuid(Id $uuid): ?array
+    {
+        /** @var ResultStatement $stmt */
+        $stmt = $this->connection->createQueryBuilder()
+            ->select([
+                'uuid',
+                'username',
+                'avatar_url as avatar'
+            ])
+            ->from('user_users')
+            ->where('uuid = :uuid')
+            ->setParameter('uuid', $uuid->getValue())
+            ->execute();
+
+        // @psalm-suppress DeprecatedMethod
+        $stmt->setFetchMode(FetchMode::ASSOCIATIVE);
+
+        /** @var array $result */
         $result = $stmt->fetch();
 
         return $result ?: null;

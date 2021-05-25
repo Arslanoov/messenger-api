@@ -64,6 +64,5 @@ services:
       FTP_USER_HOME: /app
     volumes:
       - ./storage/public:/app
-
 volumes:
   messenger-postgres:
