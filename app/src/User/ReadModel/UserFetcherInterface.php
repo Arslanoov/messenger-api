@@ -11,4 +11,6 @@ interface UserFetcherInterface
     public function findForAuthByUsername(string $username): ?AuthView;
 
     public function searchByUsername(string $username): array;
+
+    public function searchOneByUuid(string $uuid): ?array;
 }

@@ -83,4 +83,32 @@ final class DoctrineUserFetcher implements UserFetcherInterface
 
         return $results ?: [];
     }
+
+    /**
+     * @param string $uuid
+     * @return array | null
+     * @throws Exception
+     * @psalm-suppress DeprecatedMethod
+     */
+    public function searchOneByUuid(string $uuid): ?array
+    {
+        /** @var ResultStatement $stmt */
+        $stmt = $this->connection->createQueryBuilder()
+            ->select([
+                'uuid',
+                'username'
+            ])
+            ->from('user_users')
+            ->where('uuid = :uuid')
+            ->setParameter('uuid', $uuid)
+            ->execute();
+
+        // @psalm-suppress DeprecatedMethod
+        $stmt->setFetchMode(FetchMode::ASSOCIATIVE);
+
+        /** @var array $result */
+        $result = $stmt->fetch();
+
+        return $result ?: null;
+    }
 }
