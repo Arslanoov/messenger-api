@@ -10,6 +10,6 @@ final class DomainAssertionException extends DomainException
 {
     public function __construct(string $message = '', int $code = 419, Throwable $previous = null)
     {
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message, 419, $previous);
     }
 }

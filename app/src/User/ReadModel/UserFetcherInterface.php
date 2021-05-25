@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace User\ReadModel;
 
 use User\Infrastructure\ReadModel\User\AuthView;
+use User\Model\Id;
 
 interface UserFetcherInterface
 {
@@ -12,5 +13,5 @@ interface UserFetcherInterface
 
     public function searchByUsername(string $username): array;
 
-    public function searchOneByUuid(string $uuid): ?array;
+    public function searchOneByUuid(Id $uuid): ?array;
 }

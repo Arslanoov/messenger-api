@@ -10,6 +10,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\FetchMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
+use User\Model\Id;
 use User\Model\User;
 use User\ReadModel\UserFetcherInterface;
 
@@ -85,12 +86,12 @@ final class DoctrineUserFetcher implements UserFetcherInterface
     }
 
     /**
-     * @param string $uuid
+     * @param Id $uuid
      * @return array | null
      * @throws Exception
      * @psalm-suppress DeprecatedMethod
      */
-    public function searchOneByUuid(string $uuid): ?array
+    public function searchOneByUuid(Id $uuid): ?array
     {
         /** @var ResultStatement $stmt */
         $stmt = $this->connection->createQueryBuilder()
@@ -101,7 +102,7 @@ final class DoctrineUserFetcher implements UserFetcherInterface
             ])
             ->from('user_users')
             ->where('uuid = :uuid')
-            ->setParameter('uuid', $uuid)
+            ->setParameter('uuid', $uuid->getValue())
             ->execute();
 
         // @psalm-suppress DeprecatedMethod

@@ -8,6 +8,7 @@ use App\Exception\UserNotFound;
 use App\Http\Response\ResponseFactory;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
+use User\Model\Id;
 use User\ReadModel\UserFetcherInterface;
 
 /**
@@ -28,7 +29,7 @@ final class Find
 
     public function __invoke(string $uuid): mixed
     {
-        $user = $this->users->searchOneByUuid($uuid);
+        $user = $this->users->searchOneByUuid(new Id($uuid));
         if (!$user) {
             throw new UserNotFound();
         }
