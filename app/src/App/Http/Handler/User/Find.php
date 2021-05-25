@@ -34,6 +34,9 @@ final class Find
             throw new UserNotFound();
         }
 
+        // TODO: Env
+        $user['avatar'] = $user['avatar'] ? 'http://localhost:8082/avatar/' . ($user['avatar'] ?? '') : null;
+
         return $this->response->json($user);
     }
 }
