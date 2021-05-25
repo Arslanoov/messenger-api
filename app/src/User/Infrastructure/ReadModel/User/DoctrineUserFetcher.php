@@ -96,7 +96,8 @@ final class DoctrineUserFetcher implements UserFetcherInterface
         $stmt = $this->connection->createQueryBuilder()
             ->select([
                 'uuid',
-                'username'
+                'username',
+                'avatar_url as avatar'
             ])
             ->from('user_users')
             ->where('uuid = :uuid')
