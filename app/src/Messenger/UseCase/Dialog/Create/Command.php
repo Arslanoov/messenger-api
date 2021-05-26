@@ -13,6 +13,11 @@ final class Command
          * @var string
          * @Assert\NotBlank()
          */
+        public string $dialogId,
+        /**
+         * @var string
+         * @Assert\NotBlank()
+         */
         public string $firstAuthorId,
         /**
          * @var string

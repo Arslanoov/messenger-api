@@ -8,9 +8,10 @@ use Domain\FlusherInterface;
 use Domain\PersisterInterface;
 use Messenger\Exception\DialogAlreadyExists;
 use Messenger\Model\Author\AuthorRepositoryInterface;
-use Messenger\Model\Author\Id;
+use Messenger\Model\Author\Id as AuthorId;
 use Messenger\Model\Dialog\Dialog;
 use Messenger\Model\Dialog\DialogRepositoryInterface;
+use Messenger\Model\Dialog\Id as DialogId;
 
 final class Handler
 {
@@ -33,14 +34,14 @@ final class Handler
 
     public function handle(Command $command): void
     {
-        $firstAuthor = $this->authors->getById(new Id($command->firstAuthorId));
-        $secondAuthor = $this->authors->getById(new Id($command->secondAuthorId));
+        $firstAuthor = $this->authors->getById(new AuthorId($command->firstAuthorId));
+        $secondAuthor = $this->authors->getById(new AuthorId($command->secondAuthorId));
 
         if ($this->dialogs->hasDialogByMembers($firstAuthor, $secondAuthor)) {
             throw new DialogAlreadyExists();
         }
 
-        $dialog = Dialog::new($firstAuthor, $secondAuthor);
+        $dialog = Dialog::newWithId(new DialogId($command->dialogId), $firstAuthor, $secondAuthor);
 
         $this->persister->persist($dialog);
 

@@ -6,7 +6,10 @@ namespace App\Http\Handler\Messenger\Dialog;
 
 use App\Http\Response\ResponseFactory;
 use App\Security\UserIdentity;
+use App\Service\UuidGenerator;
 use App\Service\ValidatorInterface;
+use Messenger\Model\Dialog\DialogRepositoryInterface;
+use Messenger\Model\Dialog\Id;
 use Messenger\UseCase\Dialog\Create\Command as CreateCommand;
 use Messenger\UseCase\Dialog\Create\Handler as CreateHandler;
 use OpenApi\Annotations as OA;
@@ -54,6 +57,8 @@ final class Create
     private OnlineHandler $onlineHandler;
     private ValidatorInterface $validator;
     private SerializerInterface $serializer;
+    private DialogRepositoryInterface $dialogs;
+    private UuidGenerator $uuid;
     private ResponseFactory $response;
     private Security $security;
 
@@ -62,6 +67,8 @@ final class Create
         OnlineHandler $onlineHandler,
         ValidatorInterface $validator,
         SerializerInterface $serializer,
+        DialogRepositoryInterface $dialogs,
+        UuidGenerator $uuid,
         ResponseFactory $response,
         Security $security
     ) {
@@ -69,6 +76,8 @@ final class Create
         $this->onlineHandler = $onlineHandler;
         $this->validator = $validator;
         $this->serializer = $serializer;
+        $this->dialogs = $dialogs;
+        $this->uuid = $uuid;
         $this->response = $response;
         $this->security = $security;
     }
@@ -86,7 +95,8 @@ final class Create
 
         /** @var UserIdentity $user */
         $user = $this->security->getUser();
-        $command = new CreateCommand($user->getId(), $withAuthor);
+        $dialogId = $this->uuid->uuid4();
+        $command = new CreateCommand($dialogId, $user->getId(), $withAuthor);
 
         try {
             $this->validator->validateObjects([$command]);
@@ -100,6 +110,10 @@ final class Create
         $this->handler->handle($command);
         $this->onlineHandler->handle(new OnlineCommand($user->getUsername()));
 
-        return $this->response->json([], 204);
+        $dialog = $this->dialogs->getById(new Id($dialogId));
+
+        return $this->response->json([
+            'item' => $dialog->getUuid()
+        ], 201);
     }
 }

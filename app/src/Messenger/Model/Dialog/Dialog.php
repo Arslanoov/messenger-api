@@ -71,6 +71,18 @@ final class Dialog
         $this->notReadCount = $notReadCount;
     }
 
+    // TODO: Add tests
+    public static function newWithId(Id $id, Author $firstAuthor, Author $secondAuthor): self
+    {
+        return new self(
+            $id,
+            $firstAuthor,
+            $secondAuthor,
+            0,
+            0
+        );
+    }
+
     public static function new(Author $firstAuthor, Author $secondAuthor): self
     {
         return new self(
