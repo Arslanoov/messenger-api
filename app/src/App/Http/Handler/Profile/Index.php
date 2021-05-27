@@ -73,7 +73,7 @@ final class Index
 
         $user = $this->users->getByUsername(new Username($userIdentity->getUsername()));
 
-        $avatarUrl = $user->avatar() ? 'http://localhost:8082/avatar/' . ($user->avatar() ?? '') : null;
+        $avatarUrl = $user->avatar() ? ($user->avatar() ?? '') : null;
 
         $this->handler->handle(new Command($userIdentity->getUsername()));
 
@@ -84,7 +84,6 @@ final class Index
             // TODO: DI Date interval
             'isOnline' => $user->isOnline(new DateTimeImmutable(), new DateInterval("PT15M")),
             'messagesCount' => $user->getMessagesCount(),
-            // TODO: Add env
             'avatar' => $avatarUrl
         ]);
     }

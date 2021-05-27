@@ -82,10 +82,6 @@ final class Create
         $this->security = $security;
     }
 
-    /**
-     * @param Request $request
-     * @return mixed
-     */
     public function __invoke(Request $request): mixed
     {
         $content = (string) $request->getContent();
@@ -113,7 +109,7 @@ final class Create
         $dialog = $this->dialogs->getById(new Id($dialogId));
 
         return $this->response->json([
-            'item' => $dialog->getUuid()
+            'uuid' => $dialog->getUuid()->getValue()
         ], 201);
     }
 }
