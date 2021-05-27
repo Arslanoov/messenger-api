@@ -47,11 +47,11 @@ final class DoctrineDialogRepository implements DialogRepositoryInterface
     public function hasDialogByMembers(Author $firstMember, Author $secondMember): bool
     {
         return $this->repository->createQueryBuilder('d')
-                ->select('COUNT(d.id)')
-                ->where('d.first_author_id = :first_author_id AND d.second_author_id = :second_author_id')
-                ->orWhere('d.first_author_id = :second_author_id AND d.second_author_id = :first_author_id')
-                ->setParameter(':first_author_id', $firstMember->getUuid()->getValue())
-                ->setParameter(':second_author_id', $secondMember->getUuid()->getValue())
+                ->select('COUNT(d.uuid)')
+                ->where('d.firstAuthor = :firstAuthor AND d.secondAuthor = :secondAuthor')
+                ->orWhere('d.firstAuthor = :secondAuthor AND d.secondAuthor = :firstAuthor')
+                ->setParameter(':firstAuthor', $firstMember->getUuid()->getValue())
+                ->setParameter(':secondAuthor', $secondMember->getUuid()->getValue())
                 ->getQuery()->getSingleScalarResult() > 0;
     }
 }

@@ -8,8 +8,9 @@ use App\Http\Response\ResponseFactory;
 use App\Security\UserIdentity;
 use App\Service\UuidGenerator;
 use App\Service\ValidatorInterface;
-use Messenger\Model\Dialog\DialogRepositoryInterface;
-use Messenger\Model\Dialog\Id;
+use DateInterval;
+use DateTimeImmutable;
+use Messenger\ReadModel\DialogFetcherInterface;
 use Messenger\UseCase\Dialog\Create\Command as CreateCommand;
 use Messenger\UseCase\Dialog\Create\Handler as CreateHandler;
 use OpenApi\Annotations as OA;
@@ -57,8 +58,8 @@ final class Create
     private OnlineHandler $onlineHandler;
     private ValidatorInterface $validator;
     private SerializerInterface $serializer;
-    private DialogRepositoryInterface $dialogs;
     private UuidGenerator $uuid;
+    private DialogFetcherInterface $dialogs;
     private ResponseFactory $response;
     private Security $security;
 
@@ -67,8 +68,8 @@ final class Create
         OnlineHandler $onlineHandler,
         ValidatorInterface $validator,
         SerializerInterface $serializer,
-        DialogRepositoryInterface $dialogs,
         UuidGenerator $uuid,
+        DialogFetcherInterface $dialogs,
         ResponseFactory $response,
         Security $security
     ) {
@@ -76,16 +77,12 @@ final class Create
         $this->onlineHandler = $onlineHandler;
         $this->validator = $validator;
         $this->serializer = $serializer;
-        $this->dialogs = $dialogs;
         $this->uuid = $uuid;
+        $this->dialogs = $dialogs;
         $this->response = $response;
         $this->security = $security;
     }
 
-    /**
-     * @param Request $request
-     * @return mixed
-     */
     public function __invoke(Request $request): mixed
     {
         $content = (string) $request->getContent();
@@ -110,10 +107,39 @@ final class Create
         $this->handler->handle($command);
         $this->onlineHandler->handle(new OnlineCommand($user->getUsername()));
 
-        $dialog = $this->dialogs->getById(new Id($dialogId));
+        $dialog = $this->dialogs->findDialog($dialogId, $user->getId());
+        $latestMessage = $this->dialogs->getLatestMessage((string) $dialog['uuid']);
+        /* TODO: Extract */
+        if ($latestMessage && mb_strlen((string) $latestMessage['content']) > 25) {
+            $latestMessage['content'] = mb_substr((string) $latestMessage['content'], 0, 25) . '...';
+        }
+
+        // TODO: Move form controller
+        if ($latestMessage) {
+            if ($user->getId() === $latestMessage['author_id']) {
+                $dialog['sentByMe'] = [
+                    'isSent' => true,
+                    'isRead' => $latestMessage['read_status']
+                ];
+            } else {
+                $dialog['sentByPartner'] = [
+                    'isRead' => $latestMessage['read_status']
+                ];
+            }
+        }
 
         return $this->response->json([
-            'item' => $dialog->getUuid()
+            'uuid' => $dialog['uuid'],
+            'partner' => [
+                'uuid' => $dialog['partner_user_uuid'],
+                'username' => $dialog['partner_user_username'],
+                'avatarUrl' => $dialog['partner_user_avatar_url'],
+                'aboutMe' => $dialog['partner_user_about_me'],
+                'isOnline' => new DateTimeImmutable((string) $dialog['partner_latest_activity']) >
+                    (new DateTimeImmutable())->add(new DateInterval("PT15M")),
+            ],
+            'messagesCount' => $dialog['messages_count'],
+            'latestMessage' => $latestMessage
         ], 201);
     }
 }
