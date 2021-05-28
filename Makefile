@@ -62,3 +62,7 @@ test-functional:
 test-coverage:
 	docker-compose run --rm messenger-php-cli chmod -R 755 var/cache
 	docker-compose run --rm messenger-php-cli composer test-coverage
+
+websocket-key:
+	rm -f ./websocket/public.key
+	cp ./app/var/oauth/public.key ./websocket/public.key
