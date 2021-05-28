@@ -64,5 +64,15 @@ services:
       FTP_USER_HOME: /app
     volumes:
       - ./storage/public:/app
+
+  websocket:
+    image: node:10.11-jessie
+    volumes:
+      - ./websocket:/app/websocket
+    ports:
+      - "8083:8000"
+    working_dir: /app/websocket
+    tty: true
+
 volumes:
   messenger-postgres:
