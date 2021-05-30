@@ -114,7 +114,7 @@ final class SendMessage
         return $this->response->json([
             'uuid' => $message->getId()->getValue(),
             'isMine' => $message->getAuthor()->getUuid()->getValue() === $user->getId(),
-            'wroteAt' => $message->getWroteAt()->format('d.m.Y H:i:s'),
+            'wroteAt' => ((array) $message->getWroteAt())['date'],
             'content' => $message->getContent()->getValue(),
             'isEdited' => $message->getEditStatus()->isEdited()
         ], 201);

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Handler\User;
 
+use App\Exception\StartDialogWithYourself;
 use App\Exception\UserNotFound;
 use App\Http\Response\ResponseFactory;
 use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use User\Model\Id;
+use User\Model\UserInterface;
 use User\ReadModel\UserFetcherInterface;
 
 /**
@@ -32,10 +34,14 @@ final class Find
 
     public function __invoke(string $uuid): mixed
     {
+        /** @var UserInterface $currentUser */
         $currentUser = $this->security->getUser();
         $user = $this->users->searchOneByUuid(new Id($uuid));
-        if (!$user || $user['username'] === $currentUser->getUsername()) {
+        if (!$user) {
             throw new UserNotFound();
+        }
+        if ($user['username'] === $currentUser->getUsername()) {
+            throw new StartDialogWithYourself();
         }
 
         return $this->response->json($user);
