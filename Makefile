@@ -63,6 +63,15 @@ test-coverage:
 	docker-compose run --rm messenger-php-cli chmod -R 755 var/cache
 	docker-compose run --rm messenger-php-cli composer test-coverage
 
+# Websocket
+websocket-init: websocket-key websocket-install websocket-start
+
 websocket-key:
 	rm -f ./websocket/public.key
 	cp ./app/var/oauth/public.key ./websocket/public.key
+
+websocket-install:
+	docker-compose exec websocket npm install
+
+websocket-start:
+	docker-compose exec websocket npm run start
