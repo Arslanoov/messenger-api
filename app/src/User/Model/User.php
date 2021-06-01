@@ -68,7 +68,7 @@ class User implements UserInterface, AggregateRoot
     private ?string $avatarUrl;
     /**
      * @var Role
-     * @ORM\Column(type="user_user_role", name="role", length=16)
+     * @ORM\Column(type="user_user_role", name="role", options={"default": "User"}, length=16)
      */
     private Role $role;
 
