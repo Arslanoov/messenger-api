@@ -7,6 +7,7 @@ namespace User\Test\Builder;
 use Assert\AssertionFailedException;
 use DateTimeImmutable;
 use User\Model\Id;
+use User\Model\Role;
 use User\Model\Status;
 use User\Model\User;
 use User\Model\Username;
@@ -20,6 +21,7 @@ final class UserBuilder
     private ?string $aboutMe;
     private ?string $avatarUrl;
     private DateTimeImmutable $latestActivity;
+    private Role $role;
     private int $messagesCount;
 
     /**
@@ -34,6 +36,7 @@ final class UserBuilder
         $this->status = Status::draft();
         $this->aboutMe = 'About me';
         $this->latestActivity = new DateTimeImmutable();
+        $this->role = Role::user();
         $this->messagesCount = 0;
         $this->avatarUrl = 'url';
     }
@@ -63,6 +66,13 @@ final class UserBuilder
     {
         $builder = clone $this;
         $builder->status = $status;
+        return $builder;
+    }
+
+    public function withRole(Role $role): self
+    {
+        $builder = clone $this;
+        $builder->role = $role;
         return $builder;
     }
 
@@ -112,6 +122,7 @@ final class UserBuilder
             $this->hash,
             $this->status,
             $this->latestActivity,
+            $this->role,
             $this->messagesCount,
             $this->aboutMe,
             $this->avatarUrl
