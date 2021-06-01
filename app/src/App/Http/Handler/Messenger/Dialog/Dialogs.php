@@ -60,7 +60,7 @@ use User\UseCase\Online\Handler;
  */
 final class Dialogs
 {
-    public const PER_PAGE = 20;
+    public const PER_PAGE = 4;
 
     private DialogFetcherInterface $dialogs;
     private Handler $handler;
