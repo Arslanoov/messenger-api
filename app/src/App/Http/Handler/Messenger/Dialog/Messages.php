@@ -66,7 +66,7 @@ use User\UseCase\Online\Handler as OnlineHandler;
  */
 final class Messages
 {
-    public const PER_PAGE = 25;
+    public const PER_PAGE = 20;
 
     private DialogRepositoryInterface $dialogs;
     private AuthorRepositoryInterface $authors;
@@ -125,14 +125,15 @@ final class Messages
         $messages = $this->messages->getMessages($dialog->getUuid()->getValue(), $page);
 
         return $this->response->json([
-            'items' => array_map(function (array $message) use ($author) {
+            'items' => array_reverse(array_map(function (array $message) use ($author) {
                 return [
                     'uuid' => $message['uuid'],
                     'isMine' => $message['author_id'] === $author->getUuid()->getValue(),
                     'wroteAt' => $message['wrote_at'],
                     'content' => $message['content']
                 ];
-            }, $messages)
+            }, $messages)),
+            'perPage' => self::PER_PAGE
         ]);
     }
 }

@@ -31,6 +31,6 @@ final class GenerateDocCommand extends Command
 
         $output->writeln('<info>Done!</info>');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

@@ -45,7 +45,7 @@ final class DoctrineMessageFetcher implements MessageFetcherInterface
             ])
             ->from('messenger_messages')
             ->where('dialog_id = :dialog_id')
-            ->orderBy('wrote_at', 'asc')
+            ->orderBy('wrote_at', 'desc')
             ->setParameter(':dialog_id', $dialogId);
 
         $pagination = $this->paginator->paginate($qb, $page, Messages::PER_PAGE);

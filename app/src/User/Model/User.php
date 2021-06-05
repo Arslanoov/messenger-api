@@ -66,6 +66,11 @@ class User implements UserInterface, AggregateRoot
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $avatarUrl;
+    /**
+     * @var Role
+     * @ORM\Column(type="user_user_role", name="role", options={"default": "User"}, length=16)
+     */
+    private Role $role;
 
     public function __construct(
         Id $uuid,
@@ -73,6 +78,7 @@ class User implements UserInterface, AggregateRoot
         string $hash,
         Status $status,
         DateTimeImmutable $latestActivity,
+        Role $role,
         int $messagesCount = 0,
         ?string $aboutMe = null,
         ?string $avatarUrl = null
@@ -82,6 +88,7 @@ class User implements UserInterface, AggregateRoot
         $this->hash = $hash;
         $this->status = $status;
         $this->latestActivity = $latestActivity;
+        $this->role = $role;
         $this->messagesCount = $messagesCount;
         $this->aboutMe = $aboutMe;
         $this->avatarUrl = $avatarUrl;
@@ -100,10 +107,31 @@ class User implements UserInterface, AggregateRoot
             new Username($username),
             $hash,
             Status::draft(),
-            new DateTimeImmutable()
+            new DateTimeImmutable(),
+            Role::user()
         );
 
         $user->recordEvent(new UserSignedUp($username));
+
+        return $user;
+    }
+
+    /**
+     * @param string $username
+     * @param string $hash
+     * @return self
+     * @throws AssertionFailedException
+     */
+    public static function admin(string $username, string $hash): self
+    {
+        $user = new self(
+            Id::generate(),
+            new Username($username),
+            $hash,
+            Status::active(),
+            new DateTimeImmutable(),
+            Role::admin()
+        );
 
         return $user;
     }
@@ -122,7 +150,8 @@ class User implements UserInterface, AggregateRoot
             new Username($username),
             $hash,
             Status::active(),
-            new DateTimeImmutable()
+            new DateTimeImmutable(),
+            Role::user()
         );
 
         $user->recordEvent(new UserSignedUp($username));
@@ -153,6 +182,11 @@ class User implements UserInterface, AggregateRoot
     public function aboutMe(): ?string
     {
         return $this->aboutMe;
+    }
+
+    public function role(): Role
+    {
+        return $this->role;
     }
 
     public function getLatestActivity(): DateTimeImmutable
@@ -190,6 +224,21 @@ class User implements UserInterface, AggregateRoot
         $this->aboutMe = $info;
     }
 
+    public function changeRole(Role $role): void
+    {
+        $this->role = $role;
+    }
+
+    public function makeAdmin(): void
+    {
+        $this->role = Role::admin();
+    }
+
+    public function fire(): void
+    {
+        $this->role = Role::user();
+    }
+
     public function removeAvatar(): void
     {
         $this->avatarUrl = null;
@@ -220,5 +269,15 @@ class User implements UserInterface, AggregateRoot
     public function isDraft(): bool
     {
         return $this->getStatus()->isDraft();
+    }
+
+    public function isUser(): bool
+    {
+        return $this->role->isUser();
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role->isAdmin();
     }
 }

@@ -8,6 +8,7 @@ doctrine:
             user_user_id: 'User\Infrastructure\Doctrine\Types\IdType'
             user_user_username: 'User\Infrastructure\Doctrine\Types\UsernameType'
             user_user_status: 'User\Infrastructure\Doctrine\Types\StatusType'
+            user_user_role: 'User\Infrastructure\Doctrine\Types\RoleType'
 
             messenger_author_id: 'Messenger\Infrastructure\Doctrine\Types\Author\IdType'
 

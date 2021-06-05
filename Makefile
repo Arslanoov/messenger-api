@@ -35,6 +35,8 @@ clear-cache:
 
 generate-doc:
 	docker-compose run --rm messenger-php-cli php bin/console api:doc:generate
+admin:
+	docker-compose run --rm messenger-php-cli php bin/console user:admin
 
 lint:
 	docker-compose run --rm messenger-php-cli composer lint
