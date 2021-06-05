@@ -132,7 +132,8 @@ final class Messages
                     'wroteAt' => $message['wrote_at'],
                     'content' => $message['content']
                 ];
-            }, $messages))
+            }, $messages)),
+            'perPage' => self::PER_PAGE
         ]);
     }
 }
