@@ -6,6 +6,7 @@ namespace User\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
 use User\Exception\AlreadyActivated;
+use User\Exception\AlreadyDeactivated;
 use User\Model\Status;
 use User\Test\Builder\UserBuilder;
 
@@ -51,5 +52,34 @@ class ActivateTest extends TestCase
         $this->expectExceptionCode(419);
 
         $user->activate();
+    }
+
+    public function testDeactivateSuccess(): void
+    {
+        $user = $this->builder->active()->build();
+
+        $this->assertEquals(Status::active(), $user->getStatus());
+        $this->assertTrue($user->getStatus()->isActive());
+        $this->assertFalse($user->getStatus()->isDraft());
+
+        $user->deactivate();
+
+        $this->assertEquals(Status::draft(), $user->getStatus());
+        $this->assertFalse($user->getStatus()->isActive());
+        $this->assertTrue($user->getStatus()->isDraft());
+    }
+
+    public function testDeactivateAlreadyDraft(): void
+    {
+        $user = $this->builder->draft()->build();
+
+        $this->assertTrue($user->getStatus()->isDraft());
+        $this->assertFalse($user->getStatus()->isActive());
+
+        $this->expectException(AlreadyDeactivated::class);
+        $this->expectExceptionMessage('Already deactivated');
+        $this->expectExceptionCode(419);
+
+        $user->deactivate();
     }
 }

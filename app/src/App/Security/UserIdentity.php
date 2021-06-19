@@ -14,7 +14,8 @@ class UserIdentity implements UserInterface, EquatableInterface
         private string $id,
         private string $username,
         private string $password,
-        private string $status
+        private string $status,
+        private string $role
     ) {
     }
 
@@ -33,6 +34,11 @@ class UserIdentity implements UserInterface, EquatableInterface
         return $this->password;
     }
 
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
     public function isDraft(): bool
     {
         return $this->status === Status::DRAFT;
@@ -40,7 +46,7 @@ class UserIdentity implements UserInterface, EquatableInterface
 
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        return ['ROLE_USER', $this->role];
     }
 
     public function getSalt(): ?string
@@ -62,6 +68,7 @@ class UserIdentity implements UserInterface, EquatableInterface
             $this->id === $user->id and
             $this->username === $user->username and
             $this->password === $user->password and
+            $this->role === $user->role and
             $this->status === $user->status
         ;
     }

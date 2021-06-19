@@ -84,7 +84,8 @@ final class Index
             // TODO: DI Date interval
             'isOnline' => $user->isOnline(new DateTimeImmutable(), new DateInterval("PT15M")),
             'messagesCount' => $user->getMessagesCount(),
-            'avatar' => $avatarUrl
+            'avatar' => $avatarUrl,
+            'role' => $user->role()->getValue()
         ]);
     }
 }

@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace User\Infrastructure\ReadModel\User;
 
+use App\Http\Handler\Admin\Users\Index;
+use App\Http\Handler\Messenger\Dialog\Dialogs;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\ResultStatement;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\FetchMode;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use User\Model\Id;
 use User\Model\User;
 use User\ReadModel\UserFetcherInterface;
@@ -17,11 +20,16 @@ use User\ReadModel\UserFetcherInterface;
 final class DoctrineUserFetcher implements UserFetcherInterface
 {
     private Connection $connection;
+    private PaginatorInterface $paginator;
     private ObjectRepository $repository;
 
-    public function __construct(Connection $connection, EntityManagerInterface $entityManger)
-    {
+    public function __construct(
+        Connection $connection,
+        PaginatorInterface $paginator,
+        EntityManagerInterface $entityManger
+    ) {
         $this->connection = $connection;
+        $this->paginator = $paginator;
         $this->repository = $entityManger->getRepository(User::class);
     }
 
@@ -39,7 +47,8 @@ final class DoctrineUserFetcher implements UserFetcherInterface
                 'uuid',
                 'username',
                 'hash',
-                'status'
+                'status',
+                'role'
             ])
             ->from('user_users')
             ->where('username = :username')
@@ -112,5 +121,30 @@ final class DoctrineUserFetcher implements UserFetcherInterface
         $result = $stmt->fetch();
 
         return $result ?: null;
+    }
+
+    /**
+     * @param int $page
+     * @return array
+     */
+    public function findAll(int $page = 1): array
+    {
+        /** @var ResultStatement $stmt */
+        $qb = $this->connection->createQueryBuilder()
+            ->select([
+                'uuid',
+                'username',
+                'hash',
+                'status',
+                'role'
+            ])
+            ->from('user_users');
+
+        $pagination = $this->paginator->paginate($qb, $page, Index::PER_PAGE);
+
+        return [
+            'items' => (array) $pagination->getItems(),
+            'totalCount' =>$pagination->getTotalItemCount()
+        ];
     }
 }

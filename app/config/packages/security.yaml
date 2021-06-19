@@ -20,4 +20,4 @@ security:
 
     access_control:
         - { path: ^/auth/sign-up, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/(messenger|profile|user), roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/(messenger|profile|user|admin), roles: IS_AUTHENTICATED_FULLY }
