@@ -61,7 +61,8 @@ class UserProvider implements UserProviderInterface
             $user->uuid,
             $user->username ?: $username,
             $user->hash ?: '',
-            $user->status
+            $user->status,
+            $user->role,
         );
     }
 }

@@ -14,4 +14,6 @@ interface UserFetcherInterface
     public function searchByUsername(string $username): array;
 
     public function searchOneByUuid(Id $uuid): ?array;
+
+    public function findAll(int $page = 1): array;
 }

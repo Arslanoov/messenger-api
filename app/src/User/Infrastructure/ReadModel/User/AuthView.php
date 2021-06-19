@@ -10,4 +10,5 @@ final class AuthView
     public string $username = "";
     public string $hash = "";
     public string $status = "";
+    public string $role = "";
 }
