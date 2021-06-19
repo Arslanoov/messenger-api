@@ -10,6 +10,13 @@ interface UserRepositoryInterface
 {
     /**
      * @throws NotFound
+     * @param Id $id
+     * @return User
+     */
+    public function getById(Id $id): User;
+
+    /**
+     * @throws NotFound
      * @param Username $username
      * @return User
      */

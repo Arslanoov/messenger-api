@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Domain\AggregateRoot;
 use Domain\EventsTrait;
 use User\Exception\AlreadyActivated;
+use User\Exception\AlreadyDeactivated;
 use User\Model\Event\UserSignedUp;
 
 /**
@@ -247,6 +248,18 @@ class User implements UserInterface, AggregateRoot
     public function addAction(DateTimeImmutable $date): void
     {
         $this->latestActivity = $date;
+    }
+
+    /**
+     * @throws AlreadyDeactivated
+     */
+    public function deactivate(): void
+    {
+        if ($this->status->isDraft()) {
+            throw new AlreadyDeactivated();
+        }
+
+        $this->status = Status::draft();
     }
 
     /**
