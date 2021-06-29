@@ -25,12 +25,6 @@ use User\UseCase\Online\Handler;
  * @OA\Get(
  *     path="/messenger/dialogs",
  *     tags={"Messenger dialogs list"},
- *     @OA\Parameter(
- *         name="page",
- *         in="path",
- *         required=false,
- *         @OA\Schema(type="string")
- *     ),
  *     @OA\Response(
  *         response=200,
  *         description="Success response",
@@ -42,8 +36,7 @@ use User\UseCase\Online\Handler;
  *                 @OA\Property(property="second_author_id", type="string"),
  *                 @OA\Property(property="messages_count", type="integer"),
  *                 @OA\Property(property="not_read_count", type="integer")
- *             )),
- *             @OA\Property(property="perPage", type="integer")
+ *             ))
  *         )
  *     ),
  *     @OA\Response(
@@ -60,8 +53,6 @@ use User\UseCase\Online\Handler;
  */
 final class Dialogs
 {
-    public const PER_PAGE = 10;
-
     private DialogFetcherInterface $dialogs;
     private Handler $handler;
     private ResponseFactory $response;
@@ -82,29 +73,22 @@ final class Dialogs
     /**
      * @param Request $request
      * @return mixed
-     * @throws IncorrectPage
      */
     public function __invoke(Request $request): mixed
     {
         /** @var UserIdentity $user */
         $user = $this->security->getUser();
 
-        $page = (int) ($request->get('page') ?? 1);
-        if ($page <= 0) {
-            throw new IncorrectPage();
-        }
-
         $this->handler->handle(new Command($user->getUsername()));
 
         return $this->response->json([
-            'items' => $this->dialog($user->getId(), $page),
-            'perPage' => self::PER_PAGE
+            'items' => $this->dialog($user->getId())
         ]);
     }
 
-    private function dialog(string $userId, int $page): array
+    private function dialog(string $userId): array
     {
-        return array_map(function (array $dialog) use ($userId) {
+        $dialogs = array_map(function (array $dialog) use ($userId) {
             $latestMessage = $this->dialogs->getLatestMessage((string) $dialog['uuid']);
             /* TODO: Extract */
             if ($latestMessage && mb_strlen((string) $latestMessage['content']) > 25) {
@@ -140,6 +124,12 @@ final class Dialogs
             }
 
             return $response;
-        }, $this->dialogs->getDialogs($userId, $page));
+        }, $this->dialogs->getDialogs($userId));
+
+        usort($dialogs, function (array $a, array $b) {
+            return strtotime($a['latestMessage']['date']) < strtotime($b['latestMessage']['date']);
+        });
+
+        return $dialogs;
     }
 }

@@ -11,6 +11,7 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use User\Model\Id;
+use User\Model\Status;
 use User\Model\UserInterface;
 use User\ReadModel\UserFetcherInterface;
 
@@ -37,7 +38,7 @@ final class Find
         /** @var UserInterface $currentUser */
         $currentUser = $this->security->getUser();
         $user = $this->users->searchOneByUuid(new Id($uuid));
-        if (!$user) {
+        if (!$user || $user['status'] === Status::DRAFT) {
             throw new UserNotFound();
         }
         if ($user['username'] === $currentUser->getUsername()) {

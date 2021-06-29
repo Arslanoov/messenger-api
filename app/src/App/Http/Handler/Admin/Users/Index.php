@@ -22,7 +22,7 @@ use User\ReadModel\UserFetcherInterface;
  */
 final class Index
 {
-    public const PER_PAGE = 20;
+    public const PER_PAGE = 10;
 
     private UserFetcherInterface $usersRead;
     private UserRepositoryInterface $users;

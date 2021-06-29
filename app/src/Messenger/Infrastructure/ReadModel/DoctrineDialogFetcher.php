@@ -11,29 +11,25 @@ use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\ForwardCompatibility\DriverStatement;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
-use Knp\Component\Pager\PaginatorInterface;
 use Messenger\Model\Dialog\Dialog;
 use Messenger\ReadModel\DialogFetcherInterface;
 
 final class DoctrineDialogFetcher implements DialogFetcherInterface
 {
     private Connection $connection;
-    private PaginatorInterface $paginator;
     private ObjectRepository $repository;
 
     public function __construct(
         Connection $connection,
         EntityManagerInterface $entityManager,
-        PaginatorInterface $paginator
     ) {
         $this->connection = $connection;
-        $this->paginator = $paginator;
         $this->repository = $entityManager->getRepository(Dialog::class);
     }
 
-    public function getDialogs(string $authorId, int $page = 1): array
+    public function getDialogs(string $authorId): array
     {
-        $qb = $this
+        $stmt = $this
             ->connection
             ->createQueryBuilder()
             ->select([
@@ -56,14 +52,15 @@ final class DoctrineDialogFetcher implements DialogFetcherInterface
                 '(d.first_author_id = p.uuid AND d.second_author_id = :author_id) OR
                 (d.second_author_id = p.uuid AND d.first_author_id = :author_id)'
             )
-            ->orderBy('not_read_count', 'desc')
-            ->setParameter(':author_id', $authorId);
+            ->setParameter(':author_id', $authorId)
+            ->execute();
 
-        // TODO: Filter by date?
+        /* TODO: Remove deprecated */
 
-        $pagination = $this->paginator->paginate($qb, $page, Dialogs::PER_PAGE);
+        /** @var array | null $result */
+        $result = $stmt->fetchAllAssociative();
 
-        return (array) $pagination->getItems();
+        return $result ?: [];
     }
 
     public function findDialog(string $dialogId, string $authorId): ?array

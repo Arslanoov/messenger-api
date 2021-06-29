@@ -100,7 +100,7 @@ final class ChangeAvatar
         $this->onlineHandler->handle(new OnlineCommand($userIdentity->getUsername()));
 
         return $this->response->json([
-            'url' => $file->path . $file->name,
+            'url' => $file->name,
         ]);
     }
 }
