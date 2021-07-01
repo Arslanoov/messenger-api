@@ -42,6 +42,7 @@ server.on('connection', function (ws, request) {
         server.clients.forEach(client => {
           if (client.username === data.dialog.partner.username) {
             client.send(JSON.stringify({
+              type: 'read-message',
               dialog: data.dialog,
               message: data.message
             }));
@@ -53,7 +54,26 @@ server.on('connection', function (ws, request) {
         server.clients.forEach(client => {
           if (client.username === data.dialog.partner.username) {
             client.send(JSON.stringify({
-              dialog: data.dialog
+              type: 'read-messages',
+              dialog: {
+                ...data.dialog,
+                sentByMe: {
+                  isSent: true,
+                  isRead: true
+                }
+              }
+            }));
+          }
+        });
+      }
+
+      if (data.type === 'remove-message') {
+        server.clients.forEach(client => {
+          if (client.username === data.dialog.partner.username) {
+            client.send(JSON.stringify({
+              type: 'remove-message',
+              dialog: data.dialog,
+              message: data.message
             }));
           }
         });
