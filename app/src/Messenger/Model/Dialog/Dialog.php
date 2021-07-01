@@ -17,7 +17,7 @@ use Messenger\Model\Message\Message;
  * @ORM\Entity()
  * @ORM\Table(name="messenger_dialogs")
  */
-final class Dialog
+class Dialog
 {
     /**
      * @var Id
@@ -178,7 +178,7 @@ final class Dialog
         /** @var Collection $messages */
         $messages = $this->messages;
         /** @var ?Message $message */
-        $message = $messages->first();
+        $message = $messages->last();
         return $message ?: null;
     }
 
