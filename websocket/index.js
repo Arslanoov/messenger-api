@@ -24,7 +24,57 @@ server.on('connection', function (ws, request) {
       if (data.type === 'new-message') {
         server.clients.forEach(client => {
           if (client.username === data.dialog.partner.username) {
-            client.send(JSON.stringify(data));
+            client.send(JSON.stringify({
+              ...data,
+              dialog: {
+                ...data.dialog,
+                sentByPartner: {
+                  isRead: false
+                },
+                sentByMe: null
+              }
+            }));
+          }
+        });
+      }
+
+      if (data.type === 'read-message') {
+        server.clients.forEach(client => {
+          if (client.username === data.dialog.partner.username) {
+            client.send(JSON.stringify({
+              type: 'read-message',
+              dialog: data.dialog,
+              message: data.message
+            }));
+          }
+        });
+      }
+
+      if (data.type === 'read-messages') {
+        server.clients.forEach(client => {
+          if (client.username === data.dialog.partner.username) {
+            client.send(JSON.stringify({
+              type: 'read-messages',
+              dialog: {
+                ...data.dialog,
+                sentByMe: {
+                  isSent: true,
+                  isRead: true
+                }
+              }
+            }));
+          }
+        });
+      }
+
+      if (data.type === 'remove-message') {
+        server.clients.forEach(client => {
+          if (client.username === data.dialog.partner.username) {
+            client.send(JSON.stringify({
+              type: 'remove-message',
+              dialog: data.dialog,
+              message: data.message
+            }));
           }
         });
       }

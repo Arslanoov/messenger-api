@@ -17,7 +17,7 @@ use Messenger\Model\Message\Message;
  * @ORM\Entity()
  * @ORM\Table(name="messenger_dialogs")
  */
-final class Dialog
+class Dialog
 {
     /**
      * @var Id
@@ -133,7 +133,6 @@ final class Dialog
 
     public function removeMessage(Message $message): void
     {
-        // TODO: Fix
         /** @var Message[] $messages */
         $messages = $this->messages;
         /** @var Collection $messagesCollection */
@@ -160,6 +159,19 @@ final class Dialog
         return $this->messagesCount > 0;
     }
 
+    public function hasMessage(Message $message): bool
+    {
+        /** @var Message[] $messages */
+        $messages = $this->messages;
+        foreach ($messages as $listMessage) {
+            if ($listMessage->getId()->isEqualTo($message->getId())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function isNotReadByMember(Author $author): bool
     {
         if (!$this->hasMember($author)) {
@@ -178,7 +190,7 @@ final class Dialog
         /** @var Collection $messages */
         $messages = $this->messages;
         /** @var ?Message $message */
-        $message = $messages->first();
+        $message = $messages->last();
         return $message ?: null;
     }
 

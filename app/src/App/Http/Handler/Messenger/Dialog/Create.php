@@ -119,11 +119,11 @@ final class Create
             if ($user->getId() === $latestMessage['author_id']) {
                 $dialog['sentByMe'] = [
                     'isSent' => true,
-                    'isRead' => $latestMessage['read_status']
+                    'isRead' => $latestMessage['read_status'] === 'Read'
                 ];
             } else {
                 $dialog['sentByPartner'] = [
-                    'isRead' => $latestMessage['read_status']
+                    'isRead' => $latestMessage['read_status'] === 'Read'
                 ];
             }
         }

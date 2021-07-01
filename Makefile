@@ -7,6 +7,9 @@ test: load-fixtures test-unit test-functional
 docker-up:
 	docker-compose up --build -d
 
+docker-build:
+	docker-compose build
+
 docker-down:
 	docker-compose down
 

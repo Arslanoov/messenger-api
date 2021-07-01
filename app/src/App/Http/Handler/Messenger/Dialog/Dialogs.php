@@ -114,11 +114,11 @@ final class Dialogs
                 if ($userId === $latestMessage['author_id']) {
                     $response['sentByMe'] = [
                         'isSent' => true,
-                        'isRead' => $latestMessage['read_status']
+                        'isRead' => $latestMessage['read_status'] === 'Read'
                     ];
                 } else {
                     $response['sentByPartner'] = [
-                        'isRead' => $latestMessage['read_status']
+                        'isRead' => $latestMessage['read_status'] === 'Read'
                     ];
                 }
             }
