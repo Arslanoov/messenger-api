@@ -133,7 +133,6 @@ class Dialog
 
     public function removeMessage(Message $message): void
     {
-        // TODO: Fix
         /** @var Message[] $messages */
         $messages = $this->messages;
         /** @var Collection $messagesCollection */
@@ -158,6 +157,19 @@ class Dialog
     public function hasMessages(): bool
     {
         return $this->messagesCount > 0;
+    }
+
+    public function hasMessage(Message $message): bool
+    {
+        /** @var Message[] $messages */
+        $messages = $this->messages;
+        foreach ($messages as $listMessage) {
+            if ($listMessage->getId()->isEqualTo($message->getId())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function isNotReadByMember(Author $author): bool
