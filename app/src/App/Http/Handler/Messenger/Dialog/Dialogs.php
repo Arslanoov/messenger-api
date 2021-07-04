@@ -127,7 +127,9 @@ final class Dialogs
         }, $this->dialogs->getDialogs($userId));
 
         usort($dialogs, function (array $a, array $b) {
-            return strtotime($a['latestMessage']['date']) < strtotime($b['latestMessage']['date']);
+            return isset($a['latestMessage']) &&
+                isset($b['latestMessage']) &&
+                strtotime($a['latestMessage']['date']) < strtotime($b['latestMessage']['date']);
         });
 
         return $dialogs;

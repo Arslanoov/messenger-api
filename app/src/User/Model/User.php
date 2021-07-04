@@ -10,6 +10,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Domain\AggregateRoot;
 use Domain\EventsTrait;
+use Domain\Validation\DomainLogicAssertion;
 use User\Exception\AlreadyActivated;
 use User\Exception\AlreadyDeactivated;
 use User\Model\Event\UserSignedUp;
@@ -222,6 +223,7 @@ class User implements UserInterface, AggregateRoot
 
     public function changeAboutInfo(?string $info): void
     {
+        DomainLogicAssertion::maxLength($info, 255, 'Too long about me information');
         $this->aboutMe = $info;
     }
 
